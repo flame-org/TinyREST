@@ -23,6 +23,10 @@
 		"nette/nette": "dev-master"
 	},
 
+	"suggest": {
+		"adamstipak/nette-rest-route": "*"
+	},
+
 	"config": {
 		"vendor-dir": "libs"
 	},
