@@ -8,6 +8,7 @@
 
 namespace Flame\Rest\Application\UI;
 
+use Flame\Rest\Request\Parameters;
 use Nette\Application\UI\Presenter;
 use Flame\Rest\Response\Statuses;
 use Nette\Utils\Strings;
@@ -28,11 +29,11 @@ abstract class RestPresenter extends Presenter
 	protected $resource;
 
 	/**
-	 * @return mixed
+	 * @return Parameters
 	 */
-	public function getPostData()
+	public function getRequestParameters()
 	{
-		return $this->getHttpRequest()->getPost();
+		return new Parameters($this->getParameters());
 	}
 
 	/**
