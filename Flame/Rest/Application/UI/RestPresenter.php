@@ -8,14 +8,12 @@
 
 namespace Flame\Rest\Application\UI;
 
-use Flame\Application\UI\Presenter;
+use Nette\Application\UI\Presenter;
 use Flame\Rest\Response\Statuses;
-use Flame\Utils\Strings;
+use Nette\Utils\Strings;
 use Flame\Rest\Response\IResponse;
 use Nette\Application\ForbiddenRequestException;
 use Flame\Rest\IResource;
-use Nette\Diagnostics\Debugger;
-use Nette;
 
 abstract class RestPresenter extends Presenter
 {
