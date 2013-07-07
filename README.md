@@ -1,4 +1,4 @@
 TinyREST
 ========
 
-Basic setting of REST environment for Nette
+Smart implementation of REST for Nette
