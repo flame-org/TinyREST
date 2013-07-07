@@ -3,7 +3,7 @@
 	"type": "library",
 	"description": "Smart implementation of REST for Nette",
 	"keywords": ["framework", "smart", "simple", "flame", "jsifalda", "tiny", "rest", "restful"],
-	"homepage": "https://github.com/flame-org/tiny-rest",
+	"homepage": "https://github.com/flame-org/TinyREST",
 	"license": "BSD-2-Clause-FreeBSD",
 
 	"authors": [
@@ -15,7 +15,7 @@
 
 	"support":{
 		"email":"flame@jsifalda.name",
-		"issues":"https://github.com/flame-org/tiny-rest/issues"
+		"issues":"https://github.com/flame-org/TinyREST/issues"
 	},
 
 	"require": {
