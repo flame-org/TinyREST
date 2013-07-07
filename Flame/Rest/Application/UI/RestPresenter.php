@@ -27,9 +27,6 @@ abstract class RestPresenter extends Presenter
 	/** @var  IResource */
 	protected $resource;
 
-	/** @var  string */
-	protected $resourceType = IResource::JSON;
-
 	/**
 	 * @return mixed
 	 */
