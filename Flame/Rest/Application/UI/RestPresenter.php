@@ -46,7 +46,7 @@ abstract class RestPresenter extends Presenter
 			parent::checkRequirements($element);
 			$this->checkRequestMethod($element);
 		} catch (ForbiddenRequestException $ex) {
-			$this->returnException($ex);
+			$this->sendErrorResource($ex);
 		}
 	}
 
