@@ -7,6 +7,7 @@
  */
 namespace Flame\Rest\Request;
 
+use Nette\Http\UrlScript;
 use Nette\Object;
 use Nette\Utils\Json;
 
@@ -62,11 +63,16 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @return array
+	 * @return Query
 	 */
 	public function getQuery()
 	{
-		return $this->getKey('query');
+		$query = $this->getKey('query');
+		if(is_array($query)) {
+			return new Query($query);
+		}
+
+		return new Query(array());
 	}
 
 	/**
