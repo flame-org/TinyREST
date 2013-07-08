@@ -70,14 +70,6 @@ abstract class RestPresenter extends Presenter
 	 */
 	public function sendResource($code = IResponse::S200_OK)
 	{
-
-		if($code && $code < 400) {
-			$this->resource->status = Statuses::SUCCESS;
-		}else{
-			$this->resource->status = Statuses::ERROR;
-		}
-
-		$this->resource->code = $code;
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
 	}
