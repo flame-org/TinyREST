@@ -27,6 +27,14 @@ class Parameters extends Object
 	/**
 	 * @return string
 	 */
+	public function getId()
+	{
+		return $this->getKey('id');
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getAction()
 	{
 		return $this->getKey('action');
