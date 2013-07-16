@@ -26,7 +26,7 @@ class ArrayData extends Object
 	/**
 	 * @param $name
 	 * @param null $default
-	 * @return null
+	 * @return mixed
 	 */
 	public function getByKey($name, $default = null)
 	{

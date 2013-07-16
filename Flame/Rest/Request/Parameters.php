@@ -7,13 +7,14 @@
  */
 namespace Flame\Rest\Request;
 
-use Nette\Http\UrlScript;
+use Flame\Rest\Types\ArrayData;
 use Nette\Object;
 use Nette\Utils\Json;
 
 class Parameters extends Object
 {
-	/** @var  array */
+	
+	/** @var \Flame\Rest\Types\ArrayData  */
 	private $data;
 
 	/**
@@ -21,15 +22,15 @@ class Parameters extends Object
 	 */
 	function __construct(array $data)
 	{
-		$this->data = $data;
+		$this->data = new ArrayData($data);
 	}
 
 	/**
-	 * @return string
+	 * @return mixed
 	 */
 	public function getId()
 	{
-		return $this->getKey('id');
+		return $this->data->getByKey('id');
 	}
 
 	/**
@@ -37,7 +38,7 @@ class Parameters extends Object
 	 */
 	public function getAction()
 	{
-		return $this->getKey('action');
+		return $this->data->getByKey('action');
 	}
 
 	/**
@@ -45,7 +46,7 @@ class Parameters extends Object
 	 */
 	public function getFormat()
 	{
-		return $this->getKey('format');
+		return $this->data->getByKey('format');
 	}
 
 	/**
@@ -53,7 +54,7 @@ class Parameters extends Object
 	 */
 	public function getAssociations()
 	{
-		return new Association($this->getKey('associations'));
+		return new Association($this->data->getByKey('associations', array()));
 	}
 
 	/**
@@ -62,7 +63,7 @@ class Parameters extends Object
 	 */
 	public function getData($invalidate = true)
 	{
-		$data = $this->getKey('data');
+		$data = $this->data->getByKey('data');
 		if($data && $invalidate && $this->getFormat() === 'json') {
 			$data = Json::decode($data);
 		}
@@ -75,16 +76,6 @@ class Parameters extends Object
 	 */
 	public function getQuery()
 	{
-		return new Query($this->getKey('query'));
-	}
-
-	/**
-	 * @param $name
-	 * @param null $default
-	 * @return mixed
-	 */
-	protected function getKey($name, $default = null)
-	{
-		return (isset($this->data[$name])) ? $this->data[$name] : $default;
+		return new Query($this->data->getByKey('query', array()));
 	}
 }
