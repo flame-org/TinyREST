@@ -75,12 +75,7 @@ class Parameters extends Object
 	 */
 	public function getQuery()
 	{
-		$query = $this->getKey('query');
-		if(is_array($query)) {
-			return new Query($query);
-		}
-
-		return new Query(array());
+		return new Query($this->getKey('query'));
 	}
 
 	/**
