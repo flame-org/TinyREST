@@ -49,11 +49,11 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @return array
+	 * @return Association
 	 */
 	public function getAssociations()
 	{
-		return $this->getKey('associations');
+		return new Association($this->getKey('associations'));
 	}
 
 	/**
