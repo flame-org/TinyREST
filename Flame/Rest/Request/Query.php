@@ -7,20 +7,21 @@
  */
 namespace Flame\Rest\Request;
 
+use Flame\Rest\Types\ArrayData;
 use Nette\Object;
 
 class Query extends Object
 {
 
-	/** @var array  */
+	/** @var \Flame\Rest\Types\ArrayData  */
 	private $queries;
 
 	/**
 	 * @param array $query
 	 */
-	public function __construct(array $query)
+	public function __construct($query)
 	{
-		$this->queries = $query;
+		$this->queries = new ArrayData($query);
 	}
 
 	/**
@@ -30,7 +31,7 @@ class Query extends Object
 	 */
 	public function getParam($name, $default = null)
 	{
-		return (isset($this->queries[$name])) ? $this->queries[$name] : $default;
+		return $this->queries->getByKey($name, $default);
 	}
 
 }
