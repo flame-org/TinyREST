@@ -27,10 +27,10 @@ class Association extends Object
 	/**
 	 * @param $name
 	 * @param null $default
-	 * @return null
+	 * @return \Flame\Rest\Types\Value
 	 */
 	public function get($name, $default = null)
 	{
-		return $this->associations->getByKey($name, $default);
+		return $this->associations->getValueByKey($name, $default);
 	}
 }

@@ -26,6 +26,16 @@ class ArrayData extends Object
 	/**
 	 * @param $name
 	 * @param null $default
+	 * @return Value
+	 */
+	public function getValueByKey($name, $default = null)
+	{
+		return new Value((isset($this->data[$name])) ? $this->data[$name] : $default);
+	}
+
+	/**
+	 * @param $name
+	 * @param null $default
 	 * @return mixed
 	 */
 	public function getByKey($name, $default = null)

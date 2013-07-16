@@ -10,10 +10,11 @@ namespace Flame\Rest\Request;
 use Flame\Rest\Types\ArrayData;
 use Nette\Object;
 use Nette\Utils\Json;
+use Flame\Rest\Types\ITypes;
 
 class Parameters extends Object
 {
-	
+
 	/** @var \Flame\Rest\Types\ArrayData  */
 	private $data;
 
@@ -26,11 +27,11 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getId()
 	{
-		return $this->data->getByKey('id');
+		return $this->data->getValueByKey('id')->parseInt();
 	}
 
 	/**
@@ -38,7 +39,7 @@ class Parameters extends Object
 	 */
 	public function getAction()
 	{
-		return $this->data->getByKey('action');
+		return $this->data->getValueByKey('action')->parseString();
 	}
 
 	/**
@@ -46,7 +47,7 @@ class Parameters extends Object
 	 */
 	public function getFormat()
 	{
-		return $this->data->getByKey('format');
+		return $this->data->getValueByKey('format')->parseString();
 	}
 
 	/**
@@ -63,9 +64,9 @@ class Parameters extends Object
 	 */
 	public function getData($invalidate = true)
 	{
-		$data = $this->data->getByKey('data');
-		if($data && $invalidate && $this->getFormat() === 'json') {
-			$data = Json::decode($data);
+		$data = $this->data->getValueByKey('data');
+		if($data && $invalidate && $this->getFormat() === ITypes::JSON) {
+			$data = $data->parseJSON();
 		}
 
 		return $data;

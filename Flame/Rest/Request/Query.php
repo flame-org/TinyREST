@@ -17,7 +17,7 @@ class Query extends Object
 	private $queries;
 
 	/**
-	 * @param array $query
+	 * @param $query
 	 */
 	public function __construct($query)
 	{
@@ -31,7 +31,7 @@ class Query extends Object
 	 */
 	public function getParam($name, $default = null)
 	{
-		return $this->queries->getByKey($name, $default);
+		return $this->queries->getValueByKey($name, $default);
 	}
 
 }
