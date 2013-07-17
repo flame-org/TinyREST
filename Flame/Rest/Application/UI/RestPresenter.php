@@ -39,7 +39,7 @@ abstract class RestPresenter extends Presenter
 	 */
 	public function getRequestParameters()
 	{
-		return new Parameters($this->getParameters());
+		return new Parameters($this->parser, $this->getParameters());
 	}
 
 	/**

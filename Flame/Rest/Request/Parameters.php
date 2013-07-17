@@ -7,9 +7,9 @@
  */
 namespace Flame\Rest\Request;
 
+use Flame\Rest\Tools\Parser;
 use Flame\Rest\Types\ArrayData;
 use Nette\Object;
-use Nette\Utils\Json;
 
 class Parameters extends Object
 {
@@ -17,20 +17,25 @@ class Parameters extends Object
 	/** @var \Flame\Rest\Types\ArrayData  */
 	private $data;
 
+	/** @var \Flame\Rest\Tools\Parser  */
+	private $parser;
+
 	/**
+	 * @param Parser $parser
 	 * @param array $data
 	 */
-	function __construct(array $data)
+	function __construct(Parser $parser, array $data)
 	{
+		$this->parser = $parser;
 		$this->data = new ArrayData($data);
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getId()
 	{
-		return $this->data->getByKey('id');
+		return $this->parser->toInt($this->data->getByKey('id'));
 	}
 
 	/**
@@ -38,7 +43,7 @@ class Parameters extends Object
 	 */
 	public function getAction()
 	{
-		return $this->data->getByKey('action');
+		return $this->parser->toString($this->data->getByKey('action'));
 	}
 
 	/**
@@ -46,7 +51,7 @@ class Parameters extends Object
 	 */
 	public function getFormat()
 	{
-		return $this->data->getByKey('format');
+		return $this->parser->toString($this->data->getByKey('format'));
 	}
 
 	/**
@@ -65,7 +70,7 @@ class Parameters extends Object
 	{
 		$data = $this->data->getByKey('data');
 		if($data && $invalidate && $this->getFormat() === 'json') {
-			$data = Json::decode($data);
+			$data = $this->parser->parseJson($data);
 		}
 
 		return $data;
