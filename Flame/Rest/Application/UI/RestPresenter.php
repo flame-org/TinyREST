@@ -25,6 +25,12 @@ abstract class RestPresenter extends Presenter
 	 */
 	public $resourceFactory;
 
+	/**
+	 * @inject
+	 * @var \Flame\Rest\Tools\Parser
+	 */
+	public $parser;
+
 	/** @var  IResource */
 	protected $resource;
 
