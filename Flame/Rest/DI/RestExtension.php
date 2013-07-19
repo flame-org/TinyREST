@@ -28,6 +28,11 @@ class RestExtension extends CompilerExtension
 		'validators' => array()
 	);
 
+	/** @var array  */
+	private $defaultValidators = array(
+		'Flame\Rest\Validators\ObjectToArrayConverter'
+	);
+
 	/**
 	 * @return void
 	 */
@@ -41,19 +46,20 @@ class RestExtension extends CompilerExtension
 		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
 			->setClass('Flame\Rest\Validation\ResourceValidator');
 
-		if(count($config['validators'])) {
-			foreach($config['validators'] as $validator) {
+		$validators = array_merge($this->defaultValidators, $config['validators']);
+
+		if(count($validators)) {
+			foreach($validators as $k => $validatorClass) {
+				$validator = $container->addDefinition($this->prefix($k))
+					->setClass($validatorClass);
+
 				$resourceValidator->addSetup('addValidator', $validator);
 			}
 		}
 
-		if(substr($config['time']['validator'], 0, 1) !== '@') {
-			$dateTimeValidator = $container->addDefinition($this->prefix('dateTimeValidator'))
-				->setClass($config['time']['validator'])
-				->setArguments(array($config['time']['format']));
-		}else{
-			$dateTimeValidator = $config['time']['validator'];
-		}
+		$dateTimeValidator = $container->addDefinition($this->prefix('dateTimeValidator'))
+			->setClass($config['time']['validator'])
+			->setArguments(array($config['time']['format']));
 
 		$resourceValidator->addSetup('addValidator', $dateTimeValidator);
 
