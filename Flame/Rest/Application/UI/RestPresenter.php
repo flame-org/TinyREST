@@ -13,6 +13,7 @@ use Flame\Rest\Response\Code;
 use Nette\Application\UI\Presenter;
 use Nette\Application\ForbiddenRequestException;
 use Flame\Rest\IResource;
+use Nette\Diagnostics\Debugger;
 
 abstract class RestPresenter extends Presenter
 {
@@ -62,14 +63,19 @@ abstract class RestPresenter extends Presenter
 
 	/**
 	 * @param \Exception $ex
+	 * @param bool $log
 	 */
-	public function sendErrorResource(\Exception $ex)
+	public function sendErrorResource(\Exception $ex, $log = true)
 	{
 		$code = 500;
 		$exCode = $ex->getCode();
 
 		if ($exCode && in_array($exCode, $this->code->getCodes())) {
 			$code = $ex->getCode();
+		}
+
+		if($log === true) {
+			Debugger::log($ex, Debugger::ERROR);
 		}
 
 		$this->resource->message = $ex->getMessage();
