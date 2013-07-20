@@ -7,20 +7,17 @@
  */
 namespace Flame\Rest\Types;
 
-use Nette\Object;
+use Nette\InvalidStateException;
 
-class ArrayData extends Object
+class ArrayData extends Data
 {
-
-	/** @var array  */
-	private $data;
 
 	/**
 	 * @param array $data
 	 */
 	public function __construct($data)
 	{
-		$this->data = (array) $data;
+		parent::__construct((array) $data);
 	}
 
 	/**
@@ -30,15 +27,38 @@ class ArrayData extends Object
 	 */
 	public function getByKey($name, $default = null)
 	{
-		return (isset($this->data[$name])) ? $this->data[$name] : $default;
+		return $this->getValue($name, $default);
 	}
 
 	/**
-	 * @return array
+	 * @return array|mixed
 	 */
 	public function getData()
 	{
 		return $this->data;
 	}
 
+	/**
+	 * @param string $name
+	 * @return mixed
+	 * @throws \Nette\InvalidStateException
+	 */
+	public function get($name)
+	{
+		if(!isset($this->data[$name])) {
+			throw new InvalidStateException('Value with key "' . $name . '" does not exist');
+		}
+
+		return $this->data[$name];
+	}
+
+	/**
+	 * @param string $name
+	 * @param null $default
+	 * @return mixed
+	 */
+	public function getValue($name, $default = null)
+	{
+		return (isset($this->data[$name])) ? $this->data[$name] : $default;
+	}
 }
