@@ -9,8 +9,8 @@
 namespace Flame\Rest\Application\UI;
 
 use Flame\Rest\Request\Parameters;
+use Flame\Rest\Response\Code;
 use Nette\Application\UI\Presenter;
-use Flame\Rest\Response\IResponse;
 use Nette\Application\ForbiddenRequestException;
 use Flame\Rest\IResource;
 
@@ -29,7 +29,15 @@ abstract class RestPresenter extends Presenter
 	 */
 	public $parser;
 
-	/** @var  IResource */
+	/**
+	 * @inject
+	 * @var \Flame\Rest\Response\Code
+	 */
+	public $code;
+
+	/**
+	 * @var \Flame\Rest\IResource
+	 */
 	protected $resource;
 
 	/**
@@ -58,8 +66,9 @@ abstract class RestPresenter extends Presenter
 	public function sendErrorResource(\Exception $ex)
 	{
 		$code = 500;
+		$exCode = $ex->getCode();
 
-		if ($ex->getCode()) {
+		if ($exCode && in_array($exCode, $this->code->getCodes())) {
 			$code = $ex->getCode();
 		}
 
@@ -70,19 +79,10 @@ abstract class RestPresenter extends Presenter
 	/**
 	 * @param int $code
 	 */
-	public function sendResource($code = IResponse::S200_OK)
+	public function sendResource($code = Code::S200_OK)
 	{
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
-	}
-
-	/**
-	 * On before render
-	 */
-	protected function beforeRender()
-	{
-		parent::beforeRender();
-		$this->sendResource();
 	}
 
 	/**
@@ -93,5 +93,14 @@ abstract class RestPresenter extends Presenter
 		parent::startup();
 
 		$this->resource = $this->resourceFactory->create();
+	}
+
+	/**
+	 * On before render
+	 */
+	protected function beforeRender()
+	{
+		parent::beforeRender();
+		$this->sendResource();
 	}
 }
