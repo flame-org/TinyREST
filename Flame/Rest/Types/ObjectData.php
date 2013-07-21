@@ -48,7 +48,7 @@ class ObjectData extends Data
 	 * @param $name
 	 * @return ObjectData
 	 */
-	public function getPiece($name)
+	protected function getPiece($name)
 	{
 		$data = $this->data->$name;
 		if(is_array($data) || is_object($data)) {
