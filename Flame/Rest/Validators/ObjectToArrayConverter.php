@@ -21,6 +21,10 @@ class ObjectToArrayConverter extends Object implements IValidator
 	{
 		if(count($data)) {
 			foreach ($data as &$value) {
+				if(is_array($value)) {
+					$value = $this->parseObject($value);
+				}
+
 				if(!is_object($value)) {
 					continue;
 				}
