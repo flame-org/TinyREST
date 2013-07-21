@@ -22,7 +22,7 @@ class ObjectData extends Data
 
 	/**
 	 * @param string $name
-	 * @return mixed
+	 * @return mixed|ObjectData
 	 * @throws InvalidStateException
 	 */
 	public function get($name)
@@ -31,17 +31,31 @@ class ObjectData extends Data
 			throw new InvalidStateException('Value with key "' . $name . '" does not exist');
 		}
 
-		return $this->data->$name;
+		return $this->getPiece($name);
 	}
 
 	/**
 	 * @param string $name
 	 * @param null $default
-	 * @return mixed
+	 * @return mixed|ObjectData
 	 */
 	public function getValue($name, $default = null)
 	{
-		return (isset($this->data->$name)) ? $this->data->$name : $default;
+		return (isset($this->data->$name)) ? $this->getPiece($name) : $default;
+	}
+
+	/**
+	 * @param $name
+	 * @return ObjectData
+	 */
+	public function getPiece($name)
+	{
+		$data = $this->data->$name;
+		if(is_array($data) || is_object($data)) {
+			$data = new ObjectData($data);
+		}
+
+		return $data;
 	}
 
 	/**
