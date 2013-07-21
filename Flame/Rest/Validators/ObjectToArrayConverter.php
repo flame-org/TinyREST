@@ -14,30 +14,34 @@ class ObjectToArrayConverter extends Object implements IValidator
 {
 
 	/**
-	 * @param array $data
+	 * @param $array
 	 * @return array
 	 */
-	public function parseObject(array $data)
+	public function parseObject($array)
 	{
-		if(count($data)) {
-			foreach ($data as &$value) {
-				if(!is_array($value) && !is_object($value)) {
-					continue;
+		if ($array instanceof \Traversable) {
+			$array = iterator_to_array($array);
+		}
+
+		if (!is_array($array)) {
+			if(is_object($array)) {
+				if(method_exists($array, 'toArray')) {
+					return $array->toArray();
 				}
 
-				if(is_array($value)) {
-					$value = $this->parseObject($value);
-				}
+				return (array) $array;
+			}
 
-				if(method_exists($value, 'toArray')) {
-					$value = $value->toArray();
-				}else{
-					$value = (array) $value;
-				}
+			return $array;
+		}
+
+		foreach ($array as $key => $value) {
+			if ($value instanceof \Traversable || is_array($array)) {
+				$array[$key] = $this->parseObject($value);
 			}
 		}
 
-		return $data;
+		return $array;
 	}
 
 	/**
