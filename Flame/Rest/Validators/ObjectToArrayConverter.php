@@ -26,7 +26,7 @@ class ObjectToArrayConverter extends Object implements IValidator
 		if (!is_array($array)) {
 			if(is_object($array)) {
 				if(method_exists($array, 'toArray')) {
-					return $array->toArray();
+					return $array->toArray(true);
 				}
 
 				return (array) $array;
