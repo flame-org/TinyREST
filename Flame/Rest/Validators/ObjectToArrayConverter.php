@@ -36,7 +36,7 @@ class ObjectToArrayConverter extends Object implements IValidator
 		}
 
 		foreach ($array as $key => $value) {
-			if ($value instanceof \Traversable || is_array($array)) {
+			if ($value instanceof \Traversable || is_array($array) || is_object($array)) {
 				$array[$key] = $this->parseObject($value);
 			}
 		}
