@@ -35,15 +35,21 @@ class DateTimeConverter extends Object implements IValidator
 	 * @param $array
 	 * @return array
 	 */
-	public function parseDateTime(array &$array)
+	public function parseDateTime($array)
 	{
-		array_walk_recursive($array, function (&$item) {
-			if ($item instanceof DateTime) {
-				$item = $item->format($this->format);
-			}
+		if ($array instanceof Traversable) {
+			$array = iterator_to_array($array);
+		}
 
-			return $item;
-		});
+		if (!is_array($array)) {
+			return $array instanceof DateTime ? $array->format($this->format) : $array;
+		}
+
+		foreach ($array as $key => $value) {
+			if ($value instanceof Traversable || is_array($array)) {
+				$array[$key] = $this->parseDateTime($value);
+			}
+		}
 
 		return $array;
 	}
