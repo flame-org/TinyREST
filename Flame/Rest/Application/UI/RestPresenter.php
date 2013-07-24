@@ -15,6 +15,12 @@ use Nette\Application\ForbiddenRequestException;
 use Flame\Rest\IResource;
 use Nette\Diagnostics\Debugger;
 
+/**
+ * Class RestPresenter
+ *
+ * @package Flame\Rest\Application\UI
+ * @method \Flame\Rest\Request\Parameters getRequestParameters
+ */
 abstract class RestPresenter extends Presenter
 {
 
@@ -42,12 +48,9 @@ abstract class RestPresenter extends Presenter
 	protected $resource;
 
 	/**
-	 * @return Parameters
+	 * @var Parameters
 	 */
-	public function getRequestParameters()
-	{
-		return new Parameters($this->parser, $this->getParameters());
-	}
+	protected $requestParameters;
 
 	/**
 	 * @param $element
@@ -99,6 +102,7 @@ abstract class RestPresenter extends Presenter
 		parent::startup();
 
 		$this->resource = $this->resourceFactory->create();
+		$this->requestParameters = new Parameters($this->parser, $this->getParameters());
 	}
 
 	/**
