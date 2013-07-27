@@ -44,12 +44,4 @@ interface IResource
 	 * @return array|\stdClass|\Traversable
 	 */
 	public function getData();
-
-	/**
-	 * Set result data
-	 * @param array $data
-	 * @return IResource
-	 */
-	public function setData(array $data);
-
 }

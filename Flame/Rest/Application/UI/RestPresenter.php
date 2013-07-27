@@ -43,7 +43,7 @@ abstract class RestPresenter extends Presenter
 	public $code;
 
 	/**
-	 * @var \Flame\Rest\IResource
+	 * @var \Flame\Rest\ExtendedResource
 	 */
 	protected $resource;
 

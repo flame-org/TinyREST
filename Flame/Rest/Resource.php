@@ -25,10 +25,10 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 {
 
 	/** @var string */
-	private $contentType = self::JSON;
+	protected $contentType = self::JSON;
 
 	/** @var array */
-	private $data = array();
+	protected $data = array();
 
 	/**
 	 * @param array $data
@@ -65,17 +65,6 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	public function getData()
 	{
 		return $this->data;
-	}
-
-	/**
-	 * Set result data
-	 * @param array $data
-	 * @return $this
-	 */
-	public function setData(array $data)
-	{
-		$this->data = $data;
-		return $this;
 	}
 
 	/******************** Serializable ********************/

@@ -35,7 +35,7 @@ class ResourceFactory extends Object implements IResourceFactory
 	 */
 	public function create()
 	{
-		return new ValidResource($this->validator);
+		return new ExtendedResource($this->validator);
 	}
 
 
