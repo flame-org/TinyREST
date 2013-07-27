@@ -82,10 +82,10 @@ class RestExtension extends CompilerExtension
 	 * Register REST API extension
 	 * @param Configurator $configurator
 	 */
-	public static function install(Configurator $configurator)
+	public static function register(Configurator $configurator)
 	{
 		$configurator->onCompile[] = function($configurator, $compiler) {
-			$compiler->addExtension('REST', new RestExtension());
+			$compiler->addExtension('rest', new RestExtension());
 		};
 	}
 
