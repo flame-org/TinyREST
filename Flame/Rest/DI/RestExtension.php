@@ -28,11 +28,6 @@ class RestExtension extends CompilerExtension
 		'validators' => array()
 	);
 
-	/** @var array  */
-	private $defaultValidators = array(
-		'Flame\Rest\Validators\ObjectToArrayConverter'
-	);
-
 	/**
 	 * @return void
 	 */
@@ -46,9 +41,7 @@ class RestExtension extends CompilerExtension
 		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
 			->setClass('Flame\Rest\Validation\ResourceValidator');
 
-		$validators = array_merge($this->defaultValidators, $config['validators']);
-
-		if(count($validators)) {
+		if(count($validators = $config['validators'])) {
 			foreach($validators as $k => $validatorClass) {
 				$validator = $container->addDefinition($this->prefix($k))
 					->setClass($validatorClass);
