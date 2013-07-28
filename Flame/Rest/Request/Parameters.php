@@ -8,13 +8,13 @@
 namespace Flame\Rest\Request;
 
 use Flame\Rest\Tools\Parser;
-use Flame\Rest\Types\ArrayData;
+use Nette\ArrayHash;
 use Nette\Object;
 
 class Parameters extends Object
 {
 	
-	/** @var \Flame\Rest\Types\ArrayData  */
+	/** @var \Nette\ArrayHash  */
 	private $data;
 
 	/** @var \Flame\Rest\Tools\Parser  */
@@ -27,7 +27,7 @@ class Parameters extends Object
 	function __construct(Parser $parser, array $data)
 	{
 		$this->parser = $parser;
-		$this->data = new ArrayData($data);
+		$this->data = ArrayHash::from($data);
 	}
 
 	/**
@@ -35,7 +35,7 @@ class Parameters extends Object
 	 */
 	public function getId()
 	{
-		return $this->parser->toInt($this->data->getByKey('id'));
+		return $this->parser->toInt($this->data->id);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Parameters extends Object
 	 */
 	public function getAction()
 	{
-		return $this->parser->toString($this->data->getByKey('action'));
+		return $this->parser->toString($this->data->action);
 	}
 
 	/**
@@ -51,15 +51,15 @@ class Parameters extends Object
 	 */
 	public function getFormat()
 	{
-		return $this->parser->toString($this->data->getByKey('format'));
+		return $this->parser->toString($this->data->format);
 	}
 
 	/**
-	 * @return Association
+	 * @return ArrayHash
 	 */
 	public function getAssociations()
 	{
-		return new Association($this->data->getByKey('associations', array()));
+		return ArrayHash::from($this->data->associations);
 	}
 
 	/**
@@ -68,19 +68,19 @@ class Parameters extends Object
 	 */
 	public function getData($invalidate = true)
 	{
-		$data = $this->data->getByKey('data');
+		$data = $this->data->data;
 		if($data && $invalidate && $this->getFormat() === 'json') {
-			$data = $this->parser->parseJson($data);
+			$data = ArrayHash::from($this->parser->parseJson($data));
 		}
 
 		return $data;
 	}
 
 	/**
-	 * @return Query
+	 * @return ArrayHash
 	 */
 	public function getQuery()
 	{
-		return new Query($this->data->getByKey('query', array()));
+		return ArrayHash::from($this->data->query);
 	}
 }
