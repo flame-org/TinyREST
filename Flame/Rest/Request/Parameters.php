@@ -27,7 +27,15 @@ class Parameters extends Object
 	function __construct(Parser $parser, array $data)
 	{
 		$this->parser = $parser;
-		$this->data = ArrayHash::from($data);
+		$defaults = array(
+			'id' => '',
+			'action' => '',
+			'format' => '',
+			'associations' => array(),
+			'data' => array(),
+			'query' => array(),
+		);
+		$this->data = ArrayHash::from(array_merge($defaults, $data));
 	}
 
 	/**
