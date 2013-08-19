@@ -24,7 +24,7 @@
 	},
 
 	"suggest": {
-		"adamstipak/nette-rest-route": "*"
+		"adamstipak/nette-rest-route": ">=1.0.0"
 	},
 
 	"config": {
