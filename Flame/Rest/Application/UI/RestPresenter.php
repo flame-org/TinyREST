@@ -12,7 +12,6 @@ use Flame\Rest\Request\Parameters;
 use Flame\Rest\Response\Code;
 use Nette\Application\UI\Presenter;
 use Nette\Application\ForbiddenRequestException;
-use Flame\Rest\IResource;
 use Nette\Diagnostics\Debugger;
 
 /**
