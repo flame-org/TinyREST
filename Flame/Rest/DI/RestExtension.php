@@ -7,8 +7,8 @@
  */
 namespace Flame\Rest\DI;
 
-use Nette\DI\CompilerExtension;
-use Nette\Configurator;
+use Nette\Config\CompilerExtension;
+use Nette\Config\Configurator;
 use Nette\Utils\Validators;
 
 /**

@@ -10,7 +10,6 @@ namespace Flame\Rest\Application\UI;
 
 use Flame\Rest\Request\Parameters;
 use Flame\Rest\Response\Code;
-use Nette\Application\UI\Presenter;
 use Nette\Application\ForbiddenRequestException;
 use Nette\Diagnostics\Debugger;
 
@@ -23,32 +22,16 @@ use Nette\Diagnostics\Debugger;
 abstract class RestPresenter extends Presenter
 {
 
-	/**
-	 * @inject
-	 * @var \Flame\Rest\ResourceFactory
-	 */
-	public $resourceFactory;
+	/** @var  \Flame\Rest\Tools\Parser */
+	protected $parser;
 
-	/**
-	 * @inject
-	 * @var \Flame\Rest\Tools\Parser
-	 */
-	public $parser;
-
-	/**
-	 * @inject
-	 * @var \Flame\Rest\Response\Code
-	 */
+	/** @var  \Flame\Rest\Response\Code */
 	public $code;
 
-	/**
-	 * @var \Flame\Rest\ExtendedResource
-	 */
+	/** @var  \Flame\Rest\ExtendedResource */
 	protected $resource;
 
-	/**
-	 * @var Parameters
-	 */
+	/** @var  Parameters */
 	protected $requestParameters;
 
 	/**
@@ -100,8 +83,9 @@ abstract class RestPresenter extends Presenter
 	{
 		parent::startup();
 
-		$this->resource = $this->resourceFactory->create();
-		$this->requestParameters = new Parameters($this->parser, $this->getParameters());
+		$this->resource = $this->context->getByType('\Flame\Rest\IResourceFactory')->create();
+		$this->code = $this->context->getByType('\Flame\Rest\ICode');
+		$this->requestParameters = new Parameters($this->parser, $this->params);
 	}
 
 	/**
