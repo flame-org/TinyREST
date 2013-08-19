@@ -17,7 +17,6 @@ use Nette\Diagnostics\Debugger;
  * Class RestPresenter
  *
  * @package Flame\Rest\Application\UI
- * @method \Flame\Rest\Request\Parameters getRequestParameters
  */
 abstract class RestPresenter extends Presenter
 {
@@ -33,6 +32,14 @@ abstract class RestPresenter extends Presenter
 
 	/** @var  Parameters */
 	protected $requestParameters;
+
+	/**
+	 * @return Parameters
+	 */
+	public function getRequestParameters()
+	{
+		return $this->requestParameters;
+	}
 
 	/**
 	 * @param $element
@@ -84,7 +91,8 @@ abstract class RestPresenter extends Presenter
 		parent::startup();
 
 		$this->resource = $this->context->getByType('\Flame\Rest\IResourceFactory')->create();
-		$this->code = $this->context->getByType('\Flame\Rest\ICode');
+		$this->code = $this->context->getByType('Flame\Rest\Response\ICode');
+		$this->parser = $this->context->getByType('\Flame\Rest\Tools\Parser');
 		$this->requestParameters = new Parameters($this->parser, $this->params);
 	}
 
