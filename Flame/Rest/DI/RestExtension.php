@@ -54,7 +54,7 @@ class RestExtension extends CompilerExtension
 			->setClass($config['time']['validator'])
 			->setArguments(array($config['time']['format']));
 
-		$resourceValidator->addSetup('addValidator', $dateTimeValidator);
+		$resourceValidator->addSetup('addValidator', array($dateTimeValidator));
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
