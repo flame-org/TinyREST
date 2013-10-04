@@ -46,7 +46,7 @@ class Parser extends Object
 	 */
 	public function parseJson($value)
 	{
-		return Json::decode($this->toString($value));
+		return Json::decode($this->toString($value), 1);
 	}
 
 }
