@@ -39,7 +39,7 @@ class RestExtension extends CompilerExtension
 		$this->configValidation($config);
 
 		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
-			->setClass('Flame\Rest\Validation\ResourceValidator');
+			->setClass('Flame\Rest\Validation\ValidatorComposite');
 
 		if(count($validators = $config['validators'])) {
 			foreach($validators as $k => $validatorClass) {

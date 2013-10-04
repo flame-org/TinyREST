@@ -7,7 +7,7 @@
  */
 namespace Flame\Rest;
 
-use Flame\Rest\Validation\ResourceValidator;
+use Flame\Rest\Validation\ValidatorComposite;
 use Nette\Object;
 
 /**
@@ -18,15 +18,15 @@ use Nette\Object;
 class ResourceFactory extends Object implements IResourceFactory
 {
 
-	/** @var ResourceValidator  */
-	private $validator;
+	/** @var  ValidatorComposite */
+	private $validatorComposite;
 
 	/**
-	 * @param ResourceValidator $validator
+	 * @param ValidatorComposite $validatorComposite
 	 */
-	public function __construct(ResourceValidator $validator)
+	function __construct(ValidatorComposite $validatorComposite)
 	{
-		$this->validator = $validator;
+		$this->validatorComposite = $validatorComposite;
 	}
 
 	/**
@@ -35,7 +35,7 @@ class ResourceFactory extends Object implements IResourceFactory
 	 */
 	public function create()
 	{
-		return new ExtendedResource($this->validator);
+		return new ExtendedResource($this->validatorComposite);
 	}
 
 

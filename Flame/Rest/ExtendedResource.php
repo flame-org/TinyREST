@@ -7,21 +7,20 @@
  */
 namespace Flame\Rest;
 
-use Flame\Rest\Mapping\IResourceMapping;
-use Flame\Rest\Validation\ResourceValidator;
+use Flame\Rest\Validation\ValidatorComposite;
 
 class ExtendedResource extends Resource
 {
 
-	/** @var  ResourceValidator */
-	private $validator;
+	/** @var  ValidatorComposite */
+	private $validatorComposite;
 
 	/**
-	 * @param ResourceValidator $validator
+	 * @param ValidatorComposite $validatorComposite
 	 */
-	function __construct(ResourceValidator $validator)
+	function __construct(ValidatorComposite $validatorComposite)
 	{
-		$this->validator = $validator;
+		$this->validatorComposite = $validatorComposite;
 	}
 
 	/**
@@ -39,7 +38,7 @@ class ExtendedResource extends Resource
 	 */
 	public function getData()
 	{
-		return $this->validator->getValidData(parent::getData());
+		return $this->validatorComposite->validate(parent::getData());
 	}
 
 } 
