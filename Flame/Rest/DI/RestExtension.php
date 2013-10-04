@@ -23,10 +23,6 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
-		'time' => array(
-			'validator' => 'Flame\Rest\Validators\DateTimeConverter',
-			'format' => 'c'
-		),
 		'validators' => array()
 	);
 
@@ -52,12 +48,6 @@ class RestExtension extends CompilerExtension
 			}
 		}
 
-		$dateTimeValidator = $container->addDefinition($this->prefix('dateTimeValidator'))
-			->setClass($config['time']['validator'])
-			->setArguments(array($config['time']['format']));
-
-		$resourceValidator->addSetup('addValidator', array($dateTimeValidator));
-
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
 
@@ -72,9 +62,6 @@ class RestExtension extends CompilerExtension
 	public function configValidation($config)
 	{
 		Validators::assertField($config, 'validators', 'array');
-		Validators::assertField($config, 'time', 'array');
-		Validators::assertField($config['time'], 'format', 'string');
-		Validators::assertField($config['time'], 'validator', 'string');
 	}
 
 	/**
