@@ -30,10 +30,6 @@ class ExtendedResource extends Resource
 	 */
 	public function setData($data)
 	{
-		if($data instanceof IResourceMapping) {
-			$data = $data->getResource();
-		}
-
 		$this->data = $data;
 		return $this;
 	}
