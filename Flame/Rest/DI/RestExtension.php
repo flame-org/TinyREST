@@ -59,9 +59,6 @@ class RestExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
 
-		$container->addDefinition($this->prefix('parser'))
-			->setClass('\Flame\Rest\Tools\Parser');
-
 		$container->addDefinition($this->prefix('code'))
 			->setClass('\Flame\Rest\Response\Code');
 	}

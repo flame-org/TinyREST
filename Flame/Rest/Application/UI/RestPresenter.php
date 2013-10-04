@@ -21,9 +21,6 @@ use Nette\Diagnostics\Debugger;
 abstract class RestPresenter extends Presenter
 {
 
-	/** @var  \Flame\Rest\Tools\Parser */
-	protected $parser;
-
 	/** @var  \Flame\Rest\Response\Code */
 	public $code;
 
@@ -92,8 +89,7 @@ abstract class RestPresenter extends Presenter
 
 		$this->resource = $this->context->getByType('\Flame\Rest\IResourceFactory')->create();
 		$this->code = $this->context->getByType('Flame\Rest\Response\ICode');
-		$this->parser = $this->context->getByType('\Flame\Rest\Tools\Parser');
-		$this->requestParameters = new Parameters($this->parser, $this->params);
+		$this->requestParameters = new Parameters($this->params);
 	}
 
 	/**
