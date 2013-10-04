@@ -20,6 +20,10 @@ class EntityToArrayConverter extends Object implements IValidator
 	 */
 	public function entityToArray($array)
 	{
+		if($array instanceof \Traversable) {
+			$array = iterator_to_array($array);
+
+		}
 		if (!is_array($array)) {
 			if(is_object($array)) {
 				if($array instanceof Entity) {
@@ -33,7 +37,7 @@ class EntityToArrayConverter extends Object implements IValidator
 		}
 
 		foreach ($array as $key => $value) {
-			if (is_array($array) || is_object($array)) {
+			if ($array instanceof \Traversable || is_array($array) || is_object($array)) {
 				$array[$key] = $this->entityToArray($value);
 			}
 		}
