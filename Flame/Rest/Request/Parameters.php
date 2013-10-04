@@ -77,7 +77,7 @@ class Parameters extends Object
 	public function getData($invalidate = true)
 	{
 		$data = $this->data->data;
-		if($data && $invalidate && $this->getFormat() === 'json') {
+		if($data && $invalidate === true && $this->getFormat() === 'json') {
 			$data = ArrayHash::from($this->parser->parseJson($data));
 		}
 
