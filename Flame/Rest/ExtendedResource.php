@@ -38,7 +38,7 @@ class ExtendedResource extends Resource
 	 */
 	public function getData()
 	{
-		return $this->validatorComposite->validate(parent::getData());
+		return $this->validatorComposite->validate((array) parent::getData());
 	}
 
 } 
