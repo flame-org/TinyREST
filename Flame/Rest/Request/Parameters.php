@@ -58,11 +58,21 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @return ArrayHash
+	 * @param null $name
+	 * @param null $default
+	 * @return object|null
 	 */
-	public function getAssociations()
+	public function getAssociations($name = null, $default = null)
 	{
-		return ArrayHash::from($this->data->associations);
+		if($name !== null) {
+			if(isset($this->data->associations[$name])) {
+				return $this->data->associations[$name];
+			}
+
+			return $default;
+		}
+
+		return $this->data->associations;
 	}
 
 	/**
@@ -80,10 +90,20 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @return ArrayHash
+	 * @param null $query
+	 * @param null $default
+	 * @return object|null
 	 */
-	public function getQuery()
+	public function getQuery($query = null, $default = null)
 	{
-		return ArrayHash::from($this->data->query);
+		if($query !== null) {
+			if(isset($this->data->query[$query])) {
+				return $this->data->query[$query];
+			}
+
+			return $default;
+		}
+
+		return $this->data->query;
 	}
 }
