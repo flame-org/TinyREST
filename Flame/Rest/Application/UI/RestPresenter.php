@@ -22,13 +22,13 @@ abstract class RestPresenter extends Presenter
 {
 
 	/** @var  \Flame\Rest\Response\Code */
-	public $code;
+	protected $code;
 
 	/** @var  \Flame\Rest\ExtendedResource */
 	protected $resource;
 
 	/** @var  Parameters */
-	protected $requestParameters;
+	private $requestParameters;
 
 	/**
 	 * @return Parameters
