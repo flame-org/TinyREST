@@ -58,9 +58,9 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @param null $name
+	 * @param null|string $name
 	 * @param null $default
-	 * @return object|null
+	 * @return mixed
 	 */
 	public function getAssociations($name = null, $default = null)
 	{
@@ -90,9 +90,9 @@ class Parameters extends Object
 	}
 
 	/**
-	 * @param null $query
+	 * @param null|string $query
 	 * @param null $default
-	 * @return object|null
+	 * @return mixed
 	 */
 	public function getQuery($query = null, $default = null)
 	{
