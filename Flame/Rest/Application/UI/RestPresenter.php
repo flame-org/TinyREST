@@ -31,6 +31,16 @@ abstract class RestPresenter extends Presenter
 	private $requestParameters;
 
 	/**
+	 * @param array $requestParameters
+	 * @return $this
+	 */
+	public function setRequestParameters(array $requestParameters)
+	{
+		$this->requestParameters = new Parameters($requestParameters);
+		return $this;
+	}
+
+	/**
 	 * @return Parameters
 	 */
 	public function getRequestParameters()
@@ -89,7 +99,7 @@ abstract class RestPresenter extends Presenter
 
 		$this->resource = $this->context->getByType('\Flame\Rest\IResourceFactory')->create();
 		$this->code = $this->context->getByType('Flame\Rest\Response\ICode');
-		$this->requestParameters = new Parameters($this->params);
+		$this->setRequestParameters($this->params);
 	}
 
 	/**
