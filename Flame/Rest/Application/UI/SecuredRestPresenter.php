@@ -7,8 +7,8 @@
  */
 namespace Flame\Rest\Application\UI;
 
+use Flame\Rest\Security\Authenticators\BasicAuthenticator;
 use Nette\Application\BadRequestException;
-use Nette\Application\ForbiddenRequestException;
 use Nette\Utils\Strings;
 
 class SecuredRestPresenter extends RestPresenter
@@ -17,35 +17,29 @@ class SecuredRestPresenter extends RestPresenter
 	/** @var bool */
 	protected $checkRequestMethod = false;
 
-	/** @var  \Flame\Rest\Security\Authentication */
-	protected $authentication;
+	/**
+	 * @param BasicAuthenticator $authenticator
+	 */
+	public function injectBasicAuthenticator(BasicAuthenticator $authenticator)
+	{
+		$this->authentication->setAuthenticator($authenticator);
+	}
 
-		/**
+	/**
 	 * @param $element
 	 */
 	public function checkRequirements($element)
 	{
 		try {
-
-			parent::checkRequirements($element);
+			$this->authentication->authenticate($this->getRequestParameters());
 
 			if($this->checkRequestMethod === true) {
 				$this->checkRequestMethod($element);
 			}
 
-		} catch (ForbiddenRequestException $ex) {
+		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function startup()
-	{
-		parent::startup();
-
-		$this->authentication = $this->context->getByType('Flame\Rest\Security\Authentication');
 	}
 
 	/**
