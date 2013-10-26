@@ -64,6 +64,9 @@ class RestExtension extends CompilerExtension
 		$container->getDefinition('application')
 			->setClass('Flame\Rest\Application\Application')
 			->addSetup('setRestErrorPresenter', array($config['errorPresenter']));
+
+		$container->addDefinition($this->prefix('parametersFactory'))
+			->setClass('Flame\Rest\Request\ParametersFactory');
 	}
 
 	/**

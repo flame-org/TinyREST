@@ -9,6 +9,7 @@
 namespace Flame\Rest\Application\UI;
 
 use Flame\Rest\IResourceFactory;
+use Flame\Rest\Request\IParametersFactory;
 use Flame\Rest\Request\Parameters;
 use Flame\Rest\Response\Code;
 use Flame\Rest\Response\ICode;
@@ -35,31 +36,22 @@ abstract class RestPresenter extends Presenter
 	/** @var  Parameters */
 	private $requestParameters;
 
-	public function __construct()
-	{
-		$this->setRequestParameters($this->params);
-	}
-
 	/**
 	 * @param IResourceFactory $resourceFactory
 	 * @param ICode $code
 	 * @param Authentication $authentication
+	 * @param IParametersFactory $paramsFactory
 	 */
-	final public function injectRestServices(IResourceFactory $resourceFactory, ICode $code, Authentication $authentication)
+	final public function injectRestServices(
+		IResourceFactory $resourceFactory,
+		ICode $code,
+		Authentication $authentication,
+		IParametersFactory $paramsFactory)
 	{
 		$this->resource = $resourceFactory->create();
 		$this->authentication = $authentication;
+		$this->requestParameters = $paramsFactory->create($this->params);
 		$this->code = $code;
-	}
-
-	/**
-	 * @param array $requestParameters
-	 * @return $this
-	 */
-	public function setRequestParameters(array $requestParameters)
-	{
-		$this->requestParameters = new Parameters($requestParameters);
-		return $this;
 	}
 
 	/**

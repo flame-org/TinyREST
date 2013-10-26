@@ -11,7 +11,7 @@ use Nette\ArrayHash;
 use Nette\Utils\Json;
 use Nette\Object;
 
-class Parameters extends Object
+class Parameters extends Object implements IParameters
 {
 	
 	/** @var \Nette\ArrayHash  */
