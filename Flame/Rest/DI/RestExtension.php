@@ -36,6 +36,9 @@ class RestExtension extends CompilerExtension
 
 		$this->configValidation($config);
 
+		$container->addDefinition($this->prefix('authentication'))
+			->setClass('Flame\Rest\Security\Authentication');
+
 		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
 			->setClass('Flame\Rest\Validation\ValidatorComposite');
 

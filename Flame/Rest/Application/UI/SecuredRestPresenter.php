@@ -19,7 +19,10 @@ class SecuredRestPresenter extends RestPresenter
 	/** @var bool */
 	protected $checkRequestMethod = false;
 
-	/**
+	/** @var  \Flame\Rest\Security\Authentication */
+	protected $authentication;
+
+		/**
 	 * @param $element
 	 */
 	public function checkRequirements($element)
@@ -39,6 +42,16 @@ class SecuredRestPresenter extends RestPresenter
 		} catch (ForbiddenRequestException $ex) {
 			$this->sendErrorResource($ex);
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function startup()
+	{
+		parent::startup();
+
+		$this->authentication = $this->context->getByType('Flame\Rest\Security\Authentication');
 	}
 
 	/**

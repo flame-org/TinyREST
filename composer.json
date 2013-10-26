@@ -33,6 +33,6 @@
 
 	"autoload": {
 		"psr-0": {"Flame": ""},
-    "files": ["Flame/Rest/compatibility.php"]
+    "files": ["Flame/Rest/compatibility.php", "Flame/Rest/Security/exceptions.php"]
 	}
 }
