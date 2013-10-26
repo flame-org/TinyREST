@@ -8,8 +8,11 @@
 
 namespace Flame\Rest\Application\UI;
 
+use Flame\Rest\IResourceFactory;
 use Flame\Rest\Request\Parameters;
 use Flame\Rest\Response\Code;
+use Flame\Rest\Response\ICode;
+use Flame\Rest\Security\Authentication;
 use Nette\Application\ForbiddenRequestException;
 use Nette\Diagnostics\Debugger;
 
@@ -27,8 +30,28 @@ abstract class RestPresenter extends Presenter
 	/** @var  \Flame\Rest\ExtendedResource */
 	protected $resource;
 
+	/** @var  \Flame\Rest\Security\Authentication */
+	protected $authentication;
+
 	/** @var  Parameters */
 	private $requestParameters;
+
+	public function __construct()
+	{
+		$this->setRequestParameters($this->params);
+	}
+
+	/**
+	 * @param IResourceFactory $resourceFactory
+	 * @param ICode $code
+	 * @param Authentication $authentication
+	 */
+	final public function injectRestServices(IResourceFactory $resourceFactory, ICode $code, Authentication $authentication)
+	{
+		$this->resource = $resourceFactory->create();
+		$this->authentication = $authentication;
+		$this->code = $code;
+	}
 
 	/**
 	 * @param array $requestParameters
@@ -88,18 +111,6 @@ abstract class RestPresenter extends Presenter
 	{
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function startup()
-	{
-		parent::startup();
-
-		$this->resource = $this->context->getByType('\Flame\Rest\IResourceFactory')->create();
-		$this->code = $this->context->getByType('Flame\Rest\Response\ICode');
-		$this->setRequestParameters($this->params);
 	}
 
 	/**
