@@ -61,8 +61,10 @@ abstract class RestPresenter extends Presenter
 	public function checkRequirements($element)
 	{
 		try {
-			parent::checkRequirements($element);
-			$this->authentication->authenticate($this->requestParameters);
+			$user = (array) $element->getAnnotation('User');
+			if (in_array('loggedIn', $user) && !$this->user->isLoggedIn()) {
+				$this->authentication->authenticate($this->getRequestParameters());
+			}
 		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}

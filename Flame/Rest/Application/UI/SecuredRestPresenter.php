@@ -18,19 +18,12 @@ class SecuredRestPresenter extends RestPresenter
 	protected $checkRequestMethod = false;
 
 	/**
-	 * @param BasicAuthenticator $authenticator
-	 */
-	public function injectBasicAuthenticator(BasicAuthenticator $authenticator)
-	{
-		$this->authentication->setAuthenticator($authenticator);
-	}
-
-	/**
 	 * @param $element
 	 */
 	public function checkRequirements($element)
 	{
 		try {
+
 			$this->authentication->authenticate($this->getRequestParameters());
 
 			if($this->checkRequestMethod === true) {
