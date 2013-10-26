@@ -7,6 +7,7 @@
  */
 namespace Flame\Rest\Application\UI;
 
+use Nette\Application\BadRequestException;
 use Nette\Application\ForbiddenRequestException;
 use Nette\Utils\Strings;
 
@@ -49,13 +50,13 @@ class SecuredRestPresenter extends RestPresenter
 
 	/**
 	 * @param $element
-	 * @throws \Nette\Application\ForbiddenRequestException
+	 * @throws \Nette\Application\BadRequestException
 	 */
 	private function checkRequestMethod($element)
 	{
 		if($method = $element->getAnnotation('method')) {
-			if (Strings::upper($method) !== $this->getHttpRequest()->getMethod()) {
-				throw new ForbiddenRequestException('Bad HTTP method for the request.');
+			if (Strings::upper($method) !== Strings::upper($this->getHttpRequest()->getMethod())) {
+				throw new BadRequestException('Bad HTTP method for the request.');
 			}
 		}
 	}
