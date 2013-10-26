@@ -93,6 +93,7 @@ abstract class RestPresenter extends Presenter
 		}
 
 		$this->resource->message = $ex->getMessage();
+		$this->resource->type = 'error';
 		$this->sendResource($code);
 	}
 
