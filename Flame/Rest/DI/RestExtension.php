@@ -23,6 +23,7 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
+		'errorPresenter' => 'ErrorRest',
 		'validators' => array()
 	);
 
@@ -59,6 +60,10 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('code'))
 			->setClass('\Flame\Rest\Response\Code');
+
+		$container->getDefinition('application')
+			->setClass('Flame\Rest\Application\Application')
+			->addSetup('setRestErrorPresenter', array($config['errorPresenter']));
 	}
 
 	/**
@@ -68,6 +73,7 @@ class RestExtension extends CompilerExtension
 	public function configValidation($config)
 	{
 		Validators::assertField($config, 'validators', 'array');
+		Validators::assertField($config, 'errorPresenter', 'string');
 	}
 
 	/**
