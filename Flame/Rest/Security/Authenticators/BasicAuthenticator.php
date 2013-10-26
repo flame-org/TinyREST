@@ -32,7 +32,7 @@ class BasicAuthenticator extends Authenticator
 	 * @return bool|void
 	 * @throws \Flame\Rest\Security\UnauthorizedRequestException
 	 */
-	function authRequestData(Parameters $params)
+	public function authRequestData(Parameters $params)
 	{
 		if (!$this->user->isLoggedIn()) {
 			throw new UnauthorizedRequestException('User is not logged.');
@@ -44,7 +44,7 @@ class BasicAuthenticator extends Authenticator
 	 * @return bool|void
 	 * @throws \Flame\Rest\Security\AuthenticationException
 	 */
-	function authRequestTimeout(Parameters $params)
+	public function authRequestTimeout(Parameters $params)
 	{
 		if ($this->user->getLogoutReason() === IUserStorage::INACTIVITY) {
 			throw new AuthenticationException('User session expired');

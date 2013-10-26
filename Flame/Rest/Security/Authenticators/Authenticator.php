@@ -29,11 +29,11 @@ abstract class Authenticator extends Object implements IAuthenticator
 	 * @param Parameters $params
 	 * @return bool
 	 */
-	abstract function authRequestData(Parameters $params);
+	abstract public function authRequestData(Parameters $params);
 
 	/**
 	 * @param Parameters $params
 	 * @return bool
 	 */
-	abstract function authRequestTimeout(Parameters $params);
+	abstract public function authRequestTimeout(Parameters $params);
 } 
