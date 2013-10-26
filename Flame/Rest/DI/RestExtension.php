@@ -67,6 +67,12 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('parametersFactory'))
 			->setClass('Flame\Rest\Request\ParametersFactory');
+
+		$container->addDefinition($this->prefix('authorizationHash'))
+			->setClass('Flame\Rest\Security\Hashes\AuthorizationHash');
+
+		$container->addDefinition($this->prefix('hashAuthenticator'))
+			->setClass('Flame\Rest\Security\Authenticators\HashAuthenticator');
 	}
 
 	/**
