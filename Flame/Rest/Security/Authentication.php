@@ -34,11 +34,11 @@ class Authentication extends Object
 	 */
 	public function authenticate(Parameters $params)
 	{
-		if($this->authenticator === null) {
-			throw new InvalidStateException('No IAuthenticator found in class "' . __CLASS__ . '". Please set one first.');
+		if($this->authenticator !== null) {
+			return $this->authenticator->authenticate($params);
 		}
 
-		return $this->authenticator->authenticate($params);
+		return true;
 	}
 
 } 

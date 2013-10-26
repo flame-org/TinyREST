@@ -69,6 +69,7 @@ abstract class RestPresenter extends Presenter
 	{
 		try {
 			parent::checkRequirements($element);
+			$this->authentication->authenticate($this->requestParameters);
 		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
