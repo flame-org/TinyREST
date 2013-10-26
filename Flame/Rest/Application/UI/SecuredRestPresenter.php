@@ -14,9 +14,6 @@ class SecuredRestPresenter extends RestPresenter
 {
 
 	/** @var bool */
-	protected $checkUserRole = true;
-
-	/** @var bool */
 	protected $checkRequestMethod = false;
 
 	/** @var  \Flame\Rest\Security\Authentication */
@@ -35,10 +32,6 @@ class SecuredRestPresenter extends RestPresenter
 				$this->checkRequestMethod($element);
 			}
 
-			if($this->checkUserRole === true) {
-				$this->checkUserRole($element);
-			}
-
 		} catch (ForbiddenRequestException $ex) {
 			$this->sendErrorResource($ex);
 		}
@@ -52,19 +45,6 @@ class SecuredRestPresenter extends RestPresenter
 		parent::startup();
 
 		$this->authentication = $this->context->getByType('Flame\Rest\Security\Authentication');
-	}
-
-	/**
-	 * @param $element
-	 * @throws \Nette\Application\ForbiddenRequestException
-	 */
-	private function checkUserRole($element)
-	{
-		if($role = $element->getAnnotation('role')) {
-			if (!$this->getUser()->isInRole($role)) {
-				throw new ForbiddenRequestException('You don\'t have permissions for this action.');
-			}
-		}
 	}
 
 	/**
