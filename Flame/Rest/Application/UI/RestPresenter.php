@@ -11,8 +11,7 @@ namespace Flame\Rest\Application\UI;
 use Flame\Rest\IResourceFactory;
 use Flame\Rest\Request\IParametersFactory;
 use Flame\Rest\Request\Parameters;
-use Flame\Rest\Response\Code;
-use Flame\Rest\Response\ICode;
+use Nette\Http\IResponse;
 use Flame\Rest\Security\Authentication;
 use Nette\Diagnostics\Debugger;
 
@@ -23,9 +22,6 @@ use Nette\Diagnostics\Debugger;
  */
 abstract class RestPresenter extends Presenter
 {
-
-	/** @var  \Flame\Rest\Response\Code */
-	protected $code;
 
 	/** @var  \Flame\Rest\ExtendedResource */
 	protected $resource;
@@ -38,20 +34,17 @@ abstract class RestPresenter extends Presenter
 
 	/**
 	 * @param IResourceFactory $resourceFactory
-	 * @param ICode $code
 	 * @param Authentication $authentication
 	 * @param IParametersFactory $paramsFactory
 	 */
 	final public function injectRestServices(
 		IResourceFactory $resourceFactory,
-		ICode $code,
 		Authentication $authentication,
 		IParametersFactory $paramsFactory)
 	{
 		$this->resource = $resourceFactory->create();
 		$this->authentication = $authentication;
 		$this->requestParameters = $paramsFactory->create($this->params);
-		$this->code = $code;
 	}
 
 	/**
@@ -81,11 +74,9 @@ abstract class RestPresenter extends Presenter
 	 */
 	public function sendErrorResource(\Exception $ex, $log = true)
 	{
-		$code = 500;
-		$exCode = $ex->getCode();
-
-		if ($exCode && in_array($exCode, $this->code->getCodes())) {
-			$code = $ex->getCode();
+		$code = $ex->getCode();
+		if ($code < 100 || $code > 599) {
+			$code = 400;
 		}
 
 		if($log === true) {
@@ -100,7 +91,7 @@ abstract class RestPresenter extends Presenter
 	/**
 	 * @param int $code
 	 */
-	public function sendResource($code = Code::S200_OK)
+	public function sendResource($code = IResponse::S200_OK)
 	{
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
