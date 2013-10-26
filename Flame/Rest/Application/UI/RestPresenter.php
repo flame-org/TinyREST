@@ -13,7 +13,6 @@ use Flame\Rest\Request\Parameters;
 use Flame\Rest\Response\Code;
 use Flame\Rest\Response\ICode;
 use Flame\Rest\Security\Authentication;
-use Nette\Application\ForbiddenRequestException;
 use Nette\Diagnostics\Debugger;
 
 /**
@@ -69,18 +68,6 @@ abstract class RestPresenter extends Presenter
 	public function getRequestParameters()
 	{
 		return $this->requestParameters;
-	}
-
-	/**
-	 * @param $element
-	 */
-	public function checkRequirements($element)
-	{
-		try {
-			parent::checkRequirements($element);
-		} catch (ForbiddenRequestException $ex) {
-			$this->sendErrorResource($ex);
-		}
 	}
 
 	/**
