@@ -71,6 +71,18 @@ abstract class RestPresenter extends Presenter
 	}
 
 	/**
+	 * @param $element
+	 */
+	public function checkRequirements($element)
+	{
+		try {
+			parent::checkRequirements($element);
+		} catch (\Exception $ex) {
+			$this->sendErrorResource($ex);
+		}
+	}
+
+	/**
 	 * @param \Exception $ex
 	 * @param bool $log
 	 */
