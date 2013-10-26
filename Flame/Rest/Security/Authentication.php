@@ -8,7 +8,6 @@
 namespace Flame\Rest\Security;
 
 use Flame\Rest\Request\Parameters;
-use Nette\InvalidStateException;
 use Nette\Object;
 
 class Authentication extends Object
