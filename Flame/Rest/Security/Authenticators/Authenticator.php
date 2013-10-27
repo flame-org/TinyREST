@@ -22,7 +22,7 @@ abstract class Authenticator extends Object implements IAuthenticator
 	 */
 	public function authenticate(Parameters $params)
 	{
-		if(!$this->authRequestTimeout($params) || !$this->authRequestData($params)) {
+		if(!$this->authRequestData($params) || !$this->authRequestTimeout($params)) {
 			throw new UnauthorizedRequestException('Unauthorized request.');
 		}
 
