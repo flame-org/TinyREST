@@ -29,6 +29,9 @@ abstract class RestPresenter extends Presenter
 	/** @var  \Flame\Rest\Security\Authentication */
 	protected $authentication;
 
+	/** @var  IParametersFactory */
+	private $parametersFactory;
+
 	/** @var  Parameters */
 	private $requestParameters;
 
@@ -44,7 +47,7 @@ abstract class RestPresenter extends Presenter
 	{
 		$this->resource = $resourceFactory->create();
 		$this->authentication = $authentication;
-		$this->requestParameters = $paramsFactory->create($this->params);
+		$this->parametersFactory = $paramsFactory;
 	}
 
 	/**
@@ -97,6 +100,16 @@ abstract class RestPresenter extends Presenter
 	{
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function startup()
+	{
+		parent::startup();
+
+		$this->requestParameters = $this->parametersFactory->create($this->params);
 	}
 
 	/**
