@@ -23,7 +23,6 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
-		'errorPresenter' => 'ErrorRest',
 		'authenticator' => 'Flame\Rest\Security\Authenticators\BasicAuthenticator',
 		'validators' => array(),
 		'tokens' => array(
@@ -63,10 +62,6 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
-
-		$container->getDefinition('application')
-			->setClass('Flame\Rest\Application\Application')
-			->addSetup('setRestErrorPresenter', array($config['errorPresenter']));
 
 		$container->addDefinition($this->prefix('parametersFactory'))
 			->setClass('Flame\Rest\Request\ParametersFactory');

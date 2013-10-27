@@ -1,13 +1,13 @@
 <?php
 /**
- * Class ErrorRestPresenter
+ * Class BaseErrorRestPresenter
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 26.10.13
  */
 namespace Flame\Rest\Application\UI;
 
-class ErrorRestPresenter extends RestPresenter
+abstract class BaseErrorRestPresenter extends RestPresenter
 {
 
 	/**
