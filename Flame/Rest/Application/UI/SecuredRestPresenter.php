@@ -7,7 +7,6 @@
  */
 namespace Flame\Rest\Application\UI;
 
-use Flame\Rest\Security\Authenticators\BasicAuthenticator;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Strings;
 
