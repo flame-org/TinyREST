@@ -80,7 +80,6 @@ class RestExtension extends CompilerExtension
 	public function configValidation($config)
 	{
 		Validators::assertField($config, 'validators', 'array');
-		Validators::assertField($config, 'errorPresenter', 'string');
 		Validators::assertField($config, 'authenticator', 'string');
 		Validators::assertField($config, 'tokens', 'array');
 		Validators::assertField($config['tokens'], 'expiration', 'string');
