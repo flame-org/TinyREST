@@ -20,7 +20,8 @@ use Nette\Utils\Strings;
  * @author Adam Štipák <adam.stipak@gmail.com>
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  */
-class RestRoute implements IRouter {
+class RestRoute implements IRouter
+{
 
 	/** @var string */
 	protected $path;
@@ -34,7 +35,7 @@ class RestRoute implements IRouter {
 	/** @var array */
 	protected $formats = array(
 		'json' => 'application/json',
-		'xml'  => 'application/xml',
+		'xml' => 'application/xml',
 	);
 
 	/** @var string */
@@ -47,39 +48,44 @@ class RestRoute implements IRouter {
 
 	const QUERY_PARAM_OVERRIDE = '__method';
 
-	public function __construct($module = NULL, $defaultFormat = 'json', $flagReadAll = FALSE) {
-		if(!array_key_exists($defaultFormat, $this->formats)) {
+	public function __construct($module = null, $defaultFormat = 'json', $flagReadAll = false)
+	{
+		if (!array_key_exists($defaultFormat, $this->formats)) {
 			throw new InvalidArgumentException("Format '{$defaultFormat}' is not allowed.");
 		}
 
 		$this->module = $module;
 		$this->defaultFormat = $defaultFormat;
-		$this->useReadAllAction = (bool) $flagReadAll;
+		$this->useReadAllAction = (bool)$flagReadAll;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDefaultFormat() {
+	public function getDefaultFormat()
+	{
 		return $this->defaultFormat;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getPath() {
+	public function getPath()
+	{
 		$path = implode('/', explode(':', $this->module));
 		$this->path = strtolower($path);
 
-		return (string) $this->path;
+		return (string)$this->path;
 	}
 
 	/**
 	 * Maps HTTP request to a Request object.
+	 *
 	 * @param \Nette\Http\IRequest $httpRequest
 	 * @return \Nette\Application\Request|NULL
 	 */
-	public function match(IRequest $httpRequest) {
+	public function match(IRequest $httpRequest)
+	{
 		$url = $httpRequest->getUrl();
 		$basePath = str_replace('/', '\/', $url->getBasePath());
 		$cleanPath = preg_replace("/^{$basePath}/", '', $url->getPath());
@@ -87,7 +93,7 @@ class RestRoute implements IRouter {
 		$path = str_replace('/', '\/', $this->getPath());
 		$pathRexExp = empty($path) ? "/^.+$/" : "/^{$path}\/.*$/";
 		if (!preg_match($pathRexExp, $cleanPath)) {
-			return NULL;
+			return null;
 		}
 
 		$cleanPath = preg_replace('/^' . $path . '\//', '', $cleanPath);
@@ -115,7 +121,8 @@ class RestRoute implements IRouter {
 		$assoc = array();
 		if (count($frags) > 0 && count($frags) % 2 === 0) {
 			foreach ($frags as $k => $f) {
-				if ($k % 2 !== 0) continue;
+				if ($k % 2 !== 0)
+					continue;
 
 				$assoc[$f] = $frags[$k + 1];
 			}
@@ -140,7 +147,8 @@ class RestRoute implements IRouter {
 		return $appRequest;
 	}
 
-	protected function detectAction(HttpRequest $request) {
+	protected function detectAction(HttpRequest $request)
+	{
 		$method = $this->detectMethod($request);
 
 		switch ($method) {
@@ -168,19 +176,20 @@ class RestRoute implements IRouter {
 	 *
 	 * @return string
 	 */
-	protected function detectMethod(HttpRequest $request) {
+	protected function detectMethod(HttpRequest $request)
+	{
 		$requestMethod = $request->getMethod();
 		if ($requestMethod !== 'POST') {
 			return $request->getMethod();
 		}
 
 		$method = $request->getHeader(self::HTTP_HEADER_OVERRIDE);
-		if(isset($method)) {
+		if (isset($method)) {
 			return strtoupper($method);
 		}
 
 		$method = $request->getQuery(self::QUERY_PARAM_OVERRIDE);
-		if(isset($method)) {
+		if (isset($method)) {
 			return strtoupper($method);
 		}
 
@@ -191,11 +200,12 @@ class RestRoute implements IRouter {
 	 * @param \Nette\Http\Request $request
 	 * @return string
 	 */
-	private function detectFormat(HttpRequest $request) {
+	private function detectFormat(HttpRequest $request)
+	{
 		$header = $request->getHeader('Accept'); // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
 		foreach ($this->formats as $format => $fullFormatName) {
 			$fullFormatName = Strings::replace($fullFormatName, '/\//', '\/');
-			if(Strings::match($header, "/{$fullFormatName}/")) {
+			if (Strings::match($header, "/{$fullFormatName}/")) {
 				return $format;
 			}
 		}
@@ -204,7 +214,7 @@ class RestRoute implements IRouter {
 		$path = $request->getUrl()->getPath();
 		$formats = array_keys($this->formats);
 		$formats = implode('|', $formats);
-		if(Strings::match($path, "/\.({$formats})$/")) {
+		if (Strings::match($path, "/\.({$formats})$/")) {
 			list($path, $format) = explode('.', $path);
 			return $format;
 		}
@@ -215,29 +225,33 @@ class RestRoute implements IRouter {
 	/**
 	 * @return array|null
 	 */
-	protected function readInput() {
+	protected function readInput()
+	{
 		return file_get_contents('php://input');
 	}
 
 	/**
 	 * @return $this
 	 */
-	public function useReadAll() {
-		$this->useReadAllAction = TRUE;
+	public function useReadAll()
+	{
+		$this->useReadAllAction = true;
 		return $this;
 	}
 
 	/**
 	 * Constructs absolute URL from Request object.
+	 *
 	 * @param \Nette\Application\Request $appRequest
 	 * @param \Nette\Http\Url $refUrl
 	 * @throws \Nette\InvalidStateException
 	 * @return string|NULL
 	 */
-	public function constructUrl(Request $appRequest, Url $refUrl) {
+	public function constructUrl(Request $appRequest, Url $refUrl)
+	{
 		// Module prefix not match.
-		if($this->module && !Strings::startsWith($appRequest->getPresenterName(), $this->module)) {
-			return NULL;
+		if ($this->module && !Strings::startsWith($appRequest->getPresenterName(), $this->module)) {
+			return null;
 		}
 
 		$parameters = $appRequest->getParameters();
