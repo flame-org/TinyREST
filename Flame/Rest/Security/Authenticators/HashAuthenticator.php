@@ -62,6 +62,8 @@ class HashAuthenticator extends Authenticator
 		if($this->isUserLogged() !== true) {
 			throw new UnauthorizedRequestException('User is not logged.');
 		}
+
+		return true;
 	}
 
 	/**
@@ -71,6 +73,8 @@ class HashAuthenticator extends Authenticator
 	public function authRequestTimeout(Parameters $params)
 	{
 		// TODO: Implement authRequestTimeout() method.
+
+		return true;
 	}
 
 	/**

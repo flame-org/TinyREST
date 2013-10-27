@@ -37,6 +37,8 @@ class BasicAuthenticator extends Authenticator
 		if (!$this->user->isLoggedIn()) {
 			throw new UnauthorizedRequestException('User is not logged.');
 		}
+
+		return true;
 	}
 
 	/**
@@ -49,5 +51,7 @@ class BasicAuthenticator extends Authenticator
 		if ($this->user->getLogoutReason() === IUserStorage::INACTIVITY) {
 			throw new AuthenticationException('User session expired');
 		}
+
+		return true;
 	}
 }

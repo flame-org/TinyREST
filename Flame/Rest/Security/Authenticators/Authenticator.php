@@ -9,6 +9,7 @@ namespace Flame\Rest\Security\Authenticators;
 
 use Flame\Rest\Request\Parameters;
 use Flame\Rest\Security\IAuthenticator;
+use Flame\Rest\Security\UnauthorizedRequestException;
 use Nette\Object;
 
 abstract class Authenticator extends Object implements IAuthenticator
@@ -17,11 +18,14 @@ abstract class Authenticator extends Object implements IAuthenticator
 	/**
 	 * @param Parameters $params
 	 * @return bool
+	 * @throws \Flame\Rest\Security\UnauthorizedRequestException
 	 */
 	public function authenticate(Parameters $params)
 	{
-		$this->authRequestData($params);
-		$this->authRequestTimeout($params);
+		if(!$this->authRequestTimeout($params) || !$this->authRequestData($params)) {
+			throw new UnauthorizedRequestException('Unauthorized request.');
+		}
+
 		return true;
 	}
 
