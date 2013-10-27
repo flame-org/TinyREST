@@ -8,7 +8,6 @@
 namespace Flame\Rest\Application\Routers;
 
 use Nette\Application\IRouter;
-use Nette\InvalidArgumentException;
 use Nette\Http\Request as HttpRequest;
 use Nette\Application\Request;
 use Nette\Http\IRequest;
@@ -23,14 +22,14 @@ use Nette\Utils\Strings;
 class RestRoute implements IRouter
 {
 
+	const HTTP_HEADER_OVERRIDE = 'X-HTTP-Method-Override';
+	const QUERY_PARAM_OVERRIDE = '__method';
+
 	/** @var string */
 	protected $path;
 
 	/** @var string */
 	protected $module;
-
-	/** @var boolean */
-	protected $useReadAllAction;
 
 	/** @var array */
 	protected $formats = array(
@@ -41,30 +40,12 @@ class RestRoute implements IRouter
 	/** @var string */
 	private $requestUrl;
 
-	/** @var string */
-	protected $defaultFormat;
-
-	const HTTP_HEADER_OVERRIDE = 'X-HTTP-Method-Override';
-
-	const QUERY_PARAM_OVERRIDE = '__method';
-
-	public function __construct($module = null, $defaultFormat = 'json', $flagReadAll = false)
-	{
-		if (!array_key_exists($defaultFormat, $this->formats)) {
-			throw new InvalidArgumentException("Format '{$defaultFormat}' is not allowed.");
-		}
-
-		$this->module = $module;
-		$this->defaultFormat = $defaultFormat;
-		$this->useReadAllAction = (bool)$flagReadAll;
-	}
-
 	/**
-	 * @return string
+	 * @param null $module
 	 */
-	public function getDefaultFormat()
+	public function __construct($module = null)
 	{
-		return $this->defaultFormat;
+		$this->module = $module;
 	}
 
 	/**
@@ -106,7 +87,7 @@ class RestRoute implements IRouter
 		// Resource ID.
 		if (count($frags) % 2 === 0) {
 			$params['id'] = array_pop($frags);
-		} elseif ($params['action'] == 'read' && $this->useReadAllAction) {
+		} elseif ($params['action'] == 'read' && !@$params['id']) {
 			$params['action'] = 'readAll';
 		}
 		$presenterName = ucfirst(array_pop($frags));
@@ -138,15 +119,18 @@ class RestRoute implements IRouter
 		// Remember absolute URL for ::constructUrl(). It is one way route ;-).
 		$this->requestUrl = $url->getAbsoluteUrl();
 
-		$appRequest = new Request(
+		return new Request(
 			$presenterName,
 			$httpRequest->getMethod(),
 			$params
 		);
-
-		return $appRequest;
 	}
 
+	/**
+	 * @param HttpRequest $request
+	 * @return string
+	 * @throws \Nette\InvalidStateException
+	 */
 	protected function detectAction(HttpRequest $request)
 	{
 		$method = $this->detectMethod($request);
@@ -202,14 +186,6 @@ class RestRoute implements IRouter
 	 */
 	private function detectFormat(HttpRequest $request)
 	{
-		$header = $request->getHeader('Accept'); // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-		foreach ($this->formats as $format => $fullFormatName) {
-			$fullFormatName = Strings::replace($fullFormatName, '/\//', '\/');
-			if (Strings::match($header, "/{$fullFormatName}/")) {
-				return $format;
-			}
-		}
-
 		// Try retrieve fallback from URL.
 		$path = $request->getUrl()->getPath();
 		$formats = array_keys($this->formats);
@@ -219,7 +195,14 @@ class RestRoute implements IRouter
 			return $format;
 		}
 
-		return $this->defaultFormat;
+		$header = $request->getHeader('Accept'); // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+		foreach ($this->formats as $format => $fullFormatName) {
+			$fullFormatName = Strings::replace($fullFormatName, '/\//', '\/');
+			if (Strings::match($header, "/{$fullFormatName}/")) {
+				return $format;
+			}
+		}
+
 	}
 
 	/**
@@ -228,15 +211,6 @@ class RestRoute implements IRouter
 	protected function readInput()
 	{
 		return file_get_contents('php://input');
-	}
-
-	/**
-	 * @return $this
-	 */
-	public function useReadAll()
-	{
-		$this->useReadAllAction = true;
-		return $this;
 	}
 
 	/**
@@ -266,10 +240,6 @@ class RestRoute implements IRouter
 		// Associations.
 		if (isset($parameters['associations']) && is_array($parameters['associations'])) {
 			$associations = & $parameters['associations'];
-
-			if (count($associations) % 2 !== 0) {
-				throw new InvalidStateException("Number of associations is not even");
-			}
 
 			foreach ($associations as $key => $value) {
 				$urlStack[] = $key;
