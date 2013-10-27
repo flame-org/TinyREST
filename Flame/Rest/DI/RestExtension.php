@@ -25,7 +25,10 @@ class RestExtension extends CompilerExtension
 	public $defaults = array(
 		'errorPresenter' => 'ErrorRest',
 		'authenticator' => 'Flame\Rest\Security\Authenticators\BasicAuthenticator',
-		'validators' => array()
+		'validators' => array(),
+		'tokens' => array(
+			'expiration' => '+ 30 days'
+		)
 	);
 
 	/**
@@ -70,6 +73,9 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('authorizationHash'))
 			->setClass('Flame\Rest\Security\Hashes\AuthorizationHash');
+
+		$container->addDefinition($this->prefix('hashCalculator'))
+			->setClass('Flame\Rest\Security\HashCalculator', array($config['tokens']['expiration']));
 	}
 
 	/**
@@ -81,6 +87,8 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'validators', 'array');
 		Validators::assertField($config, 'errorPresenter', 'string');
 		Validators::assertField($config, 'authenticator', 'string');
+		Validators::assertField($config, 'tokens', 'array');
+		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
 
 	/**

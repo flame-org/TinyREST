@@ -22,3 +22,8 @@ class UnauthorizedRequestException extends AuthenticationException
 	/** @var int */
 	protected $defaultCode = IResponse::S401_UNAUTHORIZED;
 }
+
+class RequestTimeoutException extends UnauthorizedRequestException
+{
+
+}

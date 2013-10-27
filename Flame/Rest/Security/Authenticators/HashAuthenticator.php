@@ -9,6 +9,7 @@ namespace Flame\Rest\Security\Authenticators;
 
 use Flame\Rest\Request\Parameters;
 use Flame\Rest\Security\IUserHash;
+use Flame\Rest\Security\RequestTimeoutException;
 use Flame\Rest\Security\Storage\IAuthStorage;
 use Flame\Rest\Security\IUser;
 use Flame\Rest\Security\UnauthorizedRequestException;
@@ -69,10 +70,19 @@ class HashAuthenticator extends Authenticator
 	/**
 	 * @param Parameters $params
 	 * @return bool
+	 * @throws \Flame\Rest\Security\RequestTimeoutException
 	 */
 	public function authRequestTimeout(Parameters $params)
 	{
-		// TODO: Implement authRequestTimeout() method.
+		$pieces = explode(':', $this->getUser()->getHash());
+		if(isset($pieces[0], $pieces[1])) {
+			$expirationTime = new \DateTime();
+			$expirationTime->setTimestamp($pieces[1]);
+
+			if((new \DateTime()) > $expirationTime) {
+				throw new RequestTimeoutException('Validity of token expired. Please sign in again.');
+			}
+		}
 
 		return true;
 	}
