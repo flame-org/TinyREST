@@ -8,7 +8,6 @@
 namespace Flame\Rest\Security;
 
 use Flame\Rest\Request\Parameters;
-use Flame\Rest\Security\Authenticators\BasicAuthenticator;
 use Nette\Object;
 
 class Authentication extends Object
@@ -16,14 +15,6 @@ class Authentication extends Object
 
 	/** @var  IAuthenticator */
 	private $authenticator;
-
-	/**
-	 * @param BasicAuthenticator $authenticator
-	 */
-	function __construct(BasicAuthenticator $authenticator = null)
-	{
-		$this->authenticator = $authenticator;
-	}
 
 	/**
 	 * @param IAuthenticator $authenticator

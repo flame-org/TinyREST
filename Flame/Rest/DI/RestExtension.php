@@ -24,6 +24,7 @@ class RestExtension extends CompilerExtension
 	/** @var array  */
 	public $defaults = array(
 		'errorPresenter' => 'ErrorRest',
+		'authenticator' => 'Flame\Rest\Security\Authenticators\BasicAuthenticator',
 		'validators' => array()
 	);
 
@@ -37,11 +38,13 @@ class RestExtension extends CompilerExtension
 
 		$this->configValidation($config);
 
-		$container->addDefinition($this->prefix('authentication'))
+		$authentication = $container->addDefinition($this->prefix('authentication'))
 			->setClass('Flame\Rest\Security\Authentication');
 
-		$container->addDefinition($this->prefix('basicAuthenticator'))
-			->setClass('Flame\Rest\Security\Authenticators\BasicAuthenticator');
+		$authenticator = $container->addDefinition($this->prefix('authenticator'))
+			->setClass($config['authenticator']);
+
+		$authentication->addSetup('setAuthenticator', array($authenticator));
 
 		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
 			->setClass('Flame\Rest\Validation\ValidatorComposite');
@@ -67,9 +70,6 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('authorizationHash'))
 			->setClass('Flame\Rest\Security\Hashes\AuthorizationHash');
-
-		$container->addDefinition($this->prefix('hashAuthenticator'))
-			->setClass('Flame\Rest\Security\Authenticators\HashAuthenticator');
 	}
 
 	/**
@@ -80,6 +80,7 @@ class RestExtension extends CompilerExtension
 	{
 		Validators::assertField($config, 'validators', 'array');
 		Validators::assertField($config, 'errorPresenter', 'string');
+		Validators::assertField($config, 'authenticator', 'string');
 	}
 
 	/**
