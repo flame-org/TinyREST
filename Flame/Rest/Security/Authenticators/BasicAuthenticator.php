@@ -7,7 +7,6 @@
  */
 namespace Flame\Rest\Security\Authenticators;
 
-use Flame\Rest\Request\Parameters;
 use Flame\Rest\Security\AuthenticationException;
 use Flame\Rest\Security\UnauthorizedRequestException;
 use Nette\Security\User;
@@ -28,11 +27,10 @@ class BasicAuthenticator extends Authenticator
 	}
 
 	/**
-	 * @param Parameters $params
-	 * @return bool|void
+	 * @return bool
 	 * @throws \Flame\Rest\Security\UnauthorizedRequestException
 	 */
-	public function authRequestData(Parameters $params)
+	public function authRequestData()
 	{
 		if (!$this->user->isLoggedIn()) {
 			throw new UnauthorizedRequestException('User is not logged.');
@@ -42,11 +40,10 @@ class BasicAuthenticator extends Authenticator
 	}
 
 	/**
-	 * @param Parameters $params
-	 * @return bool|void
+	 * @return bool
 	 * @throws \Flame\Rest\Security\AuthenticationException
 	 */
-	public function authRequestTimeout(Parameters $params)
+	public function authRequestTimeout()
 	{
 		if ($this->user->getLogoutReason() === IUserStorage::INACTIVITY) {
 			throw new AuthenticationException('User session expired');

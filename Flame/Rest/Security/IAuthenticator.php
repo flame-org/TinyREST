@@ -8,14 +8,11 @@
 
 namespace Flame\Rest\Security;
 
-use Flame\Rest\Request\Parameters;
-
 interface IAuthenticator
 {
 
 	/**
-	 * @param Parameters $params
 	 * @return bool
 	 */
-	public function authenticate(Parameters $params);
+	public function authenticate();
 } 

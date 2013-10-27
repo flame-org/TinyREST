@@ -7,7 +7,6 @@
  */
 namespace Flame\Rest\Security\Authenticators;
 
-use Flame\Rest\Request\Parameters;
 use Flame\Rest\Security\IUserHash;
 use Flame\Rest\Security\RequestTimeoutException;
 use Flame\Rest\Security\Storage\IAuthStorage;
@@ -54,11 +53,10 @@ class HashAuthenticator extends Authenticator
 	}
 
 	/**
-	 * @param Parameters $params
-	 * @return bool|void
+	 * @return bool
 	 * @throws \Flame\Rest\Security\UnauthorizedRequestException
 	 */
-	public function authRequestData(Parameters $params)
+	public function authRequestData()
 	{
 		if($this->isUserLogged() !== true) {
 			throw new UnauthorizedRequestException('User is not logged.');
@@ -68,11 +66,10 @@ class HashAuthenticator extends Authenticator
 	}
 
 	/**
-	 * @param Parameters $params
 	 * @return bool
 	 * @throws \Flame\Rest\Security\RequestTimeoutException
 	 */
-	public function authRequestTimeout(Parameters $params)
+	public function authRequestTimeout()
 	{
 		$pieces = explode(':', $this->getUser()->getHash());
 		if(isset($pieces[0], $pieces[1])) {
