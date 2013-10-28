@@ -76,13 +76,12 @@ class Parameters extends Object implements IParameters
 	}
 
 	/**
-	 * @param bool $invalidate
 	 * @return mixed
 	 */
-	public function getData($invalidate = true)
+	public function getData()
 	{
 		$data = $this->data->data;
-		if($data && $invalidate === true && $this->getFormat() === 'json') {
+		if($data && is_string($data) && $this->getFormat() === 'json') {
 			$data = ArrayHash::from(Json::decode((string) $data, 1));
 		}
 

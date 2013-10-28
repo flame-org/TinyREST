@@ -32,10 +32,9 @@ interface IParameters
 	public function getAssociations($name = null, $default = null);
 
 	/**
-	 * @param bool $invalidate
 	 * @return mixed
 	 */
-	public function getData($invalidate = true);
+	public function getData();
 
 	/**
 	 * @param null|string $query
