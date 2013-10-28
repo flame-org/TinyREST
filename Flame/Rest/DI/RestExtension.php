@@ -9,6 +9,7 @@ namespace Flame\Rest\DI;
 
 use Nette\DI\CompilerExtension;
 use Nette\Configurator;
+use Nette\PhpGenerator\ClassType;
 use Nette\Utils\Validators;
 
 /**
@@ -27,7 +28,8 @@ class RestExtension extends CompilerExtension
 		'validators' => array(),
 		'tokens' => array(
 			'expiration' => '+ 30 days'
-		)
+		),
+		'cors' => false
 	);
 
 	/**
@@ -82,6 +84,7 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'validators', 'array');
 		Validators::assertField($config, 'authenticator', 'string');
 		Validators::assertField($config, 'tokens', 'array');
+		Validators::assertField($config, 'cors', 'bool');
 		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
 
@@ -94,6 +97,22 @@ class RestExtension extends CompilerExtension
 		$configurator->onCompile[] = function($configurator, $compiler) {
 			$compiler->addExtension(self::REST_EXTENSION, new RestExtension());
 		};
+	}
+
+	/**
+	 * @param ClassType $class
+	 */
+	public function afterCompile(ClassType $class)
+	{
+		$config = $this->getConfig($this->defaults);
+		if($config['cors'] === true) {
+			$container = $this->getContainerBuilder();
+			$initialize = $class->methods['initialize'];
+
+			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Origin: *\');', array()));
+			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Headers: *\');', array()));
+			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Methods: *\');', array()));
+		}
 	}
 
 }
