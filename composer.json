@@ -23,10 +23,6 @@
 		"nette/nette": ">=2.0.0"
 	},
 
-	"suggest": {
-		"adamstipak/nette-rest-route": ">=1.0.0"
-	},
-
 	"config": {
 		"vendor-dir": "libs"
 	},
