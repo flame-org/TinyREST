@@ -39,10 +39,15 @@ class ParametersFactory extends Object implements IParametersFactory
 	 */
 	public function createData(array $default)
 	{
-		return array_merge(array(
-			'data' => $this->httpRequest->getPost(),
-			'query' => $this->httpRequest->getQuery()
-		), $default);
+		if(!isset($default['data']) || !$default['data']) {
+			$default['data'] = $this->httpRequest->getPost();
+		}
+
+		if(!isset($default['query']) || !$default['query']) {
+			$default['query'] = $this->httpRequest->getQuery();
+		}
+
+		return $default;
 	}
 
 } 
