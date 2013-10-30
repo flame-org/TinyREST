@@ -43,10 +43,6 @@ class ParametersFactory extends Object implements IParametersFactory
 			$default['data'] = $this->httpRequest->getPost();
 		}
 
-		if(!isset($default['query']) || !$default['query']) {
-			$default['query'] = $this->httpRequest->getQuery();
-		}
-
 		return $default;
 	}
 
