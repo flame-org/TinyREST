@@ -24,15 +24,18 @@ class LyricsPresenter extends RestPresenter
 	 */
 	public $lyricsModel;
 
+	# for POST method
 	public function actionCreate()
 	{
 		try {
-			$this->resource->lyrics = $this->crudManager->create($this->getRequestParameters()->getData());
+			$postData = $this->getRequestParameters()->getData();
+			$this->resource->lyrics = $this->crudManager->create($postData);
 		}catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
 	}
 
+	#for GET method
 	public function actionRead($id)
 	{
 		try {
@@ -43,12 +46,13 @@ class LyricsPresenter extends RestPresenter
 		}
 	}
 
+	#for GET method without @id
 	public function actionReadAll()
 	{
 		try {
 			$params = $this->getRequestParameters();
-			$this->resource->lyrics = $this->lyricsModel->findAll($params->getQuery('limit', 10), $params->getQuery('limit', 0));
-
+			$lyrics = $this->lyricsModel->findAll($params->getQuery('limit', 10), $params->getQuery('limit', 0));
+			$this->resource->lyrics = $lyrics;
 		}catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
