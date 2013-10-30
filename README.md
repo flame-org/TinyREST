@@ -1,7 +1,6 @@
-TinyREST
-========
+#Nette REST library
 
-Smart implementation of REST for Nette
+Smart and tiny implementation of REST API for Nette framework
 
 ###Example
 
