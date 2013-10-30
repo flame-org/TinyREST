@@ -6,31 +6,57 @@ Smart and tiny implementation of REST API for Nette framework
 
 ```php
 <?php
-/**
- * Class SessionPresenter
- *
- * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
- * @date: 06.07.13
- */
-namespace ApiModule\V1Module;
-
 use Flame\Rest\Application\UI\RestPresenter;
+use Symb\LyricsModule\Entity\Lyrics;
 
-class SessionPresenter extends RestPresenter
+class LyricsPresenter extends RestPresenter
 {
 
-	public function actionRead()
+	/**
+	 * @inject
+	 * @var \Symb\LyricsModule\Rest\CrudManager
+	 */
+	public $crudManager;
+
+	/**
+	 * @inject
+	 * @var \Symb\LyricsModule\Model\RestLyricsModel
+	 */
+	public $lyricsModel;
+
+	public function actionCreate()
 	{
-		$this->resource->now = new \DateTime();
+		try {
+			$this->resource->lyrics = $this->crudManager->create($this->getRequestParameters()->getData());
+		}catch (\Exception $ex) {
+			$this->sendErrorResource($ex);
+		}
 	}
 
-}
+	public function actionRead($id)
+	{
+		try {
+
+			$this->resource->lyrics = $this->lyricsModel->findOneById($id);
+		}catch (\Exception $ex) {
+			$this->sendErrorResource($ex);
+		}
+	}
+
+	public function actionReadAll()
+	{
+		try {
+			$params = $this->getRequestParameters();
+			$this->resource->lyrics = $this->lyricsModel->findAll($params->getQuery('limit', 10), $params->getQuery('limit', 0));
+
+		}catch (\Exception $ex) {
+			$this->sendErrorResource($ex);
+		}
+	}
+} 
 ```
 
-**OUTPUT** is:
-`{"now":"2013-07-07T10:35:04+02:00","status":"success","code":200}`
-
-**Great working with extension [adamstipak/nette-rest-route](https://github.com/newPOPE/Nette-RestRoute)**
+**With custom REST Route: Flame\Rest\Application\Routers\RestRoute**
 
 ###Router setup
 
@@ -47,8 +73,7 @@ class RouterFactory
 	public function createRouter()
 	{
 		$router = new RouteList();
-		# $router[] = new Route('template/[<path .+>]', 'Template:default');
-		$router[] = new \AdamStipak\RestRoute('Api:V1');
+		$router[] = new \Flame\Rest\Application\Routers\RestRoute('Api:V1');
 		$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
 		return $router;
 	}
@@ -63,10 +88,11 @@ Register in your bootstrap:
 ###Configuration
 ```yaml
 REST:
-	time: 
-		validator: Flame\Rest\Validators\DateTimeConverter
-		format: c
+	authenticator: 'Flame\Rest\Security\Authenticators\BasicAuthenticator'
 	validators: []
+	tokens:
+		expiration: '+ 30 days'
+	cors: false
 ```
 
 
