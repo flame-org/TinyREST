@@ -9,6 +9,7 @@ namespace Flame\Rest\Request;
 
 use Nette\Http\Request;
 use Nette\Object;
+use Nette\Utils\Json;
 
 class ParametersFactory extends Object implements IParametersFactory
 {
@@ -45,6 +46,8 @@ class ParametersFactory extends Object implements IParametersFactory
 
 		if($default['format'] !== 'json') {
 			$default['data'] = $this->formatData($default['data']);
+		}elseif($default['format'] === 'json' && is_string($default['data'])) {
+			$default['data'] = Json::decode((string) $default['data'], 1);
 		}
 
 		return $default;

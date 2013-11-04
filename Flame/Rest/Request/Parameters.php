@@ -8,7 +8,6 @@
 namespace Flame\Rest\Request;
 
 use Nette\ArrayHash;
-use Nette\Utils\Json;
 use Nette\Object;
 
 class Parameters extends Object implements IParameters
@@ -80,12 +79,7 @@ class Parameters extends Object implements IParameters
 	 */
 	public function getData()
 	{
-		$data = $this->data->data;
-		if($data && is_string($data) && $this->getFormat() === 'json') {
-			$data = ArrayHash::from(Json::decode((string) $data, 1));
-		}
-
-		return $data;
+		return $this->data->data;
 	}
 
 	/**
