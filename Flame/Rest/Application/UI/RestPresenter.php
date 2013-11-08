@@ -23,7 +23,7 @@ use Nette\Diagnostics\Debugger;
 abstract class RestPresenter extends Presenter
 {
 
-	/** @var  \Flame\Rest\ExtendedResource */
+	/** @var  \Flame\Rest\Resource */
 	protected $resource;
 
 	/** @var  \Flame\Rest\Security\Authentication */
