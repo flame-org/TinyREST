@@ -25,7 +25,6 @@ class RestExtension extends CompilerExtension
 	/** @var array  */
 	public $defaults = array(
 		'authenticator' => 'Flame\Rest\Security\Authenticators\BasicAuthenticator',
-		'validators' => array(),
 		'tokens' => array(
 			'expiration' => '+ 30 days'
 		),
@@ -50,18 +49,6 @@ class RestExtension extends CompilerExtension
 
 		$authentication->addSetup('setAuthenticator', array($authenticator));
 
-		$resourceValidator = $container->addDefinition($this->prefix('resourceValidator'))
-			->setClass('Flame\Rest\Validation\ValidatorComposite');
-
-		if(count($validators = $config['validators'])) {
-			foreach($validators as $k => $validatorClass) {
-				$validator = $container->addDefinition($this->prefix($k))
-					->setClass($validatorClass);
-
-				$resourceValidator->addSetup('addValidator', $validator);
-			}
-		}
-
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
 
@@ -81,7 +68,6 @@ class RestExtension extends CompilerExtension
 	 */
 	public function configValidation($config)
 	{
-		Validators::assertField($config, 'validators', 'array');
 		Validators::assertField($config, 'authenticator', 'string');
 		Validators::assertField($config, 'tokens', 'array');
 		Validators::assertField($config, 'cors', 'bool');

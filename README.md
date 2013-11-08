@@ -93,7 +93,6 @@ Register in your bootstrap:
 ```yaml
 REST:
 	authenticator: 'Flame\Rest\Security\Authenticators\BasicAuthenticator'
-	validators: []
 	tokens:
 		expiration: '+ 30 days'
 	cors: false
