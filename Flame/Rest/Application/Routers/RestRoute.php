@@ -111,7 +111,6 @@ class RestRoute implements IRouter
 
 		$params['format'] = $this->detectFormat($httpRequest);
 		$params['associations'] = $assoc;
-		$params['data'] = $this->readInput();
 		$params['query'] = $httpRequest->getQuery();
 
 		$presenterName = empty($this->module) ? $presenterName : $this->module . ':' . $presenterName;
@@ -203,14 +202,6 @@ class RestRoute implements IRouter
 			}
 		}
 
-	}
-
-	/**
-	 * @return array|null
-	 */
-	protected function readInput()
-	{
-		return file_get_contents('php://input');
 	}
 
 	/**

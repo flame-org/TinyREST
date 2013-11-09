@@ -41,7 +41,7 @@ class ParametersFactory extends Object implements IParametersFactory
 	public function createData(array $default)
 	{
 		if(!isset($default['data']) || !$default['data']) {
-			$default['data'] = $this->httpRequest->getPost();
+			$default['data'] = $this->readData();
 		}
 
 		if($default['format'] !== 'json') {
@@ -51,6 +51,27 @@ class ParametersFactory extends Object implements IParametersFactory
 		}
 
 		return $default;
+	}
+
+	/**
+	 * @return mixed|string
+	 */
+	protected function readData()
+	{
+		$data = $this->readInput();
+		if(!$data) {
+			$data = $this->httpRequest->getPost();
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function readInput()
+	{
+		return file_get_contents('php://input');
 	}
 
 	/**
