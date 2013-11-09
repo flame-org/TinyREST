@@ -62,8 +62,12 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 * @param $data
 	 * @return $this
 	 */
-	public function setData(array $data)
+	public function setData($data)
 	{
+		if(!is_array($data)) {
+			$data = (array) $data;
+		}
+		
 		$this->data = $data;
 		return $this;
 	}
