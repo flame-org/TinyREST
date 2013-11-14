@@ -18,20 +18,15 @@ class JsonResponse extends Object implements Nette\Application\IResponse
 	/** @var string */
 	private $contentType;
 
-
 	/**
-	 * @param  array|\stdClass  payload
+	 * @param  array|\stdClass|null  payload
 	 * @param  string    MIME content type
 	 */
 	public function __construct($payload, $contentType = NULL)
 	{
-		if (!is_array($payload) && !is_object($payload)) {
-			throw new Nette\InvalidArgumentException("Payload must be array or object class, " . gettype($payload) . " given.");
-		}
 		$this->payload = $payload;
 		$this->contentType = $contentType ? $contentType : 'application/json';
 	}
-
 
 	/**
 	 * @return array|\stdClass
@@ -41,7 +36,6 @@ class JsonResponse extends Object implements Nette\Application\IResponse
 		return $this->payload;
 	}
 
-
 	/**
 	 * Returns the MIME content type of a downloaded file.
 	 * @return string
@@ -50,7 +44,6 @@ class JsonResponse extends Object implements Nette\Application\IResponse
 	{
 		return $this->contentType;
 	}
-
 
 	/**
 	 * Sends response to output.
@@ -63,7 +56,10 @@ class JsonResponse extends Object implements Nette\Application\IResponse
 	{
 		$httpResponse->setContentType($this->contentType);
 		$httpResponse->setExpiration(FALSE);
-		echo Nette\Utils\Json::encode($this->payload);
+
+		if($this->payload !== null) {
+			echo Nette\Utils\Json::encode($this->payload);
+		}
 	}
 
 }

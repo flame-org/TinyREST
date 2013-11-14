@@ -78,7 +78,9 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 */
 	public function getData()
 	{
-		return $this->data;
+		if($this->data !== array()) {
+			return $this->data;
+		}
 	}
 
 	/******************** Serializable ********************/
