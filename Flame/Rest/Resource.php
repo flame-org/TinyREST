@@ -28,15 +28,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	protected $contentType = self::JSON;
 
 	/** @var array */
-	protected $data = array();
-
-	/**
-	 * @param array $data
-	 */
-	public function __construct(array $data = array())
-	{
-		$this->data = $data;
-	}
+	protected $data;
 
 	/**
 	 * Set result content type
@@ -74,13 +66,11 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 
 	/**
 	 * Get result set data
-	 * @return array
+	 * @return array|null
 	 */
 	public function getData()
 	{
-		if($this->data !== array()) {
-			return $this->data;
-		}
+		return $this->data;
 	}
 
 	/******************** Serializable ********************/
