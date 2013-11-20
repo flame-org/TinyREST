@@ -44,7 +44,7 @@ class ParametersFactory extends Object implements IParametersFactory
 			$default['data'] = $this->readData();
 		}
 
-		if($default['format'] !== 'json') {
+		if(!isset($default['format']) || $default['format'] !== 'json') {
 			$default['data'] = $this->formatData($default['data']);
 		}elseif($default['format'] === 'json' && is_string($default['data'])) {
 			$default['data'] = Json::decode((string) $default['data'], 1);
