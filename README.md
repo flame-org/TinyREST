@@ -87,7 +87,7 @@ class RouterFactory
 
 ##Instalation
 Register in your bootstrap:
-`\Flame\Rest\DI\RestExtension::install($configurator);`
+`\Flame\Rest\DI\RestExtension::register($configurator);`
 
 ###Configuration
 ```yaml
