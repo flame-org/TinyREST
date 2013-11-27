@@ -56,6 +56,10 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 	 */
 	public function setData($data)
 	{
+		if($data instanceof \Traversable) {
+			$data = iterator_to_array($data);
+		}
+
 		if(!is_array($data)) {
 			$data = (array) $data;
 		}
