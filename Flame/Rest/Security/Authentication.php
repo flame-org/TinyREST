@@ -7,10 +7,9 @@
  */
 namespace Flame\Rest\Security;
 
-use Flame\Rest\Request\Parameters;
 use Nette\Object;
 
-class Authentication extends Object
+class Authentication extends Object implements IAuthenticator
 {
 
 	/** @var  IAuthenticator */
@@ -27,17 +26,14 @@ class Authentication extends Object
 	}
 
 	/**
-	 * @param Parameters $params
 	 * @return bool
-	 * @throws \Nette\InvalidStateException
 	 */
-	public function authenticate(Parameters $params)
+	public function authenticate()
 	{
 		if($this->authenticator !== null) {
-			return $this->authenticator->authenticate($params);
+			return $this->authenticator->authenticate();
 		}
 
 		return true;
 	}
-
 } 

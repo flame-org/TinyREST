@@ -23,12 +23,11 @@ class SecuredRestPresenter extends RestPresenter
 	{
 		try {
 
-			$this->authentication->authenticate($this->getRequestParameters());
+			$this->authentication->authenticate();
 
 			if($this->checkRequestMethod === true) {
 				$this->checkRequestMethod($element);
 			}
-
 		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
