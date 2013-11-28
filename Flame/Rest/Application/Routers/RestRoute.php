@@ -220,7 +220,6 @@ class RestRoute implements IRouter
 		}
 
 		$parameters = $appRequest->getParameters();
-		$url = $refUrl->getBaseUrl();
 		$urlStack = array();
 
 		// Module prefix.
@@ -247,6 +246,6 @@ class RestRoute implements IRouter
 		}
 
 		$query = http_build_query($parameters['query'], '', '&');
-		return $url . implode('/', $urlStack) . '?' . $query;
+		return $refUrl->getBaseUrl() . implode('/', $urlStack) . '?' . $query;
 	}
 }
