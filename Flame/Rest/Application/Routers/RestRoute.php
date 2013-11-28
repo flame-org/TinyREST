@@ -245,7 +245,8 @@ class RestRoute implements IRouter
 			$urlStack[] = $parameters['id'];
 		}
 
-		$query = http_build_query($parameters['query'], '', '&');
+		$sep = ini_get('arg_separator.input');
+		$query = http_build_query($parameters['query'], '', $sep ? $sep[0] : '&');
 		return $refUrl->getBaseUrl() . implode('/', $urlStack) . '?' . $query;
 	}
 }
