@@ -8,7 +8,6 @@
 namespace Flame\Rest\Request;
 
 use Nette\ArrayHash;
-use Nette\Http\Request;
 use Nette\Object;
 
 /**
@@ -29,14 +28,10 @@ class Parameters extends Object implements IParameters
 	/** @var \Nette\ArrayHash  */
 	private $data;
 
-	/** @var \Nette\Http\Request  */
-	private $request;
-
 	/**
 	 * @param array $data
-	 * @param Request $request
 	 */
-	function __construct(array $data, Request $request)
+	function __construct(array $data)
 	{
 		$defaults = array(
 			'id' => '',
@@ -44,9 +39,9 @@ class Parameters extends Object implements IParameters
 			'format' => '',
 			'associations' => array(),
 			'data' => array(),
+			'query' => array(),
 		);
 		$this->data = ArrayHash::from(array_merge($defaults, $data));
-		$this->request = $request;
 	}
 
 	/**
@@ -100,16 +95,20 @@ class Parameters extends Object implements IParameters
 	}
 
 	/**
-	 * @param null $query
+	 * @param null|string $query
 	 * @param null $default
 	 * @return mixed
 	 */
 	public function getQuery($query = null, $default = null)
 	{
 		if($query !== null) {
-			return $this->request->getQuery($query, $default);
+			if(isset($this->data->query[$query])) {
+				return $this->data->query[$query];
+			}
+
+			return $default;
 		}
 
-		return $this->request->getQuery();
+		return $this->data->query;
 	}
 }

@@ -111,6 +111,7 @@ class RestRoute implements IRouter
 
 		$params['format'] = $this->detectFormat($httpRequest);
 		$params['associations'] = $assoc;
+		$params['query'] = $httpRequest->getQuery();
 
 		$presenterName = empty($this->module) ? $presenterName : $this->module . ':' . $presenterName;
 
