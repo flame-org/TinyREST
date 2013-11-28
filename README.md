@@ -28,7 +28,7 @@ class LyricsPresenter extends RestPresenter
 	public function actionCreate()
 	{
 		try {
-			$postData = $this->getRequestParameters()->getData();
+			$postData = $this->input->getData();
 			$this->resource->lyrics = $this->crudManager->create($postData);
 		}catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
@@ -50,8 +50,7 @@ class LyricsPresenter extends RestPresenter
 	public function actionReadAll()
 	{
 		try {
-			$params = $this->getRequestParameters();
-			$lyrics = $this->lyricsModel->findAll($params->getQuery('limit', 10), $params->getQuery('limit', 0));
+			$lyrics = $this->lyricsModel->findAll($this->input->getQuery('limit', 10), $this->input->getQuery('limit', 0));
 			$this->resource->lyrics = $lyrics;
 		}catch (\Exception $ex) {
 			$this->sendErrorResource($ex);

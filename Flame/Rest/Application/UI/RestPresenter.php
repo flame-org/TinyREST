@@ -23,9 +23,6 @@ use Nette\Diagnostics\Debugger;
 abstract class RestPresenter extends Presenter
 {
 
-	/** @var  \Flame\Rest\Resource */
-	protected $resource;
-
 	/** @var  \Flame\Rest\Security\Authentication */
 	protected $authentication;
 
@@ -33,7 +30,10 @@ abstract class RestPresenter extends Presenter
 	private $parametersFactory;
 
 	/** @var  Parameters */
-	private $requestParameters;
+	protected $input;
+
+	/** @var  \Flame\Rest\Resource */
+	protected $resource;
 
 	/**
 	 * @param IResourceFactory $resourceFactory
@@ -52,10 +52,11 @@ abstract class RestPresenter extends Presenter
 
 	/**
 	 * @return Parameters
+	 * @deprecated
 	 */
 	public function getRequestParameters()
 	{
-		return $this->requestParameters;
+		return $this->input;
 	}
 
 	/**
@@ -109,7 +110,7 @@ abstract class RestPresenter extends Presenter
 	{
 		parent::startup();
 
-		$this->requestParameters = $this->parametersFactory->create($this->params);
+		$this->input = $this->parametersFactory->create($this->params);
 	}
 
 	/**
