@@ -54,24 +54,11 @@ class ParametersFactory extends Object implements IParametersFactory
 	}
 
 	/**
-	 * @return mixed|string
+	 * @return mixed
 	 */
 	protected function readData()
 	{
-		$data = $this->readInput();
-		if(!$data) {
-			$data = $this->httpRequest->getPost();
-		}
-
-		return $data;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function readInput()
-	{
-		return file_get_contents('php://input');
+		return $this->httpRequest->getPost();
 	}
 
 	/**
