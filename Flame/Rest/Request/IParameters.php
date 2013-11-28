@@ -10,7 +10,7 @@ namespace Flame\Rest\Request;
 interface IParameters
 {
 	/**
-	 * @return string
+	 * @return int
 	 */
 	public function getId();
 

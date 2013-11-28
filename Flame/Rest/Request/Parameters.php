@@ -33,11 +33,11 @@ class Parameters extends Object implements IParameters
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
 	public function getId()
 	{
-		return (string) $this->data->id;
+		return (int) $this->data->id;
 	}
 
 	/**
