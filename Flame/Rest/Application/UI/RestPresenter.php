@@ -118,8 +118,8 @@ abstract class RestPresenter extends Presenter
 			Nette\Diagnostics\Debugger::log($ex, Nette\Diagnostics\Debugger::ERROR);
 		}
 
-		$this->resource->message = $ex->getMessage();
-		$this->resource->type = 'error';
+		$this->getResource()->message = $ex->getMessage();
+		$this->getResource()->type = 'error';
 		$this->sendResource($code);
 	}
 
@@ -129,7 +129,7 @@ abstract class RestPresenter extends Presenter
 	public function sendResource($code = Nette\Http\IResponse::S200_OK)
 	{
 		$this->getHttpResponse()->setCode($code);
-		$this->sendJson($this->resource->getData());
+		$this->sendJson($this->getResource()->getData());
 	}
 
 	/**
