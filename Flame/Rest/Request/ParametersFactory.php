@@ -31,7 +31,7 @@ class ParametersFactory extends Object implements IParametersFactory
 	 */
 	public function create(array $params = array())
 	{
-		return new Parameters($this->createData($params));
+		return new Parameters($this->createData($params), $this->httpRequest);
 	}
 
 	/**
