@@ -10,6 +10,18 @@ namespace Flame\Rest\Request;
 use Nette\ArrayHash;
 use Nette\Object;
 
+/**
+ * Class Parameters
+ *
+ * @package Flame\Rest\Request
+ *
+ * @property-read int $id
+ * @property-read string $action
+ * @property-read string $format
+ * @property-read mixed $data
+ * @property-read mixed $query
+ * @property-read mixed $associations
+ */
 class Parameters extends Object implements IParameters
 {
 	
