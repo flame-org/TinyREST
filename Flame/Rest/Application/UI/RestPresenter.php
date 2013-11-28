@@ -11,14 +11,16 @@ namespace Flame\Rest\Application\UI;
 use Flame\Rest\IResourceFactory;
 use Flame\Rest\Request\IParametersFactory;
 use Flame\Rest\Request\Parameters;
-use Nette\Http\IResponse;
 use Flame\Rest\Security\Authentication;
-use Nette\Diagnostics\Debugger;
+use Nette;
 
 /**
  * Class RestPresenter
  *
  * @package Flame\Rest\Application\UI
+ *
+ * @property-read Parameters $input
+ * @property-read \Flame\Rest\Resource $resource
  */
 abstract class RestPresenter extends Presenter
 {
@@ -30,10 +32,13 @@ abstract class RestPresenter extends Presenter
 	private $parametersFactory;
 
 	/** @var  Parameters */
-	protected $input;
+	private $input;
 
 	/** @var  \Flame\Rest\Resource */
-	protected $resource;
+	private $resource;
+
+	/** @var  IResourceFactory */
+	private $resourceFactory;
 
 	/**
 	 * @param IResourceFactory $resourceFactory
@@ -45,9 +50,33 @@ abstract class RestPresenter extends Presenter
 		Authentication $authentication,
 		IParametersFactory $paramsFactory)
 	{
-		$this->resource = $resourceFactory->create();
+		$this->resourceFactory = $resourceFactory;
 		$this->authentication = $authentication;
 		$this->parametersFactory = $paramsFactory;
+	}
+
+	/**
+	 * @return \Flame\Rest\Resource
+	 */
+	public function getResource()
+	{
+		if($this->resource === null) {
+			$this->resource = $this->resourceFactory->create();
+		}
+
+		return $this->resource;
+	}
+
+	/**
+	 * @return Parameters
+	 */
+	public function getInput()
+	{
+		if($this->input === null) {
+			$this->input = $this->parametersFactory->create($this->params);
+		}
+
+		return $this->input;
 	}
 
 	/**
@@ -56,7 +85,7 @@ abstract class RestPresenter extends Presenter
 	 */
 	public function getRequestParameters()
 	{
-		return $this->input;
+		return $this->getInput();
 	}
 
 	/**
@@ -86,7 +115,7 @@ abstract class RestPresenter extends Presenter
 		}
 
 		if($log === true) {
-			Debugger::log($ex, Debugger::ERROR);
+			Nette\Diagnostics\Debugger::log($ex, Nette\Diagnostics\Debugger::ERROR);
 		}
 
 		$this->resource->message = $ex->getMessage();
@@ -97,20 +126,10 @@ abstract class RestPresenter extends Presenter
 	/**
 	 * @param int $code
 	 */
-	public function sendResource($code = IResponse::S200_OK)
+	public function sendResource($code = Nette\Http\IResponse::S200_OK)
 	{
 		$this->getHttpResponse()->setCode($code);
 		$this->sendJson($this->resource->getData());
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function startup()
-	{
-		parent::startup();
-
-		$this->input = $this->parametersFactory->create($this->params);
 	}
 
 	/**
