@@ -88,10 +88,14 @@ class RestRoute implements IRouter
 			$id = array_pop($frags);
 			if(is_numeric($id)) {
 				$params['id'] = $id;
+			}else{
+				$params['specific_action'] = $id;
+				$params['action'] .= ucfirst($id);
 			}
 		} elseif ($params['action'] == 'read' && !@$params['id']) {
 			$params['action'] = 'readAll';
 		}
+
 		$presenterName = ucfirst(array_pop($frags));
 
 		// Allow to use URLs like domain.tld/presenter.format.
@@ -242,12 +246,17 @@ class RestRoute implements IRouter
 		// Resource.
 		$urlStack[] = Strings::lower($resourceName);
 
+		if(isset($parameters['specific_action']) && $parameters['specific_action']) {
+			$urlStack[] = $parameters['specific_action'];
+		}
+
 		// Id.
 		if (isset($parameters['id']) && is_scalar($parameters['id'])) {
 			$urlStack[] = $parameters['id'];
 		}
 
 		$url = $q = $refUrl->getBaseUrl() . implode('/', $urlStack);
+
 		if(isset($parameters['query']) && count($parameters['query'])) {
 			$sep = ini_get('arg_separator.input');
 			$query = http_build_query($parameters['query'], '', $sep ? $sep[0] : '&');
