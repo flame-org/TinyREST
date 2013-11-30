@@ -86,7 +86,10 @@ class RestRoute implements IRouter
 
 		// Resource ID.
 		if (count($frags) % 2 === 0) {
-			$params['id'] = array_pop($frags);
+			$id = array_pop($frags);
+			if(is_numeric($id)) {
+				$params['id'] = $id;
+			}
 		} elseif ($params['action'] == 'read' && !@$params['id']) {
 			$params['action'] = 'readAll';
 		}
