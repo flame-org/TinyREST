@@ -77,10 +77,9 @@ class RestRoute implements IRouter
 			return null;
 		}
 
-		$cleanPath = preg_replace('/^' . $path . '\//', '', $cleanPath);
+		$path = preg_replace('/^' . $path . '\//', '', $cleanPath);
 
 		$params = array();
-		$path = $cleanPath;
 		$params['action'] = $this->detectAction($httpRequest);
 		$frags = explode('/', $path);
 
