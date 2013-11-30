@@ -93,9 +93,14 @@ class RestRoute implements IRouter
 				$params['action'] .= ucfirst($id);
 			}
 		} elseif(count($frags) === 3) {
-			$params['id'] = array_pop($frags);
-			$params['specific_action'] = array_pop($frags);
-			$params['action'] .= ucfirst($params['specific_action']);
+			$id = array_pop($frags);
+			if(is_numeric($id)) {
+				$params['id'] = $id;
+				$params['specific_action'] = array_pop($frags);
+				$params['action'] .= ucfirst($params['specific_action']);
+			}else {
+				$frags[] = $id;
+			}
 		}
 
 		if ($params['action'] == 'read' && !@$params['id']) {
