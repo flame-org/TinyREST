@@ -83,8 +83,8 @@ class RestRoute implements IRouter
 		$params['action'] = $this->detectAction($httpRequest);
 		$frags = explode('/', $path);
 
-		// Resource ID.
 		if (count($frags) % 2 === 0) {
+			// Resource ID.
 			$id = array_pop($frags);
 			if(is_numeric($id)) {
 				$params['id'] = $id;
@@ -92,11 +92,13 @@ class RestRoute implements IRouter
 				$params['specific_action'] = $id;
 				$params['action'] .= ucfirst($id);
 			}
-		} elseif(count($frags) % 3 === 0) {
+		} elseif(count($frags) === 3) {
 			$params['id'] = array_pop($frags);
 			$params['specific_action'] = array_pop($frags);
 			$params['action'] .= ucfirst($params['specific_action']);
-		} elseif ($params['action'] == 'read' && !@$params['id']) {
+		}
+
+		if ($params['action'] == 'read' && !@$params['id']) {
 			$params['action'] = 'readAll';
 		}
 
