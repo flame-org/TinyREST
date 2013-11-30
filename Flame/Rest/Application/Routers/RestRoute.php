@@ -92,6 +92,10 @@ class RestRoute implements IRouter
 				$params['specific_action'] = $id;
 				$params['action'] .= ucfirst($id);
 			}
+		} elseif(count($frags) % 3 === 0) {
+			$params['id'] = array_pop($frags);
+			$params['specific_action'] = array_pop($frags);
+			$params['action'] .= ucfirst($params['specific_action']);
 		} elseif ($params['action'] == 'read' && !@$params['id']) {
 			$params['action'] = 'readAll';
 		}
