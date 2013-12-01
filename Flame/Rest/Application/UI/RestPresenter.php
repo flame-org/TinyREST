@@ -118,8 +118,12 @@ abstract class RestPresenter extends Presenter
 			Nette\Diagnostics\Debugger::log($ex, Nette\Diagnostics\Debugger::ERROR);
 		}
 
-		$this->getResource()->message = $ex->getMessage();
+		if($message = $ex->getMessage()) {
+			$this->getResource()->message = $message;
+		}
+		$this->getResource()->code = $code;
 		$this->getResource()->type = 'error';
+
 		$this->sendResource($code);
 	}
 
