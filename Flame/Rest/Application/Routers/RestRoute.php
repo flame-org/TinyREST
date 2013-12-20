@@ -144,6 +144,62 @@ class RestRoute implements IRouter
 	}
 
 	/**
+	 * Constructs absolute URL from Request object.
+	 *
+	 * @param \Nette\Application\Request $appRequest
+	 * @param \Nette\Http\Url $refUrl
+	 * @throws \Nette\InvalidStateException
+	 * @return string|NULL
+	 */
+	public function constructUrl(Request $appRequest, Url $refUrl)
+	{
+		// Module prefix not match.
+		if ($this->module && !Strings::startsWith($appRequest->getPresenterName(), $this->module)) {
+			return null;
+		}
+
+		$parameters = $appRequest->getParameters();
+		$urlStack = array();
+
+		// Module prefix.
+		$moduleFrags = explode(":", Strings::lower($appRequest->getPresenterName()));
+		$resourceName = array_pop($moduleFrags);
+		$urlStack += $moduleFrags;
+
+		// Associations.
+		if (isset($parameters['associations']) && is_array($parameters['associations'])) {
+			$associations = & $parameters['associations'];
+
+			foreach ($associations as $key => $value) {
+				$urlStack[] = $key;
+				$urlStack[] = $value;
+			}
+		}
+
+		// Resource.
+		$urlStack[] = Strings::lower($resourceName);
+
+		if(isset($parameters['specific_action']) && $parameters['specific_action']) {
+			$urlStack[] = $parameters['specific_action'];
+		}
+
+		// Id.
+		if (isset($parameters['id']) && is_scalar($parameters['id'])) {
+			$urlStack[] = $parameters['id'];
+		}
+
+		$url = $q = $refUrl->getBaseUrl() . implode('/', $urlStack);
+
+		if(isset($parameters['query']) && count($parameters['query'])) {
+			$sep = ini_get('arg_separator.input');
+			$query = http_build_query($parameters['query'], '', $sep ? $sep[0] : '&');
+			$url .= '?' . $query;
+		}
+
+		return $url;
+	}
+
+	/**
 	 * @param HttpRequest $request
 	 * @return string
 	 * @throws \Nette\InvalidStateException
@@ -237,60 +293,5 @@ class RestRoute implements IRouter
 		}
 
 		return implode('', $pieces);
-	}
-
-	/**
-	 * Constructs absolute URL from Request object.
-	 *
-	 * @param \Nette\Application\Request $appRequest
-	 * @param \Nette\Http\Url $refUrl
-	 * @throws \Nette\InvalidStateException
-	 * @return string|NULL
-	 */
-	public function constructUrl(Request $appRequest, Url $refUrl)
-	{
-		// Module prefix not match.
-		if ($this->module && !Strings::startsWith($appRequest->getPresenterName(), $this->module)) {
-			return null;
-		}
-
-		$parameters = $appRequest->getParameters();
-		$urlStack = array();
-
-		// Module prefix.
-		$moduleFrags = explode(":", Strings::lower($appRequest->getPresenterName()));
-		$resourceName = array_pop($moduleFrags);
-		$urlStack += $moduleFrags;
-
-		// Associations.
-		if (isset($parameters['associations']) && is_array($parameters['associations'])) {
-			$associations = & $parameters['associations'];
-
-			foreach ($associations as $key => $value) {
-				$urlStack[] = $key;
-				$urlStack[] = $value;
-			}
-		}
-
-		// Resource.
-		$urlStack[] = Strings::lower($resourceName);
-
-		if(isset($parameters['specific_action']) && $parameters['specific_action']) {
-			$urlStack[] = $parameters['specific_action'];
-		}
-
-		// Id.
-		if (isset($parameters['id']) && is_scalar($parameters['id'])) {
-			$urlStack[] = $parameters['id'];
-		}
-
-		$url = $q = $refUrl->getBaseUrl() . implode('/', $urlStack);
-
-		if(isset($parameters['query']) && count($parameters['query'])) {
-			$sep = ini_get('arg_separator.input');
-			$query = http_build_query($parameters['query'], '', $sep ? $sep[0] : '&');
-			$url .= '?' . $query;
-		}
-		return $url;
 	}
 }
