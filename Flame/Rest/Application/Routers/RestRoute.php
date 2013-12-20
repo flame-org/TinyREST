@@ -71,7 +71,13 @@ class RestRoute implements IRouter
 		$basePath = str_replace('/', '\/', $url->getBasePath());
 		$cleanPath = preg_replace("/^{$basePath}/", '', $url->getPath());
 
+
+		if (strpos($cleanPath, '-') !== false) {
+			$cleanPath = $this->replaceDashWithUpperCase($cleanPath);
+		}
+
 		$path = str_replace('/', '\/', $this->getPath());
+
 		$pathRexExp = empty($path) ? "/^.+$/" : "/^{$path}\/.*$/";
 		if (!preg_match($pathRexExp, $cleanPath)) {
 			return null;
@@ -218,7 +224,24 @@ class RestRoute implements IRouter
 				return $format;
 			}
 		}
+	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	private function replaceDashWithUpperCase($path)
+	{
+		$pieces = explode('-', $path);
+		foreach($pieces as $k => $piece) {
+			if ($k === 0) {
+				continue;
+			}
+
+			$pieces[$k] = ucfirst($piece);
+		}
+
+		return implode('', $pieces);
 	}
 
 	/**
