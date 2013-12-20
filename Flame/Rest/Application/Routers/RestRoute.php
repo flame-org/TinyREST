@@ -26,9 +26,6 @@ class RestRoute implements IRouter
 	const QUERY_PARAM_OVERRIDE = '__method';
 
 	/** @var string */
-	protected $path;
-
-	/** @var string */
 	protected $module;
 
 	/** @var array */
@@ -54,9 +51,7 @@ class RestRoute implements IRouter
 	public function getPath()
 	{
 		$path = implode('/', explode(':', $this->module));
-		$this->path = strtolower($path);
-
-		return (string)$this->path;
+		return strtolower($path);
 	}
 
 	/**
