@@ -25,6 +25,7 @@ class LyricsPresenter extends RestPresenter
 	public $lyricsModel;
 
 	# for POST method
+	# request: example.com/api/v1/lyrics
 	public function actionCreate()
 	{
 		try {
@@ -35,7 +36,8 @@ class LyricsPresenter extends RestPresenter
 		}
 	}
 
-	#for GET method
+	# for GET method
+	# request: example.com/api/v1/lyrics/<id>
 	public function actionRead($id)
 	{
 		try {
@@ -46,7 +48,8 @@ class LyricsPresenter extends RestPresenter
 		}
 	}
 
-	#for GET method without @id
+	# for GET method without @id
+	# request: example.com/api/v1/lyrics
 	public function actionReadAll()
 	{
 		try {
@@ -56,6 +59,28 @@ class LyricsPresenter extends RestPresenter
 			$this->sendErrorResource($ex);
 		}
 	}
+
+	# for GET method
+	# request: example.com/api/v1/lyrics/count
+    public function actionReadCount()
+    {
+        try {
+            $this->resource->count = count($this->lyricsModel->findAll());
+        }catch (\Exception $ex) {
+            $this->sendErrorResource($ex);
+        }
+    }
+
+    # for POST method
+    # request: example.com/api/v1/lyrics/lyrics-without-author
+    public function actionCreateLyricsWithoutAuthor()
+    {
+        try {
+            $this->resource->lyrics = $this->crudManager->create($this->input->data);
+        }catch (\Exception $ex) {
+            $this->sendErrorResource($ex);
+        }
+    }
 } 
 ```
 
