@@ -89,6 +89,8 @@ class LyricsPresenter extends RestPresenter
 
 **With custom REST Route: Flame\Rest\Application\Routers\RestRoute**
 
+Learn more about associations (and more...) [from inspired Route](https://github.com/newPOPE/Nette-RestRoute#associations)
+
 ###Router setup
 
 ```php
