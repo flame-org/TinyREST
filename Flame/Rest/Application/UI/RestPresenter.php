@@ -107,7 +107,7 @@ abstract class RestPresenter extends Presenter
 	 * @param \Exception $ex
 	 * @param bool $log
 	 */
-	public function sendErrorResource(\Exception $ex, $log = true)
+	public function sendErrorResource(\Exception $ex, $log = false)
 	{
 		$code = $ex->getCode();
 		if ($code < 100 || $code > 599) {
