@@ -31,6 +31,9 @@ class LyricsPresenter extends RestPresenter
 		try {
 			$postData = $this->input->getData();
 			$this->resource->lyrics = $this->crudManager->create($postData);
+
+			# shortcut for the same
+			# $this->resource->lyrics = $this->crudManager->create($this->input->data);
 		}catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}
