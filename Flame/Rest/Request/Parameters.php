@@ -122,14 +122,9 @@ class Parameters extends Object implements IParameters
 			$value = array_map(function ($item) {
 				return $this->validateValue($item);
 			}, $value);
-		}
-
-
-		if ($value === 'null') {
+		} elseif ($value === 'null') {
 			$value = null;
-		}
-
-		if (is_numeric($value)) {
+		} elseif (is_numeric($value)) {
 			$value = (int) $value;
 		}
 
