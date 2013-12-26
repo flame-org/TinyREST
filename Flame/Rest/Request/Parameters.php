@@ -77,7 +77,7 @@ class Parameters extends Object implements IParameters
 	{
 		if($name !== null) {
 			if(isset($this->data->associations[$name])) {
-				return $this->data->associations[$name];
+				return $this->validateValue($this->data->associations[$name]);
 			}
 
 			return $default;
@@ -118,8 +118,19 @@ class Parameters extends Object implements IParameters
 	 */
 	protected function validateValue($value)
 	{
+		if (is_array($value)) {
+			$value = array_map(function ($item) {
+				return $this->validateValue($item);
+			}, $value);
+		}
+
+
 		if ($value === 'null') {
 			$value = null;
+		}
+
+		if (is_numeric($value)) {
+			$value = (int) $value;
 		}
 
 		return $value;
