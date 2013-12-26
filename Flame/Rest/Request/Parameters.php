@@ -126,6 +126,8 @@ class Parameters extends Object implements IParameters
 			$value = null;
 		} elseif (is_numeric($value)) {
 			$value = (int) $value;
+		} elseif ($value === 'true' || $value === 'false') {
+			$value = (bool) $value;
 		}
 
 		return $value;
