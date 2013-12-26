@@ -103,12 +103,25 @@ class Parameters extends Object implements IParameters
 	{
 		if($query !== null) {
 			if(isset($this->data->query[$query])) {
-				return $this->data->query[$query];
+				return $this->validateValue($this->data->query[$query]);
 			}
 
 			return $default;
 		}
 
 		return $this->data->query;
+	}
+
+	/**
+	 * @param $value
+	 * @return mixed
+	 */
+	protected function validateValue($value)
+	{
+		if ($value === 'null') {
+			$value = null;
+		}
+
+		return $value;
 	}
 }
