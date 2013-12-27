@@ -65,12 +65,6 @@ class RestRoute implements IRouter
 		$url = $httpRequest->getUrl();
 		$basePath = str_replace('/', '\/', $url->getBasePath());
 		$cleanPath = preg_replace("/^{$basePath}/", '', $url->getPath());
-
-
-		if (strpos($cleanPath, '-') !== false) {
-			$cleanPath = $this->replaceDashWithUpperCase($cleanPath);
-		}
-
 		$path = str_replace('/', '\/', $this->getPath());
 
 		$pathRexExp = empty($path) ? "/^.+$/" : "/^{$path}\/.*$/";
@@ -130,6 +124,7 @@ class RestRoute implements IRouter
 		$params['format'] = $this->detectFormat($httpRequest);
 		$params['associations'] = $assoc;
 		$params['query'] = $httpRequest->getQuery();
+		$params['action'] = $this->replaceDashWithUpperCase($params['action']);
 
 		$presenterName = empty($this->module) ? $presenterName : $this->module . ':' . $presenterName;
 
@@ -137,7 +132,7 @@ class RestRoute implements IRouter
 		$this->requestUrl = $url->getAbsoluteUrl();
 
 		return new Request(
-			$presenterName,
+			$this->replaceDashWithUpperCase($presenterName),
 			$httpRequest->getMethod(),
 			$params
 		);
@@ -283,15 +278,19 @@ class RestRoute implements IRouter
 	 */
 	private function replaceDashWithUpperCase($path)
 	{
-		$pieces = explode('-', $path);
-		foreach($pieces as $k => $piece) {
-			if ($k === 0) {
-				continue;
+		if (strpos($path, '-') !== false) {
+			$pieces = explode('-', $path);
+			foreach($pieces as $k => $piece) {
+				if ($k === 0) {
+					continue;
+				}
+
+				$pieces[$k] = ucfirst($piece);
 			}
 
-			$pieces[$k] = ucfirst($piece);
+			$path = implode('', $pieces);
 		}
 
-		return implode('', $pieces);
+		return $path;
 	}
 }
