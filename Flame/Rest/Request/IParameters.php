@@ -32,9 +32,11 @@ interface IParameters
 	public function getAssociations($name = null, $default = null);
 
 	/**
+	 * @param null|string $name
+	 * @param null $default
 	 * @return mixed
 	 */
-	public function getData();
+	public function getData($name = null, $default = null);
 
 	/**
 	 * @param null|string $query

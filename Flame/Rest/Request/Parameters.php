@@ -87,10 +87,20 @@ class Parameters extends Object implements IParameters
 	}
 
 	/**
+	 * @param null|string $name
+	 * @param null $default
 	 * @return mixed
 	 */
-	public function getData()
+	public function getData($name = null, $default = null)
 	{
+		if ($name !== null) {
+			if (isset($this->data->data[$name])) {
+				return $this->validateValue($this->data->data[$name]);
+			}
+
+			return $default;
+		}
+
 		return $this->data->data;
 	}
 
