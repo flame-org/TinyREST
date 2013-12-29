@@ -7,6 +7,7 @@
  */
 namespace Flame\Rest\Request;
 
+use Flame\Rest\Http\Files;
 use Nette\ArrayHash;
 use Nette\Object;
 
@@ -21,6 +22,7 @@ use Nette\Object;
  * @property-read mixed $data
  * @property-read mixed $query
  * @property-read mixed $associations
+ * @property-read array|\Nette\Http\FileUpload[] $files
  */
 class Parameters extends Object implements IParameters
 {
@@ -28,10 +30,14 @@ class Parameters extends Object implements IParameters
 	/** @var \Nette\ArrayHash  */
 	private $data;
 
+	/** @var \Flame\Rest\Http\Files  */
+	private $filesContainer;
+
 	/**
 	 * @param array $data
+	 * @param null $files
 	 */
-	function __construct(array $data)
+	function __construct(array $data, $files = null)
 	{
 		$defaults = array(
 			'id' => '',
@@ -41,7 +47,9 @@ class Parameters extends Object implements IParameters
 			'data' => array(),
 			'query' => array(),
 		);
+
 		$this->data = ArrayHash::from(array_merge($defaults, $data));
+		$this->filesContainer = new Files($files);
 	}
 
 	/**
@@ -141,5 +149,13 @@ class Parameters extends Object implements IParameters
 		}
 
 		return $value;
+	}
+
+	/**
+	 * @return array|\Nette\Http\FileUpload[]
+	 */
+	public function getFiles()
+	{
+		return $this->filesContainer->getFiles();
 	}
 }

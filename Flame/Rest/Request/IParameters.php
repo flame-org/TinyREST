@@ -25,6 +25,11 @@ interface IParameters
 	public function getFormat();
 
 	/**
+	 * @return array|\Nette\Http\FileUpload[]
+	 */
+	public function getFiles();
+
+	/**
 	 * @param null|string $name
 	 * @param null $default
 	 * @return mixed
