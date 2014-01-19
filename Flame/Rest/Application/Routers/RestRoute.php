@@ -216,6 +216,9 @@ class RestRoute implements IRouter
 			case 'DELETE':
 				$action = 'delete';
 				break;
+			case 'OPTIONS':
+				$action = 'options';
+				break;
 			default:
 				throw new InvalidStateException('Method ' . $method . ' is not allowed.');
 		}
