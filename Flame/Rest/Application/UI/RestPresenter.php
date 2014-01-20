@@ -103,6 +103,12 @@ abstract class RestPresenter extends Presenter
 		}
 	}
 
+	public function actionOptions()
+	{
+		$this->getHttpResponse()->setHeader('Access-Control-Allow-Headers', 'content-type');
+		$this->getHttpResponse()->setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,HEAD,TRACE,CONNECT');
+	}
+
 	/**
 	 * @param \Exception $ex
 	 * @param bool $log
