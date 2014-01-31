@@ -74,7 +74,6 @@ class RestExtension extends CompilerExtension
 	{
 		Validators::assertField($config, 'authenticator', 'string');
 		Validators::assertField($config, 'tokens', 'array');
-		Validators::assertField($config, 'cors', 'bool');
 		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
 
@@ -95,7 +94,7 @@ class RestExtension extends CompilerExtension
 	public function afterCompile(ClassType $class)
 	{
 		$config = $this->getConfig($this->defaults);
-		if($config['cors']) {
+		if(isset($config['cors']) && $config['cors']) {
 			$container = $this->getContainerBuilder();
 			$initialize = $class->methods['initialize'];
 
