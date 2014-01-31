@@ -28,7 +28,11 @@ class RestExtension extends CompilerExtension
 		'tokens' => array(
 			'expiration' => '+ 30 days'
 		),
-		'cors' => false
+		'cors' => array(
+			'origin' => '*',
+			'headers' => '*',
+			'methods' => '*'
+		)
 	);
 
 	/**
@@ -91,13 +95,13 @@ class RestExtension extends CompilerExtension
 	public function afterCompile(ClassType $class)
 	{
 		$config = $this->getConfig($this->defaults);
-		if($config['cors'] === true) {
+		if($config['cors']) {
 			$container = $this->getContainerBuilder();
 			$initialize = $class->methods['initialize'];
 
-			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Origin: *\');', array()));
-			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Headers: *\');', array()));
-			$initialize->addBody($container->formatPhp('header(\'Access-Control-Allow-Methods: *\');', array()));
+			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Origin: " . ((isset($config['cors']['origin']) ? $config['cors']['origin'] : '*')) . "');", array()));
+			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Headers: " . ((isset($config['cors']['headers']) ? $config['cors']['headers'] : '*')) . "');", array()));
+			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Methods: " . ((isset($config['cors']['methods']) ? $config['cors']['methods'] : '*')) . "');", array()));
 		}
 	}
 
