@@ -20,11 +20,11 @@ abstract class Authenticator extends Object implements IAuthenticator
 	 */
 	public function authenticate()
 	{
-		if(!$this->authRequestData() || !$this->authRequestTimeout()) {
-			throw new UnauthorizedRequestException('Unauthorized request.');
+		if($this->authRequestData() && $this->authRequestTimeout()) {
+			return true;
 		}
 
-		return true;
+		throw new UnauthorizedRequestException('Unauthorized request.');
 	}
 
 	/**
