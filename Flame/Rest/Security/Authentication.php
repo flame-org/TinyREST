@@ -7,6 +7,7 @@
  */
 namespace Flame\Rest\Security;
 
+use Nette\InvalidStateException;
 use Nette\Object;
 
 class Authentication extends Object implements IAuthenticator
@@ -27,6 +28,7 @@ class Authentication extends Object implements IAuthenticator
 
 	/**
 	 * @return bool
+	 * @throws \Nette\InvalidStateException
 	 */
 	public function authenticate()
 	{
@@ -34,6 +36,6 @@ class Authentication extends Object implements IAuthenticator
 			return $this->authenticator->authenticate();
 		}
 
-		return true;
+		throw new InvalidStateException('Missing authenticator.');
 	}
 } 
