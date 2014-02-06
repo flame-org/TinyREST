@@ -80,15 +80,6 @@ abstract class RestPresenter extends Presenter
 	}
 
 	/**
-	 * @return Parameters
-	 * @deprecated
-	 */
-	public function getRequestParameters()
-	{
-		return $this->getInput();
-	}
-
-	/**
 	 * @param $element
 	 */
 	public function checkRequirements($element)
