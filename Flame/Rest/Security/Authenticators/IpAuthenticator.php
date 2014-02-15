@@ -31,7 +31,7 @@ class IpAuthenticator extends Object implements IAuthenticator
 	public function authenticate()
 	{
 		if (!in_array($this->getClientIp(), $this->allowedIps)) {
-			throw new ForbiddenRequestException;
+			throw new ForbiddenRequestException('Banned ip.');
 		}
 	}
 
