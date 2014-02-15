@@ -15,16 +15,14 @@ abstract class Authenticator extends Object implements IAuthenticator
 {
 
 	/**
-	 * @return bool
+	 * @return void
 	 * @throws \Flame\Rest\Security\UnauthorizedRequestException
 	 */
 	public function authenticate()
 	{
-		if($this->authRequestData() && $this->authRequestTimeout()) {
-			return true;
+		if(!$this->authRequestData() || !$this->authRequestTimeout()) {
+			throw new UnauthorizedRequestException('Unauthorized request.');
 		}
-
-		throw new UnauthorizedRequestException('Unauthorized request.');
 	}
 
 	/**
