@@ -12,7 +12,7 @@ interface IAuthenticator
 {
 
 	/**
-	 * @return bool
+	 * @return void
 	 */
 	public function authenticate();
 } 

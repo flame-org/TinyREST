@@ -8,6 +8,7 @@
 namespace Flame\Rest\DI;
 
 use Nette\DI\CompilerExtension;
+use Nette\DI\ContainerBuilder;
 use Nette\Configurator;
 use Nette\PhpGenerator\ClassType;
 use Nette\Utils\Validators;
@@ -24,7 +25,7 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
-		'authenticator' => 'Flame\Rest\Security\Authenticators\BasicAuthenticator',
+		'authenticators' => array(),
 		'tokens' => array(
 			'expiration' => '+ 30 days'
 		),
@@ -32,7 +33,8 @@ class RestExtension extends CompilerExtension
 			'origin' => '*',
 			'headers' => '*',
 			'methods' => '*'
-		)
+		),
+		'whitelist' => array()
 	);
 
 	/**
@@ -44,14 +46,7 @@ class RestExtension extends CompilerExtension
 		$config = $this->getConfig($this->defaults);
 
 		$this->configValidation($config);
-
-		$authentication = $container->addDefinition($this->prefix('authentication'))
-			->setClass('Flame\Rest\Security\Authentication');
-
-		$authenticator = $container->addDefinition($this->prefix('authenticator'))
-			->setClass($config['authenticator']);
-
-		$authentication->addSetup('setAuthenticator', array($authenticator));
+		$this->processAuthenticators($container, $config);
 
 		$container->addDefinition($this->prefix('resourceFactory'))
 			->setClass('Flame\Rest\ResourceFactory');
@@ -72,7 +67,8 @@ class RestExtension extends CompilerExtension
 	 */
 	public function configValidation($config)
 	{
-		Validators::assertField($config, 'authenticator', 'string');
+		Validators::assertField($config, 'authenticators', 'array');
+		Validators::assertField($config, 'whitelist', 'array');
 		Validators::assertField($config, 'tokens', 'array');
 		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
@@ -101,6 +97,27 @@ class RestExtension extends CompilerExtension
 			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Origin: " . ((isset($config['cors']['origin']) ? $config['cors']['origin'] : '*')) . "');", array()));
 			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Headers: " . ((isset($config['cors']['headers']) ? $config['cors']['headers'] : '*')) . "');", array()));
 			$initialize->addBody($container->formatPhp("header('Access-Control-Allow-Methods: " . ((isset($config['cors']['methods']) ? $config['cors']['methods'] : '*')) . "');", array()));
+		}
+	}
+
+	/**
+	 * @param ContainerBuilder $container
+	 * @param array $config
+	 */
+	private function processAuthenticators(ContainerBuilder $container, array $config)
+	{
+		$authentication = $container->addDefinition($this->prefix('authentication'))
+			->setClass('Flame\Rest\Security\Authentication');
+
+		$ipAuthenticator = $container->addDefinition($this->prefix('ipAuthenticator'))
+			->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
+			->setArguments(array($config['whitelist']));
+		$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
+
+		foreach($config['authenticators'] as $k => $authenticatorConfig) {
+			$authenticator = $container->addDefinition($this->prefix('authenticator' . $k))
+				->setClass($authenticatorConfig);
+			$authentication->addSetup('addAuthenticator', array($authenticator));
 		}
 	}
 

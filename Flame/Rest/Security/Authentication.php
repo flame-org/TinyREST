@@ -13,29 +13,45 @@ use Nette\Object;
 class Authentication extends Object implements IAuthenticator
 {
 
-	/** @var  IAuthenticator */
-	private $authenticator;
+	/** @var  IAuthenticator[]|array */
+	private $authenticators = array();
 
 	/**
 	 * @param IAuthenticator $authenticator
 	 * @return $this
 	 */
-	public function setAuthenticator(IAuthenticator $authenticator)
+	public function addAuthenticator(IAuthenticator $authenticator)
 	{
-		$this->authenticator = $authenticator;
+		$this->authenticators[spl_object_hash($authenticator)] = $authenticator;
 		return $this;
 	}
 
 	/**
-	 * @return bool
+	 * @param IAuthenticator $authenticator
+	 * @return $this
+	 */
+	public function removeAuthenticator(IAuthenticator $authenticator)
+	{
+		$hash = spl_object_hash($authenticator);
+		if (isset($this->authenticators[$hash])) {
+			unset($this->authenticators[$hash]);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return void
 	 * @throws \Nette\InvalidStateException
 	 */
 	public function authenticate()
 	{
-		if($this->authenticator !== null) {
-			return $this->authenticator->authenticate();
+		if (count($this->authenticators)) {
+			foreach($this->authenticators as $authenticator) {
+				$authenticator->authenticate();
+			}
+		}else{
+			throw new InvalidStateException('Missing authenticator.');
 		}
-
-		throw new InvalidStateException('Missing authenticator.');
 	}
 } 
