@@ -25,7 +25,7 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
-		'authenticators' => array('Flame\Rest\Security\Authenticators\NullAuthenticator'),
+		'authenticators' => array(),
 		'tokens' => array(
 			'expiration' => '+ 30 days'
 		),

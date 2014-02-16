@@ -46,12 +46,8 @@ class Authentication extends Object implements IAuthenticator
 	 */
 	public function authenticate()
 	{
-		if (count($this->authenticators)) {
-			foreach($this->authenticators as $authenticator) {
-				$authenticator->authenticate();
-			}
-		}else{
-			throw new InvalidStateException('Missing authenticator.');
+		foreach($this->authenticators as $authenticator) {
+			$authenticator->authenticate();
 		}
 	}
 } 
