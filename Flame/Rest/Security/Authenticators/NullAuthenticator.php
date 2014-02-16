@@ -7,21 +7,16 @@
  */
 namespace Flame\Rest\Security\Authenticators;
 
-class NullAuthenticator extends Authenticator
+use Nette\Object;
+use Flame\Rest\Security\IAuthenticator;
+
+class NullAuthenticator extends Object implements IAuthenticator
 {
 
 	/**
-	 * @return bool
+	 * @return void
 	 */
-	public function authRequestData()
-	{
-		return true;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function authRequestTimeout()
+	public function authenticate()
 	{
 		return true;
 	}
