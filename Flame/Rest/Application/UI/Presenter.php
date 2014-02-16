@@ -21,7 +21,11 @@ class Presenter extends Nette\Application\UI\Presenter
 	 */
 	public function sendJson($data)
 	{
-		$this->sendResponse(new JsonResponse($data));
+		if ($data === null) {
+			$this->terminate();
+		}else{
+			$this->sendResponse(new JsonResponse($data));
+		}
 	}
 
 }
