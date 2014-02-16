@@ -7,8 +7,8 @@
  */
 namespace Flame\Rest\Application\UI;
 
-use Flame\Rest\Response\JsonResponse;
 use Nette;
+use Nette\Application\Responses\JsonResponse;
 
 class Presenter extends Nette\Application\UI\Presenter
 {
