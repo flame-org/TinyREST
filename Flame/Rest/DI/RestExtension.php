@@ -109,10 +109,12 @@ class RestExtension extends CompilerExtension
 		$authentication = $container->addDefinition($this->prefix('authentication'))
 			->setClass('Flame\Rest\Security\Authentication');
 
-		$ipAuthenticator = $container->addDefinition($this->prefix('ipAuthenticator'))
-			->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
-			->setArguments(array($config['whitelist']));
-		$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
+		if (count($config['whitelist'])) {
+			$ipAuthenticator = $container->addDefinition($this->prefix('ipAuthenticator'))
+				->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
+				->setArguments(array($config['whitelist']));
+			$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
+		}
 
 		foreach($config['authenticators'] as $k => $authenticatorConfig) {
 			$authenticator = $container->addDefinition($this->prefix('authenticator' . $k))
