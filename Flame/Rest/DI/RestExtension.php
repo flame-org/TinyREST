@@ -21,8 +21,6 @@ use Nette\Utils\Validators;
 class RestExtension extends CompilerExtension
 {
 
-	const REST_EXTENSION = 'rest';
-
 	/** @var array  */
 	public $defaults = array(
 		'authenticators' => array(),
@@ -80,7 +78,7 @@ class RestExtension extends CompilerExtension
 	public static function register(Configurator $configurator)
 	{
 		$configurator->onCompile[] = function($configurator, $compiler) {
-			$compiler->addExtension(self::REST_EXTENSION, new RestExtension());
+			$compiler->addExtension('rest', new RestExtension());
 		};
 	}
 
