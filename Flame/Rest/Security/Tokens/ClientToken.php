@@ -55,6 +55,14 @@ class ClientToken extends Token
 	}
 
 	/**
+	 * @return \Flame\Rest\Security\Tokens\BasicToken
+	 */
+	public function getBasicToken()
+	{
+		return $this->basicToken;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getExpiration()
