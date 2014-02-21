@@ -25,9 +25,6 @@ class RestExtension extends CompilerExtension
 	public $defaults = array(
 		'systemSalt' => 'deepSalt34',
 		'authenticators' => array(),
-		'tokens' => array(
-			'expiration' => '+ 30 days'
-		),
 		'cors' => array(
 			'origin' => '*',
 			'headers' => '*',
@@ -74,9 +71,7 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'authenticators', 'array');
 		Validators::assertField($config, 'ips', 'array');
 		Validators::assertField($config, 'referers', 'array');
-		Validators::assertField($config, 'tokens', 'array');
 		Validators::assertField($config, 'systemSalt', 'string');
-		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
 
 	/**
