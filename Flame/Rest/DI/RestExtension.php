@@ -32,7 +32,8 @@ class RestExtension extends CompilerExtension
 			'headers' => '*',
 			'methods' => '*'
 		),
-		'whitelist' => array()
+		'whitelist' => array(),
+		'referers' => array()
 	);
 
 	/**
@@ -112,6 +113,13 @@ class RestExtension extends CompilerExtension
 				->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
 				->setArguments(array($config['whitelist']));
 			$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
+		}
+
+		if (count($config['referers'])) {
+			$refererAuthenticator = $container->addDefinition($this->prefix('refererAuthenticator'))
+				->setClass('Flame\Rest\Security\Authenticators\RefererAuthenticator')
+				->setArguments(array($config['referers']));
+			$authentication->addSetup('addAuthenticator', array($refererAuthenticator));
 		}
 
 		foreach($config['authenticators'] as $k => $authenticatorConfig) {
