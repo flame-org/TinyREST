@@ -32,7 +32,7 @@ class RestExtension extends CompilerExtension
 			'headers' => '*',
 			'methods' => '*'
 		),
-		'whitelist' => array(),
+		'ips' => array(),
 		'referers' => array()
 	);
 
@@ -108,10 +108,10 @@ class RestExtension extends CompilerExtension
 		$authentication = $container->addDefinition($this->prefix('authentication'))
 			->setClass('Flame\Rest\Security\Authentication');
 
-		if (count($config['whitelist'])) {
+		if (count($config['ips'])) {
 			$ipAuthenticator = $container->addDefinition($this->prefix('ipAuthenticator'))
 				->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
-				->setArguments(array($config['whitelist']));
+				->setArguments(array($config['ips']));
 			$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
 		}
 
