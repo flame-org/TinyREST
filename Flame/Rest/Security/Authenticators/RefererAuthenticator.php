@@ -9,6 +9,7 @@ namespace Flame\Rest\Security\Authenticators;
 
 use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
+use Nette\Diagnostics\Debugger;
 use Nette\Object;
 
 class RefererAuthenticator extends Object implements IAuthenticator
@@ -32,7 +33,9 @@ class RefererAuthenticator extends Object implements IAuthenticator
 	 */
 	public function authenticate()
 	{
-		if (!in_array($this->getReferer(), $this->allowedReferers)) {
+		$referer = $this->getReferer();
+		if (!in_array($referer, $this->allowedReferers)) {
+			Debugger::log('Invalid HTTP REFERER header "' . $referer . '"', Debugger::DETECT);
 			throw new ForbiddenRequestException;
 		}
 	}

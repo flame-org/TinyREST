@@ -9,6 +9,7 @@ namespace Flame\Rest\Security\Authenticators;
 
 use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
+use Nette\Diagnostics\Debugger;
 use Nette\Object;
 
 class IpAuthenticator extends Object implements IAuthenticator
@@ -32,7 +33,8 @@ class IpAuthenticator extends Object implements IAuthenticator
 	{
 		$ip = $this->getClientIp();
 		if (!in_array($ip, $this->allowedIps)) {
-			throw new ForbiddenRequestException('Banned ip "' . $ip . '"');
+			Debugger::log('Banned ip "' . $ip . '"', Debugger::DETECT);
+			throw new ForbiddenRequestException;
 		}
 	}
 
