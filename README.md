@@ -121,7 +121,7 @@ Register in your bootstrap:
 ###Configuration
 ```yaml
 REST:
-	authenticator: 'Flame\Rest\Security\Authenticators\BasicAuthenticator'
+	authenticator: 'Flame\Rest\Security\Authenticators\SessionAuthenticator'
 	tokens:
 		expiration: '+ 30 days'
 	cors: false

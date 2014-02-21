@@ -1,19 +1,17 @@
 <?php
 /**
- * Class IAuthStorage
+ * Class IUserRepository
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 26.10.13
  */
-namespace Flame\Rest\Security\Storage;
+namespace Flame\Rest\Security;
 
-use Flame\Rest\Security\IUser;
-
-interface IAuthStorage
+interface IUserRepository
 {
 
 	/**
-	 * @param $hash
+	 * @param string $hash
 	 * @return IUser
 	 */
 	public function findUserByHash($hash);

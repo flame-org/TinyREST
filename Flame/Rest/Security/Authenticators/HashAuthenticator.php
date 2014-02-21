@@ -7,9 +7,9 @@
  */
 namespace Flame\Rest\Security\Authenticators;
 
-use Flame\Rest\Security\IUserHash;
+use Flame\Rest\Security\IHashStorage;
 use Flame\Rest\Security\RequestTimeoutException;
-use Flame\Rest\Security\Storage\IAuthStorage;
+use Flame\Rest\Security\IUserRepository;
 use Flame\Rest\Security\IUser;
 use Flame\Rest\Security\UnauthorizedRequestException;
 use Nette\InvalidStateException;
@@ -17,23 +17,22 @@ use Nette\InvalidStateException;
 class HashAuthenticator extends Authenticator
 {
 
-	/** @var  IUser */
+	/** @var IUser|null */
 	private $user;
 
-	/** @var \Flame\Rest\Security\Storage\IAuthStorage  */
+	/** @var \Flame\Rest\Security\IUserRepository  */
 	private $authStorage;
 
-	/** @var \Flame\Rest\Security\IUserHash  */
-	private $userHash;
-
+	/** @var \Flame\Rest\Security\IHashStorage  */
+	private $hashStorage;
 	/**
-	 * @param IAuthStorage $authStorage
-	 * @param IUserHash $userHash
+	 * @param IUserRepository $authStorage
+	 * @param IHashStorage $hashStorage
 	 */
-	function __construct(IAuthStorage $authStorage, IUserHash $userHash)
+	function __construct(IUserRepository $authStorage, IHashStorage $hashStorage)
 	{
 		$this->authStorage = $authStorage;
-		$this->userHash = $userHash;
+		$this->hashStorage = $hashStorage;
 	}
 
 	/**
@@ -43,7 +42,7 @@ class HashAuthenticator extends Authenticator
 	protected function getUser()
 	{
 		if($this->user === null) {
-			$this->user = $this->authStorage->findUserByHash($this->userHash->getHash());
+			$this->user = $this->authStorage->findUserByHash($this->hashStorage->getUserHash()->getBasicTokenHash());
 			if($this->user !== null && !$this->user instanceof IUser) {
 				throw new InvalidStateException('User object must be instance of Flame\Rest\Security\IUser');
 			}
@@ -71,14 +70,9 @@ class HashAuthenticator extends Authenticator
 	 */
 	public function authRequestTimeout()
 	{
-		$pieces = explode(':', $this->getUser()->getHash());
-		if(isset($pieces[0], $pieces[1])) {
-			$expirationTime = new \DateTime();
-			$expirationTime->setTimestamp($pieces[1]);
-
-			if((new \DateTime()) > $expirationTime) {
-				throw new RequestTimeoutException('Validity of token expired. Please sign in again.');
-			}
+		$expiration = $this->hashStorage->getUserHash()->getExpiration();
+		if(!$expiration instanceof \DateTime || (new \DateTime()) > $expiration) {
+			throw new RequestTimeoutException('Validity of token expired. Please sign in again.');
 		}
 
 		return true;
@@ -89,6 +83,6 @@ class HashAuthenticator extends Authenticator
 	 */
 	protected function isUserLogged()
 	{
-		return (bool) $this->getUser();
+		return $this->getUser() instanceof IUser;
 	}
 }

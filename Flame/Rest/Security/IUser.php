@@ -14,4 +14,10 @@ interface IUser
 	 * @return string
 	 */
 	public function getHash();
+
+	/**
+	 * @param IToken $token
+	 * @return $this
+	 */
+	public function setHash(IToken $token);
 } 

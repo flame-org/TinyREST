@@ -23,6 +23,7 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
+		'systemSalt' => 'deepSalt34',
 		'authenticators' => array(),
 		'tokens' => array(
 			'expiration' => '+ 30 days'
@@ -54,10 +55,11 @@ class RestExtension extends CompilerExtension
 			->setClass('Flame\Rest\Request\ParametersFactory');
 
 		$container->addDefinition($this->prefix('authorizationHash'))
-			->setClass('Flame\Rest\Security\Hashes\AuthorizationHash');
+			->setClass('Flame\Rest\Security\Storage\AuthorizationHash');
 
-		$container->addDefinition($this->prefix('hashCalculator'))
-			->setClass('Flame\Rest\Security\HashCalculator', array($config['tokens']['expiration']));
+		$container->addDefinition($this->prefix('basicTokenFactory'))
+			->setClass('Flame\Rest\Security\Tokens\BasicTokenFactory')
+			->setArguments(array($config['systemSalt']));
 	}
 
 	/**
@@ -70,6 +72,7 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'ips', 'array');
 		Validators::assertField($config, 'referers', 'array');
 		Validators::assertField($config, 'tokens', 'array');
+		Validators::assertField($config, 'systemSalt', 'string');
 		Validators::assertField($config['tokens'], 'expiration', 'string');
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Class BasicAuthenticator
+ * Class SessionAuthenticator
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 26.10.13
@@ -12,7 +12,7 @@ use Flame\Rest\Security\UnauthorizedRequestException;
 use Nette\Security\User;
 use Nette\Security\IUserStorage;
 
-class BasicAuthenticator extends Authenticator
+class SessionAuthenticator extends Authenticator
 {
 
 	/** @var  User */
