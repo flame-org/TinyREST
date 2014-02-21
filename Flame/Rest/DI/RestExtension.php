@@ -57,6 +57,9 @@ class RestExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('authorizationHash'))
 			->setClass('Flame\Rest\Security\Storage\AuthorizationHash');
 
+		$container->addDefinition($this->prefix('user'))
+			->setClass('Flame\Rest\Security\User');
+
 		$container->addDefinition($this->prefix('basicTokenFactory'))
 			->setClass('Flame\Rest\Security\Tokens\BasicTokenFactory')
 			->setArguments(array($config['systemSalt']));

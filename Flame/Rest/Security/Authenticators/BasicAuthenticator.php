@@ -1,27 +1,27 @@
 <?php
 /**
- * Class SessionAuthenticator
+ * Class BasicAuthenticator
  *
- * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
- * @date: 26.10.13
+ * @author Jiří Šifalda <sifalda.jiri@gmail.com>
+ * @date 21.02.14
  */
 namespace Flame\Rest\Security\Authenticators;
 
 use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
+use Flame\Rest\Security\IUser;
 use Nette\Object;
-use Nette\Security\User;
 
-class SessionAuthenticator extends Object implements IAuthenticator
+class BasicAuthenticator extends Object implements IAuthenticator
 {
 
-	/** @var  User */
+	/** @var  IUser */
 	private $user;
 
 	/**
-	 * @param User $user
+	 * @param IUser $user
 	 */
-	function __construct(User $user)
+	function __construct(IUser $user)
 	{
 		$this->user = $user;
 	}
