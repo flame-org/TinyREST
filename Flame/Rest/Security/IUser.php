@@ -11,11 +11,6 @@ interface IUser
 {
 
 	/**
-	 * @return int
-	 */
-	public function getId();
-
-	/**
 	 * @return string
 	 */
 	public function getHash();
