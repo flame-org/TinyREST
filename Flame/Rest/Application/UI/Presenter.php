@@ -26,7 +26,7 @@ abstract class Presenter extends Nette\Application\UI\Presenter
 		parent::startup();
 
 		$this->application->onError[] = function ($application, $exception) {
-			if ($exception instanceof \Exception && !$exception instanceof Nette\Application\AbortException) {
+			if ($exception instanceof \Exception) {
 				$this->sendErrorResource($exception);
 			}
 		};
