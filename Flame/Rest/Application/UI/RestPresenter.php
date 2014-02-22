@@ -8,10 +8,6 @@
 
 namespace Flame\Rest\Application\UI;
 
-use Flame\Rest\IResourceFactory;
-use Flame\Rest\Request\IParametersFactory;
-use Flame\Rest\Request\Parameters;
-use Flame\Rest\Security\Authentication;
 use Nette;
 
 /**
@@ -19,7 +15,7 @@ use Nette;
  *
  * @package Flame\Rest\Application\UI
  *
- * @property-read Parameters $input
+ * @property-read \Flame\Rest\Request\Parameters $input
  * @property-read \Flame\Rest\Resource $resource
  */
 abstract class RestPresenter extends Presenter
@@ -31,35 +27,33 @@ abstract class RestPresenter extends Presenter
 	 */
 	public $application;
 
-	/** @var  \Flame\Rest\Security\Authentication */
-	protected $authentication;
-
-	/** @var  IParametersFactory */
-	private $parametersFactory;
-
-	/** @var  Parameters */
-	private $input;
-
-	/** @var  \Flame\Rest\Resource */
-	private $resource;
-
-	/** @var  IResourceFactory */
-	private $resourceFactory;
+	/**
+	 * @inject
+	 * @var  \Flame\Rest\Security\Authentication
+	 */
+	public  $authentication;
 
 	/**
-	 * @param IResourceFactory $resourceFactory
-	 * @param Authentication $authentication
-	 * @param IParametersFactory $paramsFactory
+	 * @inject
+	 * @var  \Flame\Rest\Request\IParametersFactory
 	 */
-	final public function injectRestServices(
-		IResourceFactory $resourceFactory,
-		Authentication $authentication,
-		IParametersFactory $paramsFactory)
-	{
-		$this->resourceFactory = $resourceFactory;
-		$this->authentication = $authentication;
-		$this->parametersFactory = $paramsFactory;
-	}
+	public $parametersFactory;
+
+	/**
+	 * @inject
+	 * @var  \Flame\Rest\IResourceFactory
+	 */
+	public $resourceFactory;
+
+	/**
+	 * @var \Flame\Rest\Request\Parameters
+	 * */
+	private $input;
+
+	/**
+	 * @var \Flame\Rest\Resource
+	 */
+	private $resource;
 
 	/**
 	 * @return \Flame\Rest\Resource
@@ -74,7 +68,7 @@ abstract class RestPresenter extends Presenter
 	}
 
 	/**
-	 * @return Parameters
+	 * @return \Flame\Rest\Request\Parameters
 	 */
 	public function getInput()
 	{
