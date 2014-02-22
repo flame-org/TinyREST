@@ -47,10 +47,6 @@ class Authentication extends Object implements IAuthenticator
 	 */
 	public function authenticate(Method $element)
 	{
-		if (!count($this->authenticators)) {
-			throw new InvalidStateException('No authenticator is available.');
-		}
-
 		foreach($this->authenticators as $authenticator) {
 			$authenticator->authenticate($element);
 		}
