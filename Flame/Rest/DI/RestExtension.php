@@ -59,9 +59,12 @@ class RestExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('clientTokenFactory'))
 			->setClass('Flame\Rest\Security\Tokens\ClientTokenFactory');
 
-		$container->addDefinition($this->prefix('cors'))
+		$cors = $container->addDefinition($this->prefix('cors'))
 			->setClass('Flame\Rest\Security\Cors')
 			->addSetup('setConfig', array($config['cors']));
+
+		$container->getDefinition('application')
+			->addSetup('$service->onStartup[] = ?', array(array($cors, 'configure')));
 	}
 
 	/**

@@ -7,8 +7,6 @@
  */
 namespace Flame\Rest\Security;
 
-use Flame\Rest\Request\IParameters;
-
 interface ICors
 {
 
@@ -17,8 +15,7 @@ interface ICors
 	const HEADER_METHODS = 'Access-Control-Allow-Methods';
 
 	/**
-	 * @param IParameters $input
 	 * @return $this
 	 */
-	public function configure(IParameters $input);
+	public function configure();
 } 

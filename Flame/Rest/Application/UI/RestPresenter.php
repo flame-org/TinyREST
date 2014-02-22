@@ -29,12 +29,6 @@ abstract class RestPresenter extends Presenter
 
 	/**
 	 * @inject
-	 * @var  \Flame\Rest\Security\ICors
-	 */
-	public $cors;
-
-	/**
-	 * @inject
 	 * @var  \Flame\Rest\Request\IParametersFactory
 	 */
 	public $parametersFactory;
@@ -133,15 +127,5 @@ abstract class RestPresenter extends Presenter
 	{
 		parent::beforeRender();
 		$this->sendResource();
-	}
-
-	/**
-	 * @param  Nette\Application\IResponse
-	 * @return void
-	 */
-	protected function shutdown($response)
-	{
-		$this->cors->configure($this->getInput());
-		parent::shutdown($response);
 	}
 }

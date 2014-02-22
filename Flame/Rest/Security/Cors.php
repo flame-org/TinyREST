@@ -7,7 +7,6 @@
  */
 namespace Flame\Rest\Security;
 
-use Flame\Rest\Request\IParameters;
 use Nette\Http\Request;
 use Nette\Http\Response;
 use Nette\Object;
@@ -45,10 +44,9 @@ class Cors extends Object implements ICors
 	}
 
 	/**
-	 * @param IParameters $input
 	 * @return $this
 	 */
-	public function configure(IParameters $input)
+	public function configure()
 	{
 		$this->httpResponse->addHeader(self::HEADER_ORIGIN, $this->getOrigin());
 		$this->httpResponse->addHeader(self::HEADER_HEADERS, $this->getHeaders());
