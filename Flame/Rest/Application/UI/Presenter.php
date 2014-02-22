@@ -13,26 +13,6 @@ use Nette\Application\Responses\JsonResponse;
 abstract class Presenter extends Nette\Application\UI\Presenter
 {
 	/**
-	 * @inject
-	 * @var \Nette\Application\Application
-	 */
-	public $application;
-
-	/**
-	 * @return void
-	 */
-	protected function startup()
-	{
-		parent::startup();
-
-		$this->application->onError[] = function ($application, $exception) {
-			if ($exception instanceof \Exception) {
-				$this->sendErrorResource($exception);
-			}
-		};
-	}
-
-	/**
 	 * Sends JSON data to the output.
 	 * @param  mixed $data
 	 * @return void
