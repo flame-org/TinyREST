@@ -10,7 +10,6 @@ namespace Flame\Rest\DI;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
 use Nette\Configurator;
-use Nette\PhpGenerator\ClassType;
 use Nette\Utils\Validators;
 
 /**
@@ -25,11 +24,7 @@ class RestExtension extends CompilerExtension
 	public $defaults = array(
 		'systemSalt' => 'deepSalt34',
 		'authenticators' => array(),
-		'cors' => array(
-			'origin' => '*',
-			'headers' => '*',
-			'methods' => '*'
-		),
+		'cors' => array(),
 		'ips' => array(),
 		'referers' => array()
 	);
@@ -63,6 +58,10 @@ class RestExtension extends CompilerExtension
 
 		$container->addDefinition($this->prefix('clientTokenFactory'))
 			->setClass('Flame\Rest\Security\Tokens\ClientTokenFactory');
+
+		$container->addDefinition($this->prefix('cors'))
+			->setClass('Flame\Rest\Security\Cors')
+			->addSetup('setConfig', array($config['cors']));
 	}
 
 	/**
@@ -74,6 +73,7 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'authenticators', 'array');
 		Validators::assertField($config, 'ips', 'array');
 		Validators::assertField($config, 'referers', 'array');
+		Validators::assertField($config, 'cors', 'array');
 		Validators::assertField($config, 'systemSalt', 'string');
 	}
 
@@ -86,22 +86,6 @@ class RestExtension extends CompilerExtension
 		$configurator->onCompile[] = function($configurator, $compiler) {
 			$compiler->addExtension('rest', new RestExtension());
 		};
-	}
-
-	/**
-	 * @param ClassType $class
-	 */
-	public function afterCompile(ClassType $class)
-	{
-		$config = $this->getConfig($this->defaults);
-		if(isset($config['cors']) && $config['cors']) {
-			$container = $this->getContainerBuilder();
-			$initialize = $class->methods['initialize'];
-
-			$initialize->addBody($container->formatPhp("@header('Access-Control-Allow-Origin: " . ((isset($config['cors']['origin']) ? $config['cors']['origin'] : '*')) . "');", array()));
-			$initialize->addBody($container->formatPhp("@header('Access-Control-Allow-Headers: " . ((isset($config['cors']['headers']) ? $config['cors']['headers'] : '*')) . "');", array()));
-			$initialize->addBody($container->formatPhp("@header('Access-Control-Allow-Methods: " . ((isset($config['cors']['methods']) ? $config['cors']['methods'] : '*')) . "');", array()));
-		}
 	}
 
 	/**

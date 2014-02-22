@@ -29,6 +29,12 @@ abstract class RestPresenter extends Presenter
 
 	/**
 	 * @inject
+	 * @var  \Flame\Rest\Security\ICors
+	 */
+	public $cors;
+
+	/**
+	 * @inject
 	 * @var  \Flame\Rest\Request\IParametersFactory
 	 */
 	public $parametersFactory;
@@ -87,12 +93,6 @@ abstract class RestPresenter extends Presenter
 		}
 	}
 
-	public function actionOptions()
-	{
-		$this->getHttpResponse()->setHeader('Access-Control-Allow-Headers', 'content-type,authorization');
-		$this->getHttpResponse()->setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,HEAD,TRACE,CONNECT');
-	}
-
 	/**
 	 * @param \Exception $ex
 	 * @param bool $log
@@ -133,5 +133,15 @@ abstract class RestPresenter extends Presenter
 	{
 		parent::beforeRender();
 		$this->sendResource();
+	}
+
+	/**
+	 * @param  Nette\Application\IResponse
+	 * @return void
+	 */
+	protected function shutdown($response)
+	{
+		$this->cors->configure($this->getInput());
+		parent::shutdown($response);
 	}
 }
