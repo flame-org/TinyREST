@@ -79,7 +79,9 @@ abstract class RestPresenter extends Presenter
 	public function checkRequirements($element)
 	{
 		try {
-			$this->authentication->authenticate($element);
+			if ($element instanceof Nette\Reflection\Method) {
+				$this->authentication->authenticate($element);
+			}
 		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);
 		}

@@ -11,6 +11,7 @@ use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
 use Nette\Diagnostics\Debugger;
 use Nette\Object;
+use Nette\Reflection\Method;
 
 class RefererAuthenticator extends Object implements IAuthenticator
 {
@@ -29,10 +30,10 @@ class RefererAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
-	 * @param $element
+	 * @param Method $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate($element)
+	public function authenticate(Method $element)
 	{
 		$referer = $this->getReferer();
 		if (!in_array($referer, $this->allowedReferers)) {

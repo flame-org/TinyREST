@@ -11,6 +11,7 @@ use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
 use Flame\Rest\Security\IUser;
 use Nette\Object;
+use Nette\Reflection\Method;
 
 class BasicAuthenticator extends Object implements IAuthenticator
 {
@@ -27,10 +28,11 @@ class BasicAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
-	 * @param $element
+	 * @param Method $element
+	 * @return void
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate($element)
+	public function authenticate(Method $element)
 	{
 		$user = (array) $element->getAnnotation('User');
 		if (in_array('loggedIn', $user)) {

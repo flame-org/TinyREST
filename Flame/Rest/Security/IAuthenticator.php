@@ -8,12 +8,14 @@
 
 namespace Flame\Rest\Security;
 
+use Nette\Reflection\Method;
+
 interface IAuthenticator
 {
 
 	/**
-	 * @param $element
+	 * @param Method $element
 	 * @return void
 	 */
-	public function authenticate($element);
+	public function authenticate(Method $element);
 } 

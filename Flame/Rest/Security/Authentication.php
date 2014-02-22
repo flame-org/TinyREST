@@ -9,6 +9,7 @@ namespace Flame\Rest\Security;
 
 use Nette\InvalidStateException;
 use Nette\Object;
+use Nette\Reflection\Method;
 
 class Authentication extends Object implements IAuthenticator
 {
@@ -41,11 +42,10 @@ class Authentication extends Object implements IAuthenticator
 	}
 
 	/**
-	 * @param $element
-	 * @return void
+	 * @param Method $element
 	 * @throws \Nette\InvalidStateException
 	 */
-	public function authenticate($element)
+	public function authenticate(Method $element)
 	{
 		if (!count($this->authenticators)) {
 			throw new InvalidStateException('No authenticator is available.');

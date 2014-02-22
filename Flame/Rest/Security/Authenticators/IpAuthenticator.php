@@ -11,6 +11,7 @@ use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
 use Nette\Diagnostics\Debugger;
 use Nette\Object;
+use Nette\Reflection\Method;
 
 class IpAuthenticator extends Object implements IAuthenticator
 {
@@ -27,10 +28,10 @@ class IpAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
-	 * @param $element
+	 * @param Method $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate($element)
+	public function authenticate(Method $element)
 	{
 		$ip = $this->getClientIp();
 		if (!in_array($ip, $this->allowedIps)) {

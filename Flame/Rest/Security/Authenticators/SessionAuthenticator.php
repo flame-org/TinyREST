@@ -10,6 +10,7 @@ namespace Flame\Rest\Security\Authenticators;
 use Flame\Rest\Security\ForbiddenRequestException;
 use Flame\Rest\Security\IAuthenticator;
 use Nette\Object;
+use Nette\Reflection\Method;
 use Nette\Security\User;
 
 class SessionAuthenticator extends Object implements IAuthenticator
@@ -27,10 +28,10 @@ class SessionAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
-	 * @param $element
+	 * @param Method $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate($element)
+	public function authenticate(Method $element)
 	{
 		$user = (array) $element->getAnnotation('User');
 		if (in_array('loggedIn', $user)) {
