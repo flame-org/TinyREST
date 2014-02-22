@@ -32,8 +32,11 @@ class SessionAuthenticator extends Object implements IAuthenticator
 	 */
 	public function authenticate($element)
 	{
-		if (!$this->user->isLoggedIn()) {
-			throw new ForbiddenRequestException('Please sign in.');
+		$user = (array) $element->getAnnotation('User');
+		if (in_array('loggedIn', $user)) {
+			if (!$this->user->isLoggedIn()) {
+				throw new ForbiddenRequestException('Please sign in.');
+			}
 		}
 	}
 }
