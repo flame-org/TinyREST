@@ -96,6 +96,9 @@ class Cors extends Object implements ICors
 	public function getMethods()
 	{
 		if (isset($this->config['methods'])) {
+			if ($this->config['methods'] === '*' && $this->httpRequest->getMethod() === 'OPTIONS') {
+				$this->config['methods'] = array('GET','DELETE', 'PUT', 'POST','OPTIONS','HEAD','TRACE','CONNECT', 'PATCH', 'COPY', 'SEARCH');
+			}
 			if (is_array($this->config['methods'])) {
 				$this->config['methods'] = implode(',', $this->config['methods']);
 			}
