@@ -29,9 +29,10 @@ class RefererAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
+	 * @param $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate()
+	public function authenticate($element)
 	{
 		$referer = $this->getReferer();
 		if (!in_array($referer, $this->allowedReferers)) {

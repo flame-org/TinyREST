@@ -27,9 +27,10 @@ class IpAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
+	 * @param $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate()
+	public function authenticate($element)
 	{
 		$ip = $this->getClientIp();
 		if (!in_array($ip, $this->allowedIps)) {

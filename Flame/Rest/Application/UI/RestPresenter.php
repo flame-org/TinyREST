@@ -87,7 +87,7 @@ abstract class RestPresenter extends Presenter
 		try {
 			$user = (array) $element->getAnnotation('User');
 			if (in_array('loggedIn', $user)) {
-				$this->authentication->authenticate();
+				$this->authentication->authenticate($element);
 			}
 		} catch (\Exception $ex) {
 			$this->sendErrorResource($ex);

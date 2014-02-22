@@ -41,17 +41,18 @@ class Authentication extends Object implements IAuthenticator
 	}
 
 	/**
+	 * @param $element
 	 * @return void
 	 * @throws \Nette\InvalidStateException
 	 */
-	public function authenticate()
+	public function authenticate($element)
 	{
 		if (!count($this->authenticators)) {
 			throw new InvalidStateException('No authenticator is available.');
 		}
 
 		foreach($this->authenticators as $authenticator) {
-			$authenticator->authenticate();
+			$authenticator->authenticate($element);
 		}
 	}
 } 

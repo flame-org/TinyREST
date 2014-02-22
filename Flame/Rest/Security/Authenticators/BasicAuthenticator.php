@@ -27,9 +27,10 @@ class BasicAuthenticator extends Object implements IAuthenticator
 	}
 
 	/**
+	 * @param $element
 	 * @throws \Flame\Rest\Security\ForbiddenRequestException
 	 */
-	public function authenticate()
+	public function authenticate($element)
 	{
 		if (!$this->user->isLoggedIn()) {
 			throw new ForbiddenRequestException('Please sign in.');

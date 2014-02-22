@@ -12,7 +12,8 @@ interface IAuthenticator
 {
 
 	/**
+	 * @param $element
 	 * @return void
 	 */
-	public function authenticate();
+	public function authenticate($element);
 } 
