@@ -124,15 +124,16 @@ class RestRoute implements IRouter
 		$params['format'] = $this->detectFormat($httpRequest);
 		$params['associations'] = $assoc;
 		$params['query'] = $httpRequest->getQuery();
-		$params['action'] = $this->replaceDashWithUpperCase($params['action']);
+		$params['action'] = $this->path2action($params['action']);
 
+		$presenterName = $this->path2presenter($presenterName);
 		$presenterName = empty($this->module) ? $presenterName : $this->module . ':' . $presenterName;
 
 		// Remember absolute URL for ::constructUrl(). It is one way route ;-).
 		$this->requestUrl = $url->getAbsoluteUrl();
 
 		return new Request(
-			$this->replaceDashWithUpperCase($presenterName),
+			$presenterName,
 			$httpRequest->getMethod(),
 			$params
 		);
@@ -157,11 +158,17 @@ class RestRoute implements IRouter
 		$urlStack = array();
 
 		// Module prefix.
-		$moduleFrags = explode(":", Strings::lower($appRequest->getPresenterName()));
+		$moduleFrags = explode(":", $appRequest->getPresenterName());
+
+		if (count($moduleFrags)) {
+			foreach($moduleFrags as &$fragment) {
+				$fragment = $this->presenter2path($fragment);
+			}
+		}
+
 		$resourceName = array_pop($moduleFrags);
 		$urlStack += $moduleFrags;
 
-		// Associations.
 		if (isset($parameters['associations']) && is_array($parameters['associations'])) {
 			$associations = & $parameters['associations'];
 
@@ -171,19 +178,17 @@ class RestRoute implements IRouter
 			}
 		}
 
-		// Resource.
-		$urlStack[] = Strings::lower($resourceName);
-
+		$urlStack[] = $resourceName;
 		if(isset($parameters['specific_action']) && $parameters['specific_action']) {
-			$urlStack[] = $parameters['specific_action'];
+			$urlStack[] = $this->action2path($parameters['specific_action']);
 		}
 
-		// Id.
 		if (isset($parameters['id']) && is_scalar($parameters['id'])) {
 			$urlStack[] = $parameters['id'];
 		}
 
 		$url = $q = $refUrl->getBaseUrl() . implode('/', $urlStack);
+
 
 		if(isset($parameters['query']) && count($parameters['query'])) {
 			$sep = ini_get('arg_separator.input');
@@ -276,24 +281,62 @@ class RestRoute implements IRouter
 	}
 
 	/**
-	 * @param string $path
+	 * camelCaseAction name -> dash-separated.
+	 * @param  string
 	 * @return string
 	 */
-	private function replaceDashWithUpperCase($path)
+	private function action2path($s)
 	{
-		if (strpos($path, '-') !== false) {
-			$pieces = explode('-', $path);
-			foreach($pieces as $k => $piece) {
-				if ($k === 0) {
-					continue;
-				}
+		$s = preg_replace('#(.)(?=[A-Z])#', '$1-', $s);
+		$s = strtolower($s);
+		$s = rawurlencode($s);
+		return $s;
+	}
 
-				$pieces[$k] = ucfirst($piece);
-			}
 
-			$path = implode('', $pieces);
-		}
+	/**
+	 * dash-separated -> camelCaseAction name.
+	 * @param  string
+	 * @return string
+	 */
+	private function path2action($s)
+	{
+		$s = strtolower($s);
+		$s = preg_replace('#-(?=[a-z])#', ' ', $s);
+		$s = substr(ucwords('x' . $s), 1);
+		//$s = lcfirst(ucwords($s));
+		$s = str_replace(' ', '', $s);
+		return $s;
+	}
 
-		return $path;
+
+	/**
+	 * PascalCase:Presenter name -> dash-and-dot-separated.
+	 * @param  string
+	 * @return string
+	 */
+	private function presenter2path($s)
+	{
+		$s = strtr($s, ':', '.');
+		$s = preg_replace('#([^.])(?=[A-Z])#', '$1-', $s);
+		$s = strtolower($s);
+		$s = rawurlencode($s);
+		return $s;
+	}
+
+
+	/**
+	 * dash-and-dot-separated -> PascalCase:Presenter name.
+	 * @param  string
+	 * @return string
+	 */
+	private function path2presenter($s)
+	{
+		$s = strtolower($s);
+		$s = preg_replace('#([.-])(?=[a-z])#', '$1 ', $s);
+		$s = ucwords($s);
+		$s = str_replace('. ', ':', $s);
+		$s = str_replace('- ', '', $s);
+		return $s;
 	}
 }
