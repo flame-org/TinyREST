@@ -10,8 +10,27 @@ namespace Flame\Rest\Application\UI;
 use Nette;
 use Nette\Application\Responses\JsonResponse;
 
-class Presenter extends Nette\Application\UI\Presenter
+abstract class Presenter extends Nette\Application\UI\Presenter
 {
+	/**
+	 * @inject
+	 * @var \Nette\Application\Application
+	 */
+	public $application;
+
+	/**
+	 * @return void
+	 */
+	protected function startup()
+	{
+		parent::startup();
+
+		$this->application->onError[] = function ($application, $exception) {
+			if ($exception instanceof \Exception && !$exception instanceof Nette\Application\AbortException) {
+				$this->sendErrorResource($exception);
+			}
+		};
+	}
 
 	/**
 	 * Sends JSON data to the output.
@@ -27,5 +46,16 @@ class Presenter extends Nette\Application\UI\Presenter
 			$this->sendResponse(new JsonResponse($data));
 		}
 	}
+
+	/**
+	 * @param \Exception $ex
+	 * @param bool $log
+	 */
+	abstract public function sendErrorResource(\Exception $ex, $log = false);
+
+	/**
+	 * @param int $code
+	 */
+	abstract public function sendResource($code = Nette\Http\IResponse::S200_OK);
 
 }
