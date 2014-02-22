@@ -25,6 +25,12 @@ use Nette;
 abstract class RestPresenter extends Presenter
 {
 
+	/**
+	 * @inject
+	 * @var \Nette\Application\Application
+	 */
+	public $application;
+
 	/** @var  \Flame\Rest\Security\Authentication */
 	protected $authentication;
 
@@ -77,6 +83,17 @@ abstract class RestPresenter extends Presenter
 		}
 
 		return $this->input;
+	}
+
+	protected function startup()
+	{
+		parent::startup();
+
+		$this->application->onError[] = function ($application, $exception) {
+			if ($exception instanceof \Exception && !$exception instanceof Nette\Application\AbortException) {
+				$this->sendErrorResource($exception);
+			}
+		};
 	}
 
 	/**
