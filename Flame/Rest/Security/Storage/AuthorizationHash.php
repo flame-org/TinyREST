@@ -9,9 +9,7 @@ namespace Flame\Rest\Security\Storage;
 
 use Flame\Rest\Security\IHashStorage;
 use Flame\Rest\Security\Tokens\HashToken;
-use Nette\Diagnostics\Debugger;
 use Nette\Object;
-use Flame\Rest\Security\UnauthorizedRequestException;
 
 class AuthorizationHash extends Object implements IHashStorage
 {
@@ -26,12 +24,9 @@ class AuthorizationHash extends Object implements IHashStorage
 	public function getUserHash()
 	{
 		if($this->hash === null) {
-			if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-				Debugger::log('Missing HTTP header Authorization', Debugger::DETECT);
-				throw new UnauthorizedRequestException;
+			if(isset($_SERVER['HTTP_AUTHORIZATION'])) {
+				$this->hash = $this->parseHeader($_SERVER['HTTP_AUTHORIZATION']);
 			}
-
-			$this->hash = $this->parseHeader($_SERVER['HTTP_AUTHORIZATION']);
 		}
 
 		return $this->hash;

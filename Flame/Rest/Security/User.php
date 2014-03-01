@@ -47,7 +47,11 @@ class User extends Object implements IUser
 	public function getUserEntity()
 	{
 		if($this->entity === null) {
-			$this->entity = $this->userRepository->findUserByHash($this->hashStorage->getUserHash()->getBasicTokenHash());
+			$hash = $this->hashStorage->getUserHash();
+			if ($hash) {
+				$this->entity = $this->userRepository->findUserByHash($hash->getBasicTokenHash());
+			}
+
 			if($this->entity !== null && !$this->entity instanceof IUserEntity) {
 				throw new InvalidStateException('User object must be instance of Flame\Rest\Security\IUserEntity');
 			}
