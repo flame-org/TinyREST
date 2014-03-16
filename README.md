@@ -41,7 +41,7 @@ class LyricsPresenter extends RestPresenter
 
 	# for GET method
 	# request: example.com/api/v1/lyrics/<id>
-	public function actionRead($id)
+	public function actionRead($id = null)
 	{
 		try {
 
@@ -121,10 +121,11 @@ Register in your bootstrap:
 ###Configuration
 ```yaml
 REST:
-	authenticator: 'Flame\Rest\Security\Authenticators\SessionAuthenticator'
-	tokens:
-		expiration: '+ 30 days'
-	cors: false
+	systemSalt: deepSalt34
+	authenticators: []
+	cors: []
+	ips: []
+	referers: []
 ```
 
 
