@@ -26,10 +26,23 @@ class User extends Object implements IUser
 	 * @param IUserRepository $userRepository
 	 * @param IHashStorage $hashStorage
 	 */
-	function __construct(IUserRepository $userRepository, IHashStorage $hashStorage)
+	function __construct(IHashStorage $hashStorage, IUserRepository $userRepository = null)
 	{
 		$this->userRepository = $userRepository;
 		$this->hashStorage = $hashStorage;
+	}
+
+	/**
+	 * @return IUserRepository
+	 * @throws \Nette\InvalidStateException
+	 */
+	public function getUserRepository()
+	{
+		if ($this->userRepository === null) {
+			throw new InvalidStateException('Please add service which implement \Flame\Rest\Security\IUserRepository into your DIC.');
+		}
+
+		return $this->userRepository;
 	}
 
 	/**
@@ -49,7 +62,7 @@ class User extends Object implements IUser
 		if($this->entity === null) {
 			$hash = $this->hashStorage->getUserHash();
 			if ($hash) {
-				$this->entity = $this->userRepository->findUserByHash($hash->getBasicTokenHash());
+				$this->entity = $this->getUserRepository()->findUserByHash($hash->getBasicTokenHash());
 			}
 
 			if($this->entity !== null && !$this->entity instanceof IUserEntity) {
