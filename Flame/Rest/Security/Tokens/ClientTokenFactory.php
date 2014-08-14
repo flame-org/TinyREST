@@ -13,18 +13,18 @@ use Nette\Object;
 class ClientTokenFactory extends Object implements IClientTokenFactory
 {
 
-	/** @var  IBasicTokenFactory */
-	private $basicTokenFactory;
+	/** @var IServerTokenFactory  */
+	private $serverTokenFactory;
 
 	/** @var  string|\DateTime */
 	private $expiration = '+ 14 days';
 
 	/**
-	 * @param IBasicTokenFactory $basicTokenFactory
+	 * @param IServerTokenFactory $serverTokenFactory
 	 */
-	function __construct(IBasicTokenFactory $basicTokenFactory)
+	function __construct(IServerTokenFactory $serverTokenFactory)
 	{
-		$this->basicTokenFactory = $basicTokenFactory;
+		$this->serverTokenFactory = $serverTokenFactory;
 	}
 
 	/**
@@ -34,8 +34,8 @@ class ClientTokenFactory extends Object implements IClientTokenFactory
 	 */
 	public function createClientToken($password, $userSalt)
 	{
-		$basicToken = $this->basicTokenFactory->createBasicToken($password, $userSalt);
-		return new ClientToken($basicToken, $this->expiration);
+		$serverToken = $this->serverTokenFactory->createServerToken($password, $userSalt);
+		return new ClientToken($serverToken, $this->expiration);
 	}
 
 	/**

@@ -56,6 +56,9 @@ class RestExtension extends CompilerExtension
 			->setClass('Flame\Rest\Security\Tokens\BasicTokenFactory')
 			->setArguments(array($config['systemSalt']));
 
+		$container->addDefinition($this->prefix('serverTokenFactory'))
+			->setClass('Flame\Rest\Security\Tokens\ServerTokenFactory');
+
 		$container->addDefinition($this->prefix('clientTokenFactory'))
 			->setClass('Flame\Rest\Security\Tokens\ClientTokenFactory');
 

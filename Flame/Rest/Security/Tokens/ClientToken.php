@@ -12,8 +12,8 @@ use Nette\Utils\Strings;
 class ClientToken extends Token
 {
 
-	/** @var  BasicToken */
-	private $basicToken;
+	/** @var  ServerToken */
+	private $serverToken;
 
 	/** @var string  */
 	private $expiration;
@@ -22,13 +22,13 @@ class ClientToken extends Token
 	private $randomSalt;
 
 	/**
-	 * @param BasicToken $basicToken
+	 * @param ServerToken $serverToken
 	 * @param $expiration
 	 * @param null $randomSalt
 	 */
-	function __construct(BasicToken $basicToken, $expiration, $randomSalt = null)
+	function __construct(ServerToken $serverToken, $expiration, $randomSalt = null)
 	{
-		$this->basicToken = $basicToken;
+		$this->serverToken = $serverToken;
 		$this->expiration = (string) $expiration;
 
 		if ($randomSalt === null) {
@@ -43,7 +43,7 @@ class ClientToken extends Token
 	 */
 	public function encode()
 	{
-		return base64_encode(implode(self::SEPARATOR, array($this->basicToken->encode(), $this->getExpiration(), $this->getRandomSalt())));
+		return base64_encode(implode(self::SEPARATOR, array($this->serverToken->encode(), $this->getExpiration(), $this->getRandomSalt())));
 	}
 
 	/**
@@ -55,11 +55,11 @@ class ClientToken extends Token
 	}
 
 	/**
-	 * @return \Flame\Rest\Security\Tokens\BasicToken
+	 * @return \Flame\Rest\Security\Tokens\ServerToken
 	 */
-	public function getBasicToken()
+	public function getServerToken()
 	{
-		return $this->basicToken;
+		return $this->serverToken;
 	}
 
 	/**
