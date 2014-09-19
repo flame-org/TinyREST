@@ -50,7 +50,15 @@ class User extends Object implements IUser
 	 */
 	public function isLoggedIn()
 	{
-		return $this->getUserEntity() instanceof IUserEntity && $this->isValidExpirationTime();
+		$hash = $this->hashStorage->getUserHash();
+
+		if($hash) {
+			$user = $this->getUserRepository()->findUserByHash($hash->getBasicTokenHash());
+		}else{
+			$user = null;
+		}
+
+		return $user instanceof IUserEntity && $this->isValidExpirationTime();
 	}
 
 	/**
@@ -60,14 +68,7 @@ class User extends Object implements IUser
 	public function getUserEntity()
 	{
 		if($this->entity === null) {
-			$hash = $this->hashStorage->getUserHash();
-			if ($hash) {
-				$this->entity = $this->getUserRepository()->findUserByHash($hash->getBasicTokenHash());
-			}
-
-			if($this->entity !== null && !$this->entity instanceof IUserEntity) {
-				throw new InvalidStateException('User object must be instance of Flame\Rest\Security\IUserEntity');
-			}
+			$this->entity = $this->getUserRepository()->getIdentity();
 		}
 
 		return $this->entity;

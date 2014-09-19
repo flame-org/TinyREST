@@ -16,7 +16,7 @@ interface IUser
 	public function isLoggedIn();
 
 	/**
-	 * @return IUser|null
+	 * @return IUserEntity|null
 	 */
 	public function getUserEntity();
 } 

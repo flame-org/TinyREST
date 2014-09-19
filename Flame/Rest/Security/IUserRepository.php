@@ -15,4 +15,9 @@ interface IUserRepository
 	 * @return IUser
 	 */
 	public function findUserByHash($hash);
+
+	/**
+	 * @return mixed
+	 */
+	public function getIdentity();
 } 
