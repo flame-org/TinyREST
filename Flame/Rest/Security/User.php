@@ -67,7 +67,7 @@ class User extends Object implements IUser
 	 */
 	public function getUserEntity()
 	{
-		if($this->entity === null) {
+		if($this->isLoggedIn() && $this->entity === null) {
 			$this->entity = $this->getUserRepository()->getIdentity();
 		}
 
