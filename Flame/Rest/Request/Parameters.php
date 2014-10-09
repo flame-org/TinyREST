@@ -145,7 +145,7 @@ class Parameters extends Object implements IParameters
 		} elseif (is_numeric($value)) {
 			$value = (int) $value;
 		} elseif ($value === 'true' || $value === 'false') {
-			$value = (bool) $value;
+			$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 		}
 
 		return $value;
