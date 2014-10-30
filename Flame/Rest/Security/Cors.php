@@ -79,7 +79,15 @@ class Cors extends Object implements ICors
 		if (isset($this->config['headers'])) {
 			if ($this->config['headers'] === '*') {
 				$headers = array('origin', 'content-type', 'authorization');
-				$this->config['headers'] = array_merge($headers, array_keys((array) $this->httpRequest->getHeaders()));
+				/*
+				 * Because OPTIONS requests aren't contain declared headers but send list of
+				 * headers in Access-Control-Request-Headers header
+				 */
+				$expectedHeaders = $this->httpRequest->getHeader("Access-Control-Request-Headers", []);
+				if (!empty($expectedHeaders)) {
+					$expectedHeaders = array_map('trim', explode(",", $expectedHeaders));
+				}
+				$this->config['headers'] = array_merge($headers, array_keys((array) $this->httpRequest->getHeaders()), $expectedHeaders);
 			}
 
 			if (is_array($this->config['headers'])) {
