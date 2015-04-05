@@ -103,14 +103,14 @@ class RestExtension extends CompilerExtension
 		$authentication = $container->addDefinition($this->prefix('authentication'))
 			->setClass('Flame\Rest\Security\Authentication');
 
-		if (count($config['ips'])) {
+		if (!$container->parameters['debugMode'] && count($config['ips'])) {
 			$ipAuthenticator = $container->addDefinition($this->prefix('ipAuthenticator'))
 				->setClass('Flame\Rest\Security\Authenticators\IpAuthenticator')
 				->setArguments(array($config['ips']));
 			$authentication->addSetup('addAuthenticator', array($ipAuthenticator));
 		}
 
-		if (count($config['referers'])) {
+		if (!$container->parameters['debugMode'] && count($config['referers'])) {
 			$refererAuthenticator = $container->addDefinition($this->prefix('refererAuthenticator'))
 				->setClass('Flame\Rest\Security\Authenticators\RefererAuthenticator')
 				->setArguments(array($config['referers']));
