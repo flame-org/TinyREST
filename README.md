@@ -120,7 +120,7 @@ Register in your bootstrap:
 
 ###Configuration
 ```yaml
-REST:
+rest:
 	systemSalt: deepSalt34
 	authenticators: []
 	cors: []
