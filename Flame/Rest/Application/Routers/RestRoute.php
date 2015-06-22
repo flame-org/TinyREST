@@ -271,7 +271,7 @@ class RestRoute implements IRouter
 			return $format;
 		}
 
-		$header = $request->getHeader('Accept'); // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+		$header = $request->getHeader('Content-Type');
 		foreach ($this->formats as $format => $fullFormatName) {
 			$fullFormatName = Strings::replace($fullFormatName, '/\//', '\/');
 			if (Strings::match($header, "/{$fullFormatName}/")) {
