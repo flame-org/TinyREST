@@ -84,7 +84,7 @@ class LyricsPresenter extends RestPresenter
             $this->sendErrorResource($ex);
         }
     }
-} 
+}
 ```
 
 **With custom REST Route: Flame\Rest\Application\Routers\RestRoute**
@@ -117,6 +117,12 @@ class RouterFactory
 ##Instalation
 Register in your bootstrap:
 `\Flame\Rest\DI\RestExtension::register($configurator);`
+
+or in newer Nette versions in config file:
+```yaml
+extensions:
+	- \Flame\Rest\DI\RestExtension
+```
 
 ###Configuration
 ```yaml
