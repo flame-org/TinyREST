@@ -114,6 +114,59 @@ class RouterFactory
 
 ```
 
+## Authorization
+
+TinyRest contains four basic authenticators:
+
+1. BasicAuthenticator - Works with `Authorization` HTTP header and exptects value in `Basic XXXX` format. This authenticator is a good way for token authorization
+2. SessionAuthenticator - Works with regular PHP sessions and with `Nette\Security\User` object.
+3. RefererAuthenticator - works with HTTP referer. Check if is referef of actual request is enabled in `referers` section in config file.
+4. IpAuthorizatir - Works with IP adress of request. Check if is IP of actual request is enabled in `ips` section in config file.
+
+### Basic Authenticator
+
+For usage Basic authenticator you must create own implementation of `IUserRepository`. This method get user identity by token hash. For example:
+
+```php
+class UserRepository implements IUserRepository
+{
+    /** @var array */
+    private $identity = null;
+
+    /**
+     * @param string $hash
+     * @return IUser
+     */
+    public function findUserByHash($hash) 
+    {
+        $this->identity = $this->db->query("SELECT users.name, users.email FROM loggedUsers WHERE hash = ? LEFT JOIN users ON loggedUsers.userId = users.id", $hash)->fetchOne();
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getIdentity() 
+    {
+        return $this->identity;
+    }
+} 
+```
+
+Now you can use `@User` annotation with `loggedIn` option in your REST presenter for authorized requests.
+
+```php
+class MyPresenter extends RestPresenter
+{
+    /**
+     * @User loggedIn
+     */
+    public function actionRead($id)
+    {
+        /** ..... */
+    }
+}
+```
+
 ##Instalation
 Register in your bootstrap:
 `\Flame\Rest\DI\RestExtension::register($configurator);`
