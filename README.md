@@ -137,19 +137,19 @@ class UserRepository implements IUserRepository
      * @param string $hash
      * @return IUser
      */
-    public function findUserByHash($hash) 
+    public function findUserByHash($hash)
     {
         $this->identity = $this->db->query("SELECT users.name, users.email FROM loggedUsers WHERE hash = ? LEFT JOIN users ON loggedUsers.userId = users.id", $hash)->fetchOne();
     }
-    
+
     /**
      * @return mixed
      */
-    public function getIdentity() 
+    public function getIdentity()
     {
         return $this->identity;
     }
-} 
+}
 ```
 
 Now you can use `@User` annotation with `loggedIn` option in your REST presenter for authorized requests.
@@ -187,5 +187,6 @@ rest:
 	referers: []
 ```
 
-
-
+##Patrons
+**Big thanks to these guys!**
+* Ondra Zaruba (aka [@budry](https://github.com/budry))
