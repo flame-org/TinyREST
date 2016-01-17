@@ -24,7 +24,7 @@
 	},
 
 	"autoload": {
-		"psr-0": {"Flame": ""},
-    "files": ["Flame/Rest/Security/exceptions.php"]
+		"psr-4": {"Flame\\Rest\\": "./src"},
+		"files": ["./src/Security/exceptions.php"]
 	}
 }
