@@ -23,6 +23,10 @@
 		"nette/nette": ">=2.1.0"
 	},
 
+	"require-dev": {
+		"nette/tester": "^1.6"
+	},
+
 	"autoload": {
 		"psr-4": {"Flame\\Rest\\": "./src"},
 		"files": ["./src/Security/exceptions.php"]
