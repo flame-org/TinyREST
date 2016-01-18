@@ -19,7 +19,7 @@ use Nette\MemberAccessException;
  * @author Drahomír Hanák
  *
  * @property string $contentType Allowed result content type
- * @property-read array $data
+ * @property array $data
  */
 class Resource extends Object implements ArrayAccess, Serializable, IResource
 {
@@ -63,7 +63,7 @@ class Resource extends Object implements ArrayAccess, Serializable, IResource
 		if(!is_array($data)) {
 			$data = (array) $data;
 		}
-		
+
 		$this->data = $data;
 		return $this;
 	}

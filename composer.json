@@ -23,12 +23,12 @@
 		"nette/nette": ">=2.1.0"
 	},
 
-	"config": {
-		"vendor-dir": "libs"
+	"require-dev": {
+		"nette/tester": "^1.6"
 	},
 
 	"autoload": {
-		"psr-0": {"Flame": ""},
-    "files": ["Flame/Rest/Security/exceptions.php"]
+		"psr-4": {"Flame\\Rest\\": "./src"},
+		"files": ["./src/Security/exceptions.php"]
 	}
 }
