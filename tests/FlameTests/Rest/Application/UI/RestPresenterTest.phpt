@@ -34,7 +34,7 @@ class RestPresenterTest extends TestCase
 	{
 		$container = getContainer();
 		/** @var IPresenterFactory $presenterFactory */
-		$presenterFactory = $container->getByType(IPresenterFactory::class);
+		$presenterFactory = $container->getByType('\Nette\Application\IPresenterFactory');
 		$this->presenter = $presenterFactory->createPresenter('Test');
 	}
 
