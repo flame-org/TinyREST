@@ -1,0 +1,7 @@
+language: php
+install:
+  - composer install
+php:
+  - '5.4'
+
+script: ./vendor/bin/tester ./tests
