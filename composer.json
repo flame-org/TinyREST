@@ -24,7 +24,8 @@
 	},
 
 	"require-dev": {
-		"nette/tester": "^1.6"
+		"nette/tester": "^1.6",
+		"mockery/mockery": "^0.9"
 	},
 
 	"autoload": {

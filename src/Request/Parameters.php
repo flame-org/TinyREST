@@ -8,7 +8,6 @@
 namespace Flame\Rest\Request;
 
 use Flame\Rest\Http\Files;
-use Nette\ArrayHash;
 use Nette\Object;
 
 /**
@@ -26,8 +25,8 @@ use Nette\Object;
  */
 class Parameters extends Object implements IParameters
 {
-	
-	/** @var \Nette\ArrayHash  */
+
+	/** @var array */
 	private $data;
 
 	/** @var \Flame\Rest\Http\Files  */
@@ -48,7 +47,7 @@ class Parameters extends Object implements IParameters
 			'query' => array(),
 		);
 
-		$this->data = ArrayHash::from(array_merge($defaults, $data));
+		$this->data = array_merge($defaults, $data);
 		$this->filesContainer = new Files($files);
 	}
 
@@ -57,7 +56,7 @@ class Parameters extends Object implements IParameters
 	 */
 	public function getId()
 	{
-		return (int) $this->data->id;
+		return (int) $this->data['id'];
 	}
 
 	/**
@@ -65,7 +64,7 @@ class Parameters extends Object implements IParameters
 	 */
 	public function getAction()
 	{
-		return (string) $this->data->action;
+		return (string) $this->data['action'];
 	}
 
 	/**
@@ -73,7 +72,7 @@ class Parameters extends Object implements IParameters
 	 */
 	public function getFormat()
 	{
-		return (string) $this->data->format;
+		return (string) $this->data['format'];
 	}
 
 	/**
@@ -84,14 +83,14 @@ class Parameters extends Object implements IParameters
 	public function getAssociations($name = null, $default = null)
 	{
 		if($name !== null) {
-			if(isset($this->data->associations[$name])) {
-				return $this->validateValue($this->data->associations[$name]);
+			if(isset($this->data['associations'][$name])) {
+				return $this->validateValue($this->data['associations'][$name]);
 			}
 
 			return $default;
 		}
 
-		return $this->data->associations;
+		return $this->data['associations'];
 	}
 
 	/**
@@ -102,14 +101,14 @@ class Parameters extends Object implements IParameters
 	public function getData($name = null, $default = null)
 	{
 		if ($name !== null) {
-			if (isset($this->data->data[$name])) {
-				return $this->validateValue($this->data->data[$name]);
+			if (isset($this->data['data'][$name])) {
+				return $this->validateValue($this->data['data'][$name]);
 			}
 
 			return $default;
 		}
 
-		return $this->data->data;
+		return $this->data['data'];
 	}
 
 	/**
@@ -120,14 +119,14 @@ class Parameters extends Object implements IParameters
 	public function getQuery($query = null, $default = null)
 	{
 		if($query !== null) {
-			if(isset($this->data->query[$query])) {
-				return $this->validateValue($this->data->query[$query]);
+			if(isset($this->data['query'][$query])) {
+				return $this->validateValue($this->data['query'][$query]);
 			}
 
 			return $default;
 		}
 
-		return $this->data->query;
+		return $this->data['query'];
 	}
 
 	/**
