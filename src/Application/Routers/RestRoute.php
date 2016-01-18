@@ -7,6 +7,7 @@
  */
 namespace Flame\Rest\Application\Routers;
 
+use Nette\Application\BadRequestException;
 use Nette\Application\IRouter;
 use Nette\Http\Request as HttpRequest;
 use Nette\Application\Request;
@@ -27,12 +28,6 @@ class RestRoute implements IRouter
 
 	/** @var string */
 	protected $module;
-
-	/** @var array */
-	protected $formats = array(
-		'json' => 'application/json',
-		'xml' => 'application/xml',
-	);
 
 	/** @var string */
 	private $requestUrl;
@@ -57,11 +52,16 @@ class RestRoute implements IRouter
 	/**
 	 * Maps HTTP request to a Request object.
 	 *
-	 * @param \Nette\Http\IRequest $httpRequest
-	 * @return \Nette\Application\Request|NULL
+	 * @param IRequest $httpRequest
+	 * @return Request
+	 * @throws BadRequestException
 	 */
 	public function match(IRequest $httpRequest)
 	{
+		if ($httpRequest->getHeader('Content-type') != 'application/json') {
+			throw new BadRequestException('You can use only JSON!', 415);
+		}
+
 		$url = $httpRequest->getUrl();
 		$basePath = str_replace('/', '\/', $url->getBasePath());
 		$cleanPath = preg_replace("/^{$basePath}/", '', $url->getPath());
@@ -105,8 +105,7 @@ class RestRoute implements IRouter
 		$presenterName = ucfirst(array_pop($frags));
 
 		// Allow to use URLs like domain.tld/presenter.format.
-		$formats = join('|', array_keys($this->formats));
-		if (Strings::match($presenterName, "/.+\.({$formats})$/")) {
+		if (Strings::match($presenterName, "/.+\.(json)$/")) {
 			list($presenterName, $format) = explode('.', $presenterName);
 		}
 
@@ -121,7 +120,6 @@ class RestRoute implements IRouter
 			}
 		}
 
-		$params['format'] = $this->detectFormat($httpRequest);
 		$params['associations'] = $assoc;
 		$params['query'] = $httpRequest->getQuery();
 		$params['action'] = $this->path2action($params['action']);
@@ -254,30 +252,6 @@ class RestRoute implements IRouter
 		}
 
 		return $requestMethod;
-	}
-
-	/**
-	 * @param \Nette\Http\Request $request
-	 * @return string
-	 */
-	private function detectFormat(HttpRequest $request)
-	{
-		// Try retrieve fallback from URL.
-		$path = $request->getUrl()->getPath();
-		$formats = array_keys($this->formats);
-		$formats = implode('|', $formats);
-		if (Strings::match($path, "/\.({$formats})$/")) {
-			list($path, $format) = explode('.', $path);
-			return $format;
-		}
-
-		$header = $request->getHeader('Content-Type');
-		foreach ($this->formats as $format => $fullFormatName) {
-			$fullFormatName = Strings::replace($fullFormatName, '/\//', '\/');
-			if (Strings::match($header, "/{$fullFormatName}/")) {
-				return $format;
-			}
-		}
 	}
 
 	/**

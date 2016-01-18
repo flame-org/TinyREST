@@ -1,0 +1,3 @@
+Nette\Utils\ArrayHash::__set_state(array(
+	'item' => 'value',
+))

@@ -44,10 +44,8 @@ class ParametersFactory extends Object implements IParametersFactory
 			$default['data'] = $this->readData();
 		}
 
-		if(!isset($default['format']) || $default['format'] !== 'json') {
-			$default['data'] = $this->formatData($default['data']);
-		}elseif($default['format'] === 'json' && is_string($default['data'])) {
-			$default['data'] = Json::decode((string) $default['data'], 1);
+		if (is_string($default['data'])) {
+			$default['data'] = Json::decode((string) $default['data'], JSON_HEX_TAG);
 		}
 
 		return $default;
@@ -74,35 +72,4 @@ class ParametersFactory extends Object implements IParametersFactory
 		return file_get_contents('php://input');
 	}
 
-	/**
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	private function formatData($data)
-	{
-		if(is_string($data) && strpos($data, '=') !== false) {
-			if(strpos($data, '&') !== false) {
-				$data = explode('&', $data);
-			}
-
-			if(!is_array($data)) {
-				$data = array($data);
-			}
-
-			if(count($data)) {
-				$newData = array();
-				foreach ($data as $item) {
-					$item = explode('=', $item);
-					if(isset($item[0], $item[1])) {
-						$newData[$item[0]] = $item[1];
-					}
-				}
-
-				$data = $newData;
-			}
-		}
-
-		return $data;
-	}
-
-} 
+}
