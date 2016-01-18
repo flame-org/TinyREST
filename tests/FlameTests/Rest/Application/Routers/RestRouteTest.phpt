@@ -77,7 +77,7 @@ class RestRouteTest extends TestCase
 					'presenterName' => 'Api:V1:Users',
 					'action' => 'create'
 				],
-				new Request(new UrlScript("http://fake.local/api/v1/users"), null, null, null, null, null, "POST")
+				new Request(new UrlScript("http://fake.local/api/v1/users"), null, null, null, null, ['Content-type' => 'application/json'], "POST")
 			],
 			[
 				[
@@ -85,7 +85,7 @@ class RestRouteTest extends TestCase
 					'presenterName' => 'Api:V1:Users',
 					'action' => 'readall'
 				],
-				new Request(new UrlScript("http://fake.local/api/v1/users"), null, null, null, null, null, "GET")
+				new Request(new UrlScript("http://fake.local/api/v1/users"), null, null, null, null, ['Content-type' => 'application/json'], "GET")
 			],
 			[
 				[
@@ -94,7 +94,7 @@ class RestRouteTest extends TestCase
 					'action' => 'read',
 					'id' => '1'
 				],
-				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, null, "GET")
+				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, ['Content-type' => 'application/json'], "GET")
 			],
 			[
 				[
@@ -103,7 +103,7 @@ class RestRouteTest extends TestCase
 					'action' => 'update',
 					'id' => '1'
 				],
-				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, null, "PUT")
+				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, ['Content-type' => 'application/json'], "PUT")
 			],
 			[
 				[
@@ -112,7 +112,7 @@ class RestRouteTest extends TestCase
 					'action' => 'delete',
 					'id' => '1'
 				],
-				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, null, "DELETE")
+				new Request(new UrlScript("http://fake.local/api/v1/users/1"), null, null, null, null, ['Content-type' => 'application/json'], "DELETE")
 			]
 		];
 	}
