@@ -22,6 +22,14 @@ Tester\Environment::setup();
 define('TEMP_DIR', __DIR__ . '/../temp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
 Tester\Helpers::purge(TEMP_DIR);
 
+function getContainer() {
+	$configurator = new \Nette\Configurator();
+	$configurator->setTempDirectory(TEMP_DIR);
+	$configurator->addConfig(__DIR__ . '/../config/config.neon');
+
+	return $configurator->createContainer();
+}
+
 function run(Tester\TestCase $testCase) {
 	$testCase->run(isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : NULL);
 }
