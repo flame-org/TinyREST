@@ -1,0 +1,6 @@
+application:
+	mapping:
+		*: FlameTests\Tests\*Presenter
+
+extensions:
+	rest: Flame\Rest\DI\RestExtension
