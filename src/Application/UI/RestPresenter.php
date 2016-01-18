@@ -49,6 +49,9 @@ abstract class RestPresenter extends Presenter
 	 */
 	private $resource;
 
+	/** @var array */
+	public $onBeforeResponse;
+
 	/**
 	 * @return \Flame\Rest\Resource
 	 */
@@ -117,6 +120,7 @@ abstract class RestPresenter extends Presenter
 	public function sendResource($code = Nette\Http\IResponse::S200_OK)
 	{
 		$this->getHttpResponse()->setCode($code);
+		$this->onBeforeResponse($this->getResource());
 		$this->sendJson($this->getResource()->getData());
 	}
 
