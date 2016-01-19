@@ -16,7 +16,7 @@ interface IUser
 	public function isLoggedIn();
 
 	/**
-	 * @return false|
+	 * @return null|mixed
 	 */
 	public function getIdentity();
 }
