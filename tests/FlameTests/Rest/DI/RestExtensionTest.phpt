@@ -13,6 +13,7 @@
 namespace FlameTests\Rest\DI;
 
 use Nette\DI\Container;
+use Nette\Utils\Random;
 use Tester\TestCase;
 use Tester\Assert;
 
@@ -30,6 +31,8 @@ class RestExtensionTest extends TestCase
 	protected function setUp()
 	{
 		$this->container = getContainer();
+		$this->container->addService(Random::generate(), \Mockery::mock('Flame\Rest\Security\Tokens\ITokenGetter'));
+		$this->container->addService(Random::generate(), \Mockery::mock('Flame\Rest\Security\Tokens\ITokenManager'));
 	}
 
 	/**
@@ -49,11 +52,7 @@ class RestExtensionTest extends TestCase
 		return [
 			['Flame\Rest\ResourceFactory'],
 			['Flame\Rest\Request\ParametersFactory'],
-			['Flame\Rest\Security\Storage\AuthorizationHash'],
 			['Flame\Rest\Security\User'],
-			['Flame\Rest\Security\Tokens\BasicTokenFactory'],
-			['Flame\Rest\Security\Tokens\ServerTokenFactory'],
-			['Flame\Rest\Security\Tokens\ClientTokenFactory'],
 			['Flame\Rest\Security\Cors'],
 		];
 	}

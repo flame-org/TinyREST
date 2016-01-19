@@ -22,7 +22,6 @@ class RestExtension extends CompilerExtension
 
 	/** @var array  */
 	public $defaults = array(
-		'systemSalt' => 'deepSalt34',
 		'authenticators' => array(),
 		'cors' => array(),
 		'ips' => array(),
@@ -46,21 +45,8 @@ class RestExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('parametersFactory'))
 			->setClass('Flame\Rest\Request\ParametersFactory');
 
-		$container->addDefinition($this->prefix('authorizationHash'))
-			->setClass('Flame\Rest\Security\Storage\AuthorizationHash');
-
 		$container->addDefinition($this->prefix('user'))
 			->setClass('Flame\Rest\Security\User');
-
-		$container->addDefinition($this->prefix('basicTokenFactory'))
-			->setClass('Flame\Rest\Security\Tokens\BasicTokenFactory')
-			->setArguments(array($config['systemSalt']));
-
-		$container->addDefinition($this->prefix('serverTokenFactory'))
-			->setClass('Flame\Rest\Security\Tokens\ServerTokenFactory');
-
-		$container->addDefinition($this->prefix('clientTokenFactory'))
-			->setClass('Flame\Rest\Security\Tokens\ClientTokenFactory');
 
 		$cors = $container->addDefinition($this->prefix('cors'))
 			->setClass('Flame\Rest\Security\Cors')
@@ -80,7 +66,6 @@ class RestExtension extends CompilerExtension
 		Validators::assertField($config, 'ips', 'array');
 		Validators::assertField($config, 'referers', 'array');
 		Validators::assertField($config, 'cors', 'array');
-		Validators::assertField($config, 'systemSalt', 'string');
 	}
 
 	/**

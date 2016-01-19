@@ -7,7 +7,7 @@
  */
 namespace Flame\Rest\Security;
 
-interface IUser 
+interface IUser
 {
 
 	/**
@@ -16,7 +16,7 @@ interface IUser
 	public function isLoggedIn();
 
 	/**
-	 * @return IUserEntity|null
+	 * @return false|
 	 */
-	public function getUserEntity();
-} 
+	public function getIdentity();
+}
