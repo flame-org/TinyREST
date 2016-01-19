@@ -20,11 +20,6 @@ interface IParameters
 	public function getAction();
 
 	/**
-	 * @return string
-	 */
-	public function getFormat();
-
-	/**
 	 * @return array|\Nette\Http\FileUpload[]
 	 */
 	public function getFiles();
@@ -49,4 +44,4 @@ interface IParameters
 	 * @return mixed
 	 */
 	public function getQuery($query = null, $default = null);
-} 
+}
