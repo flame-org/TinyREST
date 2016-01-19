@@ -68,14 +68,6 @@ class Parameters extends Object implements IParameters
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getFormat()
-	{
-		return (string) $this->data['format'];
-	}
-
-	/**
 	 * @param null|string $name
 	 * @param null $default
 	 * @return mixed
