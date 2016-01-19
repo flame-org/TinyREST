@@ -15,7 +15,7 @@ use Nette\Http\Request;
  * Interface ITokenGetter
  * @package Flame\Rest\Security\Tokens
  */
-interface ITokenGetter
+interface ITokenProvider
 {
 	/**
 	 * @param Request $request

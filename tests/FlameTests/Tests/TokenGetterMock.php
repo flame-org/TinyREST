@@ -10,15 +10,14 @@
 
 namespace FlameTests\Tests;
 
-use Flame\Rest\Security\Tokens\IToken;
-use Flame\Rest\Security\Tokens\ITokenGetter;
+use Flame\Rest\Security\Tokens\ITokenProvider;
 use Nette\Http\Request;
 
 /**
  * Class TokenGetterMock
  * @package FlameTests\Tests
  */
-class TokenGetterMock implements ITokenGetter
+class TokenGetterMock implements ITokenProvider
 {
 	public function getToken(Request $request)
 	{

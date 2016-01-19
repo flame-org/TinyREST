@@ -7,8 +7,8 @@
  */
 namespace Flame\Rest\Security;
 
-use Flame\Rest\Security\Tokens\ITokenGetter;
 use Flame\Rest\Security\Tokens\ITokenManager;
+use Flame\Rest\Security\Tokens\ITokenProvider;
 use Nette\Http\Request;
 use Nette\InvalidStateException;
 use Nette\Object;
@@ -22,8 +22,8 @@ class User extends Object implements IUser
 	/** @var mixed */
 	private $identity = null;
 
-	/** @var ITokenGetter */
-	private $tokenGetter;
+	/** @var ITokenProvider */
+	private $tokenProvider;
 
 	/** @var ITokenManager */
 	private $tokenManager;
@@ -33,13 +33,13 @@ class User extends Object implements IUser
 
 	/**
 	 * User constructor.
-	 * @param ITokenGetter $tokenGetter
+	 * @param ITokenProvider $tokenProvider
 	 * @param ITokenManager $tokenManager
 	 * @param Request $request
 	 */
-	function __construct(ITokenGetter $tokenGetter, ITokenManager $tokenManager, Request $request)
+	function __construct(ITokenProvider $tokenProvider, ITokenManager $tokenManager, Request $request)
 	{
-		$this->tokenGetter = $tokenGetter;
+		$this->tokenProvider = $tokenProvider;
 		$this->tokenManager = $tokenManager;
 		$this->request = $request;
 	}
@@ -57,15 +57,15 @@ class User extends Object implements IUser
 	}
 
 	/**
-	 * @return ITokenGetter
+	 * @return ITokenProvider
 	 */
 	public function getTokenGetter()
 	{
-		if ($this->tokenGetter === null) {
+		if ($this->tokenProvider === null) {
 			throw new InvalidStateException('Please add service which implement \Flame\Rest\Security\Tokens\ITokenGetter into your DIC.');
 		}
 
-		return $this->tokenGetter;
+		return $this->tokenProvider;
 	}
 
 	/**
