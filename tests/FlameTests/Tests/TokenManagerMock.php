@@ -21,7 +21,8 @@ class TokenManagerMock implements ITokenManager
 {
 	const VALID_VALUE = 'valid';
 
-	const VALID_IDENTITY = ['item' => 'value'];
+	const VALID_IDENTITY_ITEM = 'item';
+	const VALID_IDENTITY_VALUE = 'value';
 
 	public function isTokenValid(IToken $token)
 	{
@@ -30,6 +31,6 @@ class TokenManagerMock implements ITokenManager
 
 	public function getIdentity(IToken $token)
 	{
-		return self::VALID_IDENTITY;
+		return [self::VALID_IDENTITY_ITEM => self::VALID_IDENTITY_VALUE];
 	}
 }

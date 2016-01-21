@@ -53,7 +53,7 @@ class UserTest extends TestCase
 	{
 		$user = new User(new TokenGetterMock(), new TokenManagerMock(), $this->validRequest);
 		$invalidUser = new User(new TokenGetterMock(), new TokenManagerMock(), $this->invalidRequest);
-		Assert::equal(TokenManagerMock::VALID_IDENTITY, $user->getIdentity());
+		Assert::equal([TokenManagerMock::VALID_IDENTITY_ITEM => TokenManagerMock::VALID_IDENTITY_VALUE], $user->getIdentity());
 		Assert::null($invalidUser->getIdentity());
 	}
 }
