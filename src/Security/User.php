@@ -7,42 +7,65 @@
  */
 namespace Flame\Rest\Security;
 
+use Flame\Rest\Security\Tokens\ITokenManager;
+use Flame\Rest\Security\Tokens\ITokenProvider;
+use Nette\Http\Request;
 use Nette\InvalidStateException;
 use Nette\Object;
 
+/**
+ * Class User
+ * @package Flame\Rest\Security
+ */
 class User extends Object implements IUser
 {
+	/** @var mixed */
+	private $identity = null;
 
-	/** @var  IUser|null */
-	private $entity;
+	/** @var ITokenProvider */
+	private $tokenProvider;
 
-	/** @var \Flame\Rest\Security\IUserRepository  */
-	private $userRepository;
+	/** @var ITokenManager */
+	private $tokenManager;
 
-	/** @var \Flame\Rest\Security\IHashStorage  */
-	private $hashStorage;
+	/** @var Request */
+	private $request;
 
 	/**
-	 * @param IUserRepository $userRepository
-	 * @param IHashStorage $hashStorage
+	 * User constructor.
+	 * @param ITokenProvider $tokenProvider
+	 * @param ITokenManager $tokenManager
+	 * @param Request $request
 	 */
-	function __construct(IHashStorage $hashStorage, IUserRepository $userRepository = null)
+	function __construct(ITokenProvider $tokenProvider, ITokenManager $tokenManager, Request $request)
 	{
-		$this->userRepository = $userRepository;
-		$this->hashStorage = $hashStorage;
+		$this->tokenProvider = $tokenProvider;
+		$this->tokenManager = $tokenManager;
+		$this->request = $request;
 	}
 
 	/**
-	 * @return IUserRepository
-	 * @throws \Nette\InvalidStateException
+	 * @return ITokenManager
 	 */
-	public function getUserRepository()
+	public function getTokenManager()
 	{
-		if ($this->userRepository === null) {
-			throw new InvalidStateException('Please add service which implement \Flame\Rest\Security\IUserRepository into your DIC.');
+		if ($this->tokenManager === null) {
+			throw new InvalidStateException('Please add service which implement \Flame\Rest\Security\Tokens\ITokenManager into your DIC.');
 		}
 
-		return $this->userRepository;
+		return $this->tokenManager;
+	}
+
+	/**
+	 * @return ITokenProvider
+	 */
+	public function getTokenGetter()
+	{
+		if ($this->tokenProvider === null) {
+			throw new InvalidStateException('Please add service which implement \Flame\Rest\Security\Tokens\ITokenGetter into your DIC.');
+		}
+
+		return $this->tokenProvider;
 	}
 
 	/**
@@ -50,40 +73,21 @@ class User extends Object implements IUser
 	 */
 	public function isLoggedIn()
 	{
-		$hash = $this->hashStorage->getUserHash();
+		$token = $this->getTokenGetter()->getToken($this->request);
 
-		if($hash) {
-			$user = $this->getUserRepository()->findUserByHash($hash->getBasicTokenHash());
-		}else{
-			$user = null;
-		}
-
-		return $user instanceof IUserEntity && $this->isValidExpirationTime();
+		return $this->getTokenManager()->isTokenValid($token);
 	}
 
 	/**
-	 * @return IUser|null
-	 * @throws \Nette\InvalidStateException
+	 * @return bool|mixed
 	 */
-	public function getUserEntity()
+	public function getIdentity()
 	{
-		if($this->isLoggedIn() && $this->entity === null) {
-			$this->entity = $this->getUserRepository()->getIdentity();
+		if ($this->isLoggedIn()) {
+			$token = $this->getTokenGetter()->getToken($this->request);
+			$this->identity = $this->getTokenManager()->getIdentity($token);
 		}
 
-		return $this->entity;
-	}
-
-	/**
-	 * @return bool
-	 */
-	protected function isValidExpirationTime()
-	{
-		$expiration = $this->hashStorage->getUserHash()->getExpiration();
-		if(!$expiration instanceof \DateTime || (new \DateTime()) > $expiration) {
-			return false;
-		}
-
-		return true;
+		return $this->identity;
 	}
 }
