@@ -24,7 +24,7 @@ For full requirements list pleas see [this file](https://github.com/flame-org/Ti
 The best way to install flame\tiny-rest is using [Composer](https://getcomposer.org)
 
 ```sh
-$ composer require kappa/deaw:@dev
+$ composer require flame/tiny-rest:@dev
 ```
 
 and register extension:
