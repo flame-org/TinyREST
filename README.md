@@ -63,7 +63,7 @@ This package provide several authorization method.
 
 1. Authorization by IP address - this authorization is enabled automatically when you set `ips` option in config file.
 2. Authorization by HTTP referer - this authorization is enabled automatically when you set `referers` option in config file
-3. Authentication by settgins for cross-domain requests - this authorization is automatically enabled when you set `cors` option in config file and respetcs [this](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) rules
+3. Authentication by settings for cross-domain requests - this authorization is automatically enabled when you set `cors` option in config file and respetcs [this](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) rules
 
 Next authorization methods is token-based authorization. For this authorization type you must do some steps:
 
