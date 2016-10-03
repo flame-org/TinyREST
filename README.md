@@ -14,7 +14,7 @@ Smart and tiny implementation of REST API for Nette framework
 
 ## Requirements
 
-For full requirements list pleas see [this file](https://github.com/flame-org/TinyRest/blob/master/composer.json)
+For full requirements list please see [this file](https://github.com/flame-org/TinyRest/blob/master/composer.json)
 
 * PHP 5.4 or higher
 * [Nette Framework](https://nette.org) 2.1 or higher
@@ -67,7 +67,7 @@ This package provide several authorization method.
 
 Next authorization methods is token-based authorization. For this authorization type you must do some steps:
 
-1. You can create own authenticator implenets `Flame\Rest\Security\IAuthenticator` <strike>or you can use default authenticator from this package</strike>
+1. You can create own authenticator implements `Flame\Rest\Security\IAuthenticator` <strike>or you can use default authenticator from this package</strike>
 2. You must create own token provider class implements `Flame\Rest\Security\Tokens\ITokenProvider`. This class with `getToken()` must get token from request (request is provided as argument) and create and return a new instance of `Flame\Rest\Security\Tokens\IToken` (there you must create own implementation <strike>or you can use default</strike>)
 3. You must create own implementation of `Flame\Rest\Security\Tokens\ITokenManager` wḧich provides method for validate token and getting identity for concrete token.
 
@@ -78,7 +78,7 @@ Implementation you can see in [Examples](#examples).
 
 ### Routing
 
-This package provide one basic route:
+This package provides one basic route:
 
 ```php
 $router = new RouteList();
@@ -87,7 +87,7 @@ $router[] = new RestRoute('Api:V1');
 return $router;
 ```
 
-This route has one optional argument with module path for searchnig presenter. In this example expects models with names Api and V1.
+This route has one optional argument with module path for searching presenter. In this example expects models with names Api and V1.
 
 Structure of URLs which is created by this router is `/<module>/<presenter>[/<specific_action>][/<id>]`. For our example will be `/api/v1/<presenter>[/<specific_action>][/<id>]`
 
@@ -99,7 +99,7 @@ All this URLs is mapped to actions in presenter by rule `action<create|update|re
 
 ### Presenter
 
-All API presenter should be extended from `RestPresenter`. When you can send data you must it write into `resource`:
+All API presenters should be extended from `RestPresenter`. When you can send data you must it write into `resource`:
 
 ```php
 public function actionRead($id) {
@@ -133,7 +133,7 @@ public function actionRead($id) {
 
 And for processing and logging errors you can use `sendErrorResponse` method.
 
-You can get data from POST, or query by `input` or `getInput()` member. You can get query valus by `getQuery()`, `POST` values by `getData()` or `FILES` by `getFiles()`
+You can get data from POST, or query by `input` or `getInput()` member. You can get query values by `getQuery()`, `POST` values by `getData()` or `FILES` by `getFiles()`
 
 ```php
 public function actionReadAll() {
@@ -206,7 +206,7 @@ class TokenGetter implements ITokenGetter
 }
 ```
 
-Crate own TokenManager
+Create own TokenManager
 
 ```php
 class TokenManager implements ITokenManager
