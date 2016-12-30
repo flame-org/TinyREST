@@ -1,2 +1,4 @@
-libs
+vendor/*
 composer.lock
+*.expected
+*.actual

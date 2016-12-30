@@ -1,0 +1,10 @@
+application:
+	mapping:
+		*: FlameTests\Tests\*Presenter
+
+services:
+	- FlameTests\Tests\TokenGetterMock
+	- FlameTests\Tests\TokenManagerMock
+
+extensions:
+	rest: Flame\Rest\DI\RestExtension

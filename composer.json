@@ -19,16 +19,17 @@
 	},
 
 	"require": {
-		"php": ">=5.3.2",
+		"php": ">=5.4",
 		"nette/nette": ">=2.1.0"
 	},
 
-	"config": {
-		"vendor-dir": "libs"
+	"require-dev": {
+		"nette/tester": "^1.6",
+		"mockery/mockery": "^0.9"
 	},
 
 	"autoload": {
-		"psr-0": {"Flame": ""},
-    "files": ["Flame/Rest/Security/exceptions.php"]
+		"psr-4": {"Flame\\Rest\\": "./src"},
+		"files": ["./src/Security/exceptions.php"]
 	}
 }
