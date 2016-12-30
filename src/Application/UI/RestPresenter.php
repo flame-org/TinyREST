@@ -16,7 +16,7 @@ use Nette;
  * @package Flame\Rest\Application\UI
  *
  * @property-read \Flame\Rest\Request\Parameters $input
- * @property-read \Flame\Rest\Resource $resource
+ * @property \Flame\Rest\Resource $resource
  */
 abstract class RestPresenter extends Presenter
 {
